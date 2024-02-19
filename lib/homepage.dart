@@ -5,9 +5,7 @@ import 'package:gdsport_flutter/fonctions/article_API.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -111,6 +109,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   print('Page changed to index $index, reason: $reason');
                 },
                 scrollDirection: Axis.horizontal,
+              ),
+            ),
+            ElevatedButton(
+              child: const Text('connexion'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/connexion');
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
               ),
             ),
           ],

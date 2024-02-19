@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gdsport_flutter/connexion.dart';
 import 'package:gdsport_flutter/homepage.dart';
 
 void main() {
@@ -15,7 +16,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'GDSport'),
+      home: const MyHomePage(),
+      routes: <String, WidgetBuilder>{
+        '/connexion': (BuildContext context) => Connexion(),
+        '/catalogue': (BuildContext context) => Connexion(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }
