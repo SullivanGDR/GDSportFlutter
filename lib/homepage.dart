@@ -120,6 +120,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
               ),
             ),
+            ElevatedButton(
+              child: const Text('register'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/register');
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+              ),
+            ),
           ],
         ),
       ),
