@@ -15,7 +15,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'GDSport'),
+      home: const MyHomePage(),
+      routes: {
+        '/home': (context) => const MyHomePage(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }
