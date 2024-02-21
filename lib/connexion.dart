@@ -1,8 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/fonctions/login_API.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../class/user.dart';
 
-// Déclarez les contrôleurs en dehors de la classe _ConnexionState
+AndroidOptions _getAndroidOptions() => const AndroidOptions(
+  encryptedSharedPreferences: true,
+);
 TextEditingController _passwordController = TextEditingController();
 TextEditingController _emailController = TextEditingController();
 
@@ -14,9 +20,12 @@ class Connexion extends StatefulWidget {
 }
 
 class _ConnexionState extends State<Connexion> {
-  void connexion(email, mdp) async {
-    await login(email, mdp);
-    setState(() {});
+
+  final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
+
+  Future<User?> connexion(email, mdp) async {
+    var rep =await login(email, mdp);
+    return rep;
   }
 
   @override
@@ -61,10 +70,21 @@ class _ConnexionState extends State<Connexion> {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
                 ),
-                onPressed: () {
+                onPressed: () async{
                   String password = _passwordController.text;
                   String email = _emailController.text;
-                  connexion(email,password);
+                  User? res = await connexion(email,password);
+                  if(res==null){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Erreur lors de la connexion')),
+                    );
+                  }else{
+                    await storage.write(key: "userData", value: jsonEncode(res.toJson()));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Vous êtes connecter')),
+                    );
+                    Navigator.popAndPushNamed(context, '/accueil');
+                  }
                 },
                 child: const Text(
                   'Se connecter',
@@ -72,7 +92,42 @@ class _ConnexionState extends State<Connexion> {
                 ),
               ),
             ),
-            // Le reste de votre code...
+            SizedBox(
+              height: 50,
+            ),
+            Padding(padding: EdgeInsets.symmetric(horizontal: 60),child: Divider(),),
+            Padding(padding: EdgeInsets.only(top: 15)),
+            Container(alignment: Alignment.bottomCenter ,child:
+            Column(children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.popAndPushNamed(context, '/register');
+                },
+                child: Text(
+                  "S'inscrire ?",
+                  style: TextStyle(
+                    color: Colors.black, // Couleur du texte
+                    decoration: TextDecoration.underline, // Soulignement du texte
+                  ),
+                ),
+              ),
+              Text('ou'),
+              GestureDetector(
+                onTap: () {
+                  // Action à effectuer lorsque le texte est cliqué
+                  // Par exemple, naviguer vers une autre page pour créer un compte
+                },
+                child: Text(
+                  'mot de passe oublié',
+                  style: TextStyle(
+                    color: Colors.black, // Couleur du texte
+                    decoration: TextDecoration.underline, // Soulignement du texte
+                  ),
+                ),
+              )
+            ],
+            ),
+            )
           ],
         ),
       ),
