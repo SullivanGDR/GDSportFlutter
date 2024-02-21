@@ -79,7 +79,9 @@ Drawer appDrawer(BuildContext context) {
           ListTile(
             leading: const Icon(Icons.cruelty_free),
             title: const Text('Enfant'),
-            onTap: () {},
+            onTap: () {
+              Navigator.popAndPushNamed(context, '/connexion');
+            },
           ),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
