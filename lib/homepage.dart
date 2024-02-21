@@ -242,7 +242,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 const Center(
                   child: Column(
                     children: [
-                      Text('© 2024 GDSport, Inc. Tous droits réservés')
+                      Text('© 2024 GDSport, Inc. Tous droits réservés.')
                     ],
                   ),
                 ),
