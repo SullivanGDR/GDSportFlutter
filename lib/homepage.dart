@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/class/article.dart';
 import 'package:gdsport_flutter/fonctions/article_API.dart';
+import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
@@ -42,6 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildContent() {
     return Scaffold(
       appBar: appBar(context),
+      drawer: appDrawer(context),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

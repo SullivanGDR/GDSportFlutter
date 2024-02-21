@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Drawer appDrawer(BuildContext context) {
   return Drawer(
@@ -11,18 +12,18 @@ Drawer appDrawer(BuildContext context) {
             decoration: BoxDecoration(
               color: Colors.white,
             ),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(child: Text(
-                  'GDSport',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
+                Center(
+                  child: Text(
+                    'GDSport',
+                    style: GoogleFonts.lilitaOne(
+                      textStyle: const TextStyle(
+                          color: Colors.black, letterSpacing: .5, fontSize: 25),
+                    ),
                   ),
-                ),
                 ),
                 SizedBox(height: 16),
                 Text(
@@ -68,23 +69,17 @@ Drawer appDrawer(BuildContext context) {
           ListTile(
             leading: const Icon(Icons.man),
             title: const Text("Homme"),
-            onTap: () {
-
-            },
+            onTap: () {},
           ),
           ListTile(
             leading: const Icon(Icons.woman),
             title: const Text('Femme'),
-            onTap: () {
-
-            },
+            onTap: () {},
           ),
           ListTile(
             leading: const Icon(Icons.cruelty_free),
             title: const Text('Enfant'),
-            onTap: () {
-
-            },
+            onTap: () {},
           ),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
@@ -100,16 +95,12 @@ Drawer appDrawer(BuildContext context) {
           ListTile(
             leading: const Icon(Icons.person),
             title: const Text("Profil"),
-            onTap: () {
-
-            },
+            onTap: () {},
           ),
           ListTile(
             leading: const Icon(Icons.favorite),
             title: const Text('Favoris'),
-            onTap: () {
-
-            },
+            onTap: () {},
           ),
         ],
       ),
