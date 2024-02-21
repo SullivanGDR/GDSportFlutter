@@ -17,62 +17,68 @@ class _CatalogueState extends State<Catalogue> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Padding(padding: EdgeInsets.only(top: 50)),
-            Center(child: Text(
-              'Connexion',
-              style: TextStyle(color: Colors.black, fontSize: 50),
-            ),),
-            Padding(padding: EdgeInsets.only(top: 30)),
-            Padding(
+            const Padding(padding: EdgeInsets.only(top: 50)),
+            const Center(
+              child: Text(
+                'Connexion',
+                style: TextStyle(color: Colors.black, fontSize: 50),
+              ),
+            ),
+            const Padding(padding: EdgeInsets.only(top: 30)),
+            const Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email'),
+                    border: OutlineInputBorder(), labelText: 'Email'),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
+            const Padding(
+              padding:
+                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 obscureText: true,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Mot de passe'),
+                    border: OutlineInputBorder(), labelText: 'Mot de passe'),
               ),
             ),
-            Padding(padding: EdgeInsets.only(top: 30)),
+            const Padding(padding: EdgeInsets.only(top: 30)),
             Container(
               height: 50,
               width: 250,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20)),
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
               child: ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.black),
                 ),
-                onPressed: () {
-
-                },
-                child: Text(
+                onPressed: () {},
+                child: const Text(
                   'Se connecter',
                   style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 80,
             ),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 60),child: Divider(),),
-            Padding(padding: EdgeInsets.only(top: 15)),
-            Container(alignment: Alignment.bottomCenter ,child:
-            Column(children: [
-              Text('Créer un compte ?'),
-              Text('ou'),
-              Text('mot de passe oublié')],),)
-
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 60),
+              child: Divider(),
+            ),
+            const Padding(padding: EdgeInsets.only(top: 15)),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: const Column(
+                children: [
+                  Text('Créer un compte ?'),
+                  Text('ou'),
+                  Text('mot de passe oublié')
+                ],
+              ),
+            )
           ],
         ),
       ),

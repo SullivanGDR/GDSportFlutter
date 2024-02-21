@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:gdsport_flutter/fonctions/login_API.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 
+// Déclarez les contrôleurs en dehors de la classe _ConnexionState
+TextEditingController _passwordController = TextEditingController();
+TextEditingController _emailController = TextEditingController();
+
 class Connexion extends StatefulWidget {
-  const Connexion({super.key});
+  const Connexion() : super();
 
   @override
   State<Connexion> createState() => _ConnexionState();
 }
 
 class _ConnexionState extends State<Connexion> {
+  void connexion(email, mdp) async {
+    await login(email, mdp);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,62 +27,52 @@ class _ConnexionState extends State<Connexion> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Padding(padding: EdgeInsets.only(top: 50)),
-            Center(child: Text(
-              'Connexion',
-              style: TextStyle(color: Colors.black, fontSize: 50),
-            ),),
-            Padding(padding: EdgeInsets.only(top: 30)),
+            const Padding(padding: EdgeInsets.only(top: 50)),
+            const Center(
+              child: Text(
+                'Connexion',
+                style: TextStyle(color: Colors.black, fontSize: 50),
+              ),
+            ),
+            const Padding(padding: EdgeInsets.only(top: 30)),
             Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
+                controller: _emailController,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email'),
+                    border: OutlineInputBorder(), labelText: 'Email'),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: TextField(
+                controller: _passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Mot de passe'),
+                    border: OutlineInputBorder(), labelText: 'Mot de passe'),
               ),
             ),
-            Padding(padding: EdgeInsets.only(top: 30)),
+            const Padding(padding: EdgeInsets.only(top: 30)),
             Container(
               height: 50,
               width: 250,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20)),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
               child: ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
                 ),
                 onPressed: () {
-
+                  String password = _passwordController.text;
+                  String email = _emailController.text;
+                  connexion(email,password);
                 },
-                child: Text(
+                child: const Text(
                   'Se connecter',
                   style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
             ),
-            SizedBox(
-              height: 80,
-            ),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 60),child: Divider(),),
-            Padding(padding: EdgeInsets.only(top: 15)),
-            Container(alignment: Alignment.bottomCenter ,child:
-            Column(children: [
-              Text('Créer un compte ?'),
-              Text('ou'),
-              Text('mot de passe oublié')],),)
-
+            // Le reste de votre code...
           ],
         ),
       ),
