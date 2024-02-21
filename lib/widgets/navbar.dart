@@ -23,3 +23,42 @@ PreferredSizeWidget appBar(BuildContext context) {
     ],
   );
 }
+
+/*
+CarouselSlider.builder(
+            itemCount: _articlesTendance.length,
+            itemBuilder: (BuildContext context, int index, int realIndex) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.symmetric(horizontal: 5.0),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(8.0),
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        'https://s3-4674.nuage-peda.fr/GDSport/public/articles/${_articlesTendance[index].getImages()[0]}'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              );
+            },
+            options: CarouselOptions(
+              height: 175.0,
+              aspectRatio: 16 / 9,
+              viewportFraction: 0.8,
+              initialPage: 0,
+              enableInfiniteScroll: true,
+              reverse: false,
+              autoPlay: true,
+              autoPlayInterval: Duration(seconds: 3),
+              autoPlayAnimationDuration: Duration(milliseconds: 800),
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enlargeCenterPage: true,
+              onPageChanged: (index, reason) {
+                // Callback when the page is changed
+                print('Page changed to index $index, reason: $reason');
+              },
+              scrollDirection: Axis.horizontal,
+            ),
+          )
+ */
