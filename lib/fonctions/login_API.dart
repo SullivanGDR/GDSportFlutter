@@ -21,8 +21,7 @@ Future<User?> login(email,mdp) async {
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> data = json.decode(response.body);
-    print(data["token"]);
-    var  user = User(data["data"]["id"], data["token"], data["data"]["prenom"], data["data"]["nom"], [], []);
+    var  user = User(data["data"]["id"],data["data"]["email"], data["token"], data["data"]["prenom"], data["data"]["nom"],data["data"]["adresse"],data["data"]["ville"],data["data"]["codePostal"],);
     return user;
   }else {
     print("Error: ${response.statusCode} - ${response.reasonPhrase}");
