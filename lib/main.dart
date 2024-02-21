@@ -20,9 +20,9 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(),
       routes: <String, WidgetBuilder>{
-        '/connexion': (BuildContext context) => Connexion(),
-        '/catalogue': (BuildContext context) => Catalogue(),
-        '/register': (BuildContext context) => Register(),
+        '/connexion': (BuildContext context) => const Connexion(),
+        '/catalogue': (BuildContext context) => const Catalogue(),
+        '/register': (BuildContext context) => const Register(),
       },
       debugShowCheckedModeBanner: false,
     );

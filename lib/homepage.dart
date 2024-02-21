@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/class/article.dart';
 import 'package:gdsport_flutter/fonctions/article_API.dart';
+import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -23,11 +24,12 @@ class _MyHomePageState extends State<MyHomePage> {
     _articles = await initListArticleTendance(_articles);
     setState(() {});
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(context),
+      drawer: appDrawer(context),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -81,12 +83,13 @@ class _MyHomePageState extends State<MyHomePage> {
               itemBuilder: (BuildContext context, int index, int realIndex) {
                 return Container(
                   width: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
                   decoration: BoxDecoration(
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(8.0),
                     image: DecorationImage(
-                      image: NetworkImage('https://s3-4674.nuage-peda.fr/GDSport/public/articles/${_articles[index].getImages()[0]}'),
+                      image: NetworkImage(
+                          'https://s3-4672.nuage-peda.fr/GDSport/public/articles/${_articles[index].getImages()[0]}'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -94,14 +97,14 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               options: CarouselOptions(
                 height: 175.0,
-                aspectRatio: 16/9,
+                aspectRatio: 16 / 9,
                 viewportFraction: 0.8,
                 initialPage: 0,
                 enableInfiniteScroll: true,
                 reverse: false,
                 autoPlay: true,
-                autoPlayInterval: Duration(seconds: 3),
-                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                autoPlayInterval: const Duration(seconds: 3),
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
                 autoPlayCurve: Curves.fastOutSlowIn,
                 enlargeCenterPage: true,
                 onPageChanged: (index, reason) {
@@ -112,22 +115,22 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             ElevatedButton(
-              child: const Text('connexion'),
               onPressed: () {
                 Navigator.pushNamed(context, '/connexion');
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
               ),
+              child: const Text('connexion'),
             ),
             ElevatedButton(
-              child: const Text('register'),
               onPressed: () {
                 Navigator.pushNamed(context, '/register');
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
               ),
+              child: const Text('register'),
             ),
           ],
         ),
