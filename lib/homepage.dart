@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/class/article.dart';
@@ -6,6 +8,13 @@ import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:gdsport_flutter/fonctions/login_API.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../class/user.dart';
+
+AndroidOptions _getAndroidOptions() => const AndroidOptions(
+      encryptedSharedPreferences: true,
+    );
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -16,8 +25,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Article> _articlesTendance = [];
-
+  final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
   bool _isLoading = true;
+  bool _isLog = false;
+  String nameUser = "";
 
   @override
   void initState() {
@@ -27,10 +38,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void chargement() async {
     _articlesTendance = await initListArticleTendance(_articlesTendance);
-
+    var value = await storage.read(key: "userData");
+    if (value != null) {
+      User user = User.fromJson(jsonDecode(value));
+      _isLog = await isLogin(user.getToken(), user.getId());
+      if (_isLog == true) {
+        try {
+          nameUser = user.getNom() + ' ' + user.getPrenom();
+        } catch (e) {
+          print("Une erreur s'est produite lors du décodage json : $e");
+        }
+      }
+    }
     setState(() {
       _isLoading = false;
-      print('test');
     });
   }
 
@@ -44,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildContent() {
     return Scaffold(
       appBar: appBar(context),
-      drawer: appDrawer(context),
+      drawer: appDrawer(context, _isLog, nameUser),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -127,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Image.network(
-                                  'https://s3-4674.nuage-peda.fr/GDSport/public/articles/${_articlesTendance[index].getImages()[0]}',
+                                  'https://s3-4672.nuage-peda.fr/GDSport/public/articles/${_articlesTendance[index].getImages()[0]}',
                                   width: 250,
                                   fit: BoxFit.contain,
                                 ),
