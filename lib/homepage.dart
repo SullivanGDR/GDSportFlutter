@@ -30,6 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _isLog=false;
   String nameUser="";
 
+  @override
   void initState() {
     super.initState();
     chargement();
@@ -155,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     height:
                                         10), // Espacement entre l'image et les textes
                                 Text(
-                                  '${_articlesTendance[index].designation}',
+                                  _articlesTendance[index].designation,
                                   style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
@@ -194,17 +195,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 Image.asset('assets/images/accueil_femme.jpg'),
                 Center(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.black,
                         backgroundColor: Colors.white,
                         elevation: 0,
-                        minimumSize: Size(250, 40),
+                        minimumSize: const Size(250, 40),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
-                          side: BorderSide(color: Colors.black),
+                          side: const BorderSide(color: Colors.black),
                         ),
                       ),
                       child: const Text(
@@ -234,17 +235,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 Image.asset('assets/images/decouvrirnike.webp'),
                 Center(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.black,
                         backgroundColor: Colors.white,
                         elevation: 0,
-                        minimumSize: Size(250, 40),
+                        minimumSize: const Size(250, 40),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
-                          side: BorderSide(color: Colors.black),
+                          side: const BorderSide(color: Colors.black),
                         ),
                       ),
                       child: const Text(
@@ -276,7 +277,530 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.white,
+            builder: (BuildContext context) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height *
+                    0.8, // 80% de la hauteur de l'écran
+                child: Column(
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 25, right: 25, left: 25),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'PANIER',
+                            style: GoogleFonts.lilitaOne(
+                              textStyle: const TextStyle(
+                                  color: Colors.black, fontSize: 20),
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.close,
+                              color: Colors.black,
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                      color: Colors.black,
+                      indent: 50,
+                      endIndent: 50,
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              bottom: 10, right: 25, left: 25),
+                          child: Column(
+                            children: <Widget>[
+                              InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 90,
+                                        height: 90,
+                                        child: Image.asset(
+                                          'assets/images/image_article_test.webp',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Chaussure Campus 00s',
+                                            style: GoogleFonts.lilitaOne(
+                                              textStyle: const TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                          Text("Taille : EU 32"),
+                                          Text('110 €'),
+                                          Row(
+                                            children: [
+                                              Text("Quantité : "),
+                                              Icon(Icons.remove_circle_outline),
+                                              Text("1"),
+                                              Icon(Icons.add_circle_outline)
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      Icon(Icons.delete),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 90,
+                                        height: 90,
+                                        child: Image.asset(
+                                          'assets/images/image_article_test.webp',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Chaussure Campus 00s',
+                                            style: GoogleFonts.lilitaOne(
+                                              textStyle: const TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                          Text("Taille : EU 32"),
+                                          Text('110 €'),
+                                          Row(
+                                            children: [
+                                              Text("Quantité : "),
+                                              Icon(Icons.remove_circle_outline),
+                                              Text("1"),
+                                              Icon(Icons.add_circle_outline)
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      Icon(Icons.delete),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 90,
+                                        height: 90,
+                                        child: Image.asset(
+                                          'assets/images/image_article_test.webp',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Chaussure Campus 00s',
+                                            style: GoogleFonts.lilitaOne(
+                                              textStyle: const TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                          Text("Taille : EU 32"),
+                                          Text('110 €'),
+                                          Row(
+                                            children: [
+                                              Text("Quantité : "),
+                                              Icon(Icons.remove_circle_outline),
+                                              Text("1"),
+                                              Icon(Icons.add_circle_outline)
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      Icon(Icons.delete),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 90,
+                                        height: 90,
+                                        child: Image.asset(
+                                          'assets/images/image_article_test.webp',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Chaussure Campus 00s',
+                                            style: GoogleFonts.lilitaOne(
+                                              textStyle: const TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                          Text("Taille : EU 32"),
+                                          Text('110 €'),
+                                          Row(
+                                            children: [
+                                              Text("Quantité : "),
+                                              Icon(Icons.remove_circle_outline),
+                                              Text("1"),
+                                              Icon(Icons.add_circle_outline)
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      Icon(Icons.delete),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 90,
+                                        height: 90,
+                                        child: Image.asset(
+                                          'assets/images/image_article_test.webp',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Chaussure Campus 00s',
+                                            style: GoogleFonts.lilitaOne(
+                                              textStyle: const TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                          Text("Taille : EU 32"),
+                                          Text('110 €'),
+                                          Row(
+                                            children: [
+                                              Text("Quantité : "),
+                                              Icon(Icons.remove_circle_outline),
+                                              Text("1"),
+                                              Icon(Icons.add_circle_outline)
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      Icon(Icons.delete),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 90,
+                                        height: 90,
+                                        child: Image.asset(
+                                          'assets/images/image_article_test.webp',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Chaussure Campus 00s',
+                                            style: GoogleFonts.lilitaOne(
+                                              textStyle: const TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                          Text("Taille : EU 32"),
+                                          Text('110 €'),
+                                          Row(
+                                            children: [
+                                              Text("Quantité : "),
+                                              Icon(Icons.remove_circle_outline),
+                                              Text("1"),
+                                              Icon(Icons.add_circle_outline)
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      Icon(Icons.delete),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 90,
+                                        height: 90,
+                                        child: Image.asset(
+                                          'assets/images/image_article_test.webp',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Chaussure Campus 00s',
+                                            style: GoogleFonts.lilitaOne(
+                                              textStyle: const TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                          Text("Taille : EU 32"),
+                                          Text('110 €'),
+                                          Row(
+                                            children: [
+                                              Text("Quantité : "),
+                                              Icon(Icons.remove_circle_outline),
+                                              Text("1"),
+                                              Icon(Icons.add_circle_outline)
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      Icon(Icons.delete),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 90,
+                                        height: 90,
+                                        child: Image.asset(
+                                          'assets/images/image_article_test.webp',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Chaussure Campus 00s',
+                                            style: GoogleFonts.lilitaOne(
+                                              textStyle: const TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                          Text("Taille : EU 32"),
+                                          Text('110 €'),
+                                          Row(
+                                            children: [
+                                              Text("Quantité : "),
+                                              Icon(Icons.remove_circle_outline),
+                                              Text("1"),
+                                              Icon(Icons.add_circle_outline)
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      Icon(Icons.delete),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 90,
+                                        height: 90,
+                                        child: Image.asset(
+                                          'assets/images/image_article_test.webp',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Chaussure Campus 00s',
+                                            style: GoogleFonts.lilitaOne(
+                                              textStyle: const TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                          Text("Taille : EU 32"),
+                                          Text('110 €'),
+                                          Row(
+                                            children: [
+                                              Text("Quantité : "),
+                                              Icon(Icons.remove_circle_outline),
+                                              Text("1"),
+                                              Icon(Icons.add_circle_outline)
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      Icon(Icons.delete),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 90,
+                                        height: 90,
+                                        child: Image.asset(
+                                          'assets/images/image_article_test.webp',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Chaussure Campus 00s',
+                                            style: GoogleFonts.lilitaOne(
+                                              textStyle: const TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                          Text("Taille : EU 32"),
+                                          Text('110 €'),
+                                          Row(
+                                            children: [
+                                              Text("Quantité : "),
+                                              Icon(Icons.remove_circle_outline),
+                                              Text("1"),
+                                              Icon(Icons.add_circle_outline)
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      Icon(Icons.delete),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width:
+                          double.infinity, // Prend toute la largeur de l'écran
+                      color: Colors.white, // Fond blanc pour le bouton
+                      child: Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.black,
+                            elevation: 0,
+                            minimumSize: Size(250, 40),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Colors.black),
+                            ),
+                          ),
+                          child: const Text(
+                            'Commander',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
         tooltip: 'Panier',
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
