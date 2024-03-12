@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:gdsport_flutter/class/ajoutPanier.dart';
 import 'package:gdsport_flutter/class/article.dart';
 import 'package:gdsport_flutter/fonctions/article_API.dart';
+import 'package:gdsport_flutter/fonctions/panier_api.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,8 +15,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../class/user.dart';
 
 AndroidOptions _getAndroidOptions() => const AndroidOptions(
-  encryptedSharedPreferences: true,
-);
+      encryptedSharedPreferences: true,
+    );
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -27,8 +29,9 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Article> _articlesTendance = [];
   final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
   bool _isLoading = true;
-  bool _isLog=false;
-  String nameUser="";
+  bool _isLog = false;
+  String nameUser = "";
+  List<AjoutPanier> panier = [];
 
   void initState() {
     super.initState();
@@ -38,15 +41,15 @@ class _MyHomePageState extends State<MyHomePage> {
   void chargement() async {
     _articlesTendance = await initListArticleTendance(_articlesTendance);
     var value = await storage.read(key: "userData");
-    if(value!=null){
+    if (value != null) {
       User user = User.fromJson(jsonDecode(value));
-      _isLog = await isLogin(user.getToken(),user.getId());
-      if(_isLog==true){
-          try {
-            nameUser=user.getNom()+' '+user.getPrenom();
-          } catch (e) {
-            print("Une erreur s'est produite lors du décodage JSON : $e");
-          }
+      _isLog = await isLogin(user.getToken(), user.getId());
+      if (_isLog == true) {
+        try {
+          nameUser = user.getNom() + ' ' + user.getPrenom();
+        } catch (e) {
+          print("Une erreur s'est produite lors du décodage JSON : $e");
+        }
       }
     }
     setState(() {
@@ -64,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildContent() {
     return Scaffold(
       appBar: appBar(context),
-      drawer: appDrawer(context,_isLog,nameUser),
+      drawer: appDrawer(context, _isLog, nameUser),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

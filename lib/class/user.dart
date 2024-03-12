@@ -1,3 +1,5 @@
+import 'article.dart';
+
 class User {
   final int _id;
   final String _token;
@@ -8,7 +10,8 @@ class User {
   final String? _ville;
   final String? _codePostal;
 
-  User(this._id,this._email, this._token, this._prenom, this._nom,this._adresse,this._ville,this._codePostal );
+  User(this._id, this._email, this._token, this._prenom, this._nom,
+      this._adresse, this._ville, this._codePostal);
 
   int getId() {
     return _id;
@@ -29,36 +32,30 @@ class User {
   String? getAdresse() {
     return _adresse;
   }
+
   String? getVille() {
     return _ville;
   }
+
   String? getCodePostal() {
     return _codePostal;
   }
 
   factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      json['id'],
-      json['email'],
-      json['token'],
-      json['prenom'],
-      json['name'],
-      json['adresse'],
-      json['ville'],
-      json['codePostal']
-    );
+    return User(json['id'], json['email'], json['token'], json['prenom'],
+        json['name'], json['adresse'], json['ville'], json['codePostal']);
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id':_id,
+      'id': _id,
       'token': _token,
       'email': _email,
-      'prenom':_prenom,
+      'prenom': _prenom,
       'name': _nom,
-      'adresse':_ville,
-      'ville':_ville,
-      'codePostal':_codePostal
+      'adresse': _ville,
+      'ville': _ville,
+      'codePostal': _codePostal,
     };
   }
 }

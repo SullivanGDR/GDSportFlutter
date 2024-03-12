@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../class/user.dart';
 
-Future<User?> login(email,mdp) async {
+Future<User?> login(email, mdp) async {
   String baseUrl = 's3-4672.nuage-peda.fr';
   Map<String, String> header = {
     "Content-type": "application/json",
@@ -13,23 +13,28 @@ Future<User?> login(email,mdp) async {
   final response = await http.post(
     uri,
     headers: header,
-    body: jsonEncode({
-      "email": email,
-      "password": mdp
-    }),
+    body: jsonEncode({"email": email, "password": mdp}),
   );
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> data = json.decode(response.body);
-    var  user = User(data["data"]["id"],data["data"]["email"], data["token"], data["data"]["prenom"], data["data"]["nom"],data["data"]["adresse"],data["data"]["ville"],data["data"]["codePostal"],);
+    var user = User(
+        data["data"]["id"],
+        data["data"]["email"],
+        data["token"],
+        data["data"]["prenom"],
+        data["data"]["nom"],
+        data["data"]["adresse"],
+        data["data"]["ville"],
+        data["data"]["codePostal"]);
     return user;
-  }else {
+  } else {
     print("Error: ${response.statusCode} - ${response.reasonPhrase}");
     return null;
   }
 }
 
-Future<bool> isLogin(token,id) async{
+Future<bool> isLogin(token, id) async {
   String baseUrl = 's3-4672.nuage-peda.fr';
   Map<String, String> header = {
     "Content-type": "application/json; charset=UTF-8",
@@ -40,11 +45,10 @@ Future<bool> isLogin(token,id) async{
 
   final response = await http.get(uri, headers: header);
 
-
   if (response.statusCode == 200) {
     print("est connecté");
     return true;
-  }else {
+  } else {
     print("Error: ${response.statusCode} - ${response.reasonPhrase}");
     return false;
   }
