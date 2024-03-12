@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/fonctions/login_API.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';

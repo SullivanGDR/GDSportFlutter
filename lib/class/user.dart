@@ -1,39 +1,39 @@
 class User {
-  final int id;
-  final String token;
-  final String email;
-  final String prenom;
-  final String nom;
-  final String? adresse;
-  final String? ville;
-  final String? codePostal;
+  final int _id;
+  final String _token;
+  final String _email;
+  final String _prenom;
+  final String _nom;
+  final String? _adresse;
+  final String? _ville;
+  final String? _codePostal;
 
-  User(this.id,this.email, this.token, this.prenom, this.nom,this.adresse,this.ville,this.codePostal );
+  User(this._id,this._email, this._token, this._prenom, this._nom,this._adresse,this._ville,this._codePostal );
 
   int getId() {
-    return id;
+    return _id;
   }
 
   String getToken() {
-    return token;
+    return _token;
   }
 
   String getPrenom() {
-    return prenom;
+    return _prenom;
   }
 
   String getNom() {
-    return nom;
+    return _nom;
   }
 
   String? getAdresse() {
-    return adresse;
+    return _adresse;
   }
   String? getVille() {
-    return ville;
+    return _ville;
   }
   String? getCodePostal() {
-    return codePostal;
+    return _codePostal;
   }
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -42,7 +42,7 @@ class User {
       json['email'],
       json['token'],
       json['prenom'],
-      json['nom'],
+      json['name'],
       json['adresse'],
       json['ville'],
       json['codePostal']
@@ -51,14 +51,14 @@ class User {
 
   Map<String, dynamic> toJson() {
     return {
-      'id':id,
-      'token': token,
-      'email': email,
-      'prenom':prenom,
-      'name': nom,
-      'adresse':ville,
-      'ville':ville,
-      'codePostal':codePostal
+      'id':_id,
+      'token': _token,
+      'email': _email,
+      'prenom':_prenom,
+      'name': _nom,
+      'adresse':_ville,
+      'ville':_ville,
+      'codePostal':_codePostal
     };
   }
 }
