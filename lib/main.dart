@@ -3,6 +3,7 @@ import 'package:gdsport_flutter/catalogue.dart';
 import 'package:gdsport_flutter/connexion.dart';
 import 'package:gdsport_flutter/homepage.dart';
 import 'package:gdsport_flutter/register.dart';
+import 'package:gdsport_flutter/article.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/connexion': (BuildContext context) => const Connexion(),
         '/catalogue': (BuildContext context) => const Catalogue(),
         '/register': (BuildContext context) => const Register(),
+        '/article': (BuildContext context) => const Article(),
       },
       debugShowCheckedModeBanner: false,
     );

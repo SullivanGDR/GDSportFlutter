@@ -58,7 +58,7 @@ Drawer appDrawer(BuildContext context) {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
             child: const Text(
-              '-- Catalogues --',
+              '-- Navigation --',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 18,
@@ -68,8 +68,10 @@ Drawer appDrawer(BuildContext context) {
           ),
           ListTile(
             leading: const Icon(Icons.man),
-            title: const Text("Homme"),
-            onTap: () {},
+            title: const Text("article"),
+            onTap: () {
+              Navigator.pushNamed(context, '/article');
+            },
           ),
           ListTile(
             leading: const Icon(Icons.woman),
