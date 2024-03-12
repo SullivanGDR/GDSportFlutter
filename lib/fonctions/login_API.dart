@@ -28,3 +28,24 @@ Future<User?> login(email,mdp) async {
     return null;
   }
 }
+
+Future<bool> isLogin(token,id) async{
+  String baseUrl = 's3-4672.nuage-peda.fr';
+  Map<String, String> header = {
+    "Content-type": "application/json; charset=UTF-8",
+    "Accept": 'application/ld+json',
+    'Authorization': "Bearer $token"
+  };
+  final uri = Uri.http(baseUrl, '/GDSport/public/api/users/$id');
+
+  final response = await http.get(uri, headers: header);
+
+
+  if (response.statusCode == 200) {
+    print("est connecté");
+    return true;
+  }else {
+    print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+    return false;
+  }
+}

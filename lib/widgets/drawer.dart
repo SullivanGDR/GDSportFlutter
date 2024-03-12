@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-Drawer appDrawer(BuildContext context) {
+AndroidOptions _getAndroidOptions() => const AndroidOptions(
+  encryptedSharedPreferences: true,
+);
+
+final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
+
+
+Drawer appDrawer(BuildContext context,bool isLog,String nomUtilisateur) {
   return Drawer(
     child: Container(
       color: Colors.white,
@@ -19,7 +27,7 @@ Drawer appDrawer(BuildContext context) {
                 Center(
                   child: Text(
                     'GDSport',
-                    style: GoogleFonts.lilitaOne(
+                    style: GoogleFonts.zcoolKuaiLe(
                       textStyle: const TextStyle(
                           color: Colors.black, letterSpacing: .5, fontSize: 25),
                     ),
@@ -44,7 +52,7 @@ Drawer appDrawer(BuildContext context) {
                     ),
                     SizedBox(width: 8),
                     Text(
-                      'utilisateur',
+                      isLog ? nomUtilisateur : 'utilisateur',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -56,54 +64,72 @@ Drawer appDrawer(BuildContext context) {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
-            child: const Text(
-              '-- Catalogues --',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+            child: Text(
+              'NAVIGATION',
+              style: GoogleFonts.lilitaOne(
+                textStyle: const TextStyle(color: Colors.black, fontSize: 20),
               ),
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.man),
-            title: const Text("Homme"),
+            leading: const Icon(Icons.home_outlined),
+            title: const Text('Accueil'),
             onTap: () {},
           ),
           ListTile(
-            leading: const Icon(Icons.woman),
-            title: const Text('Femme'),
+            leading: const Icon(Icons.checkroom_outlined),
+            title: const Text("Catalogue"),
             onTap: () {},
           ),
           ListTile(
-            leading: const Icon(Icons.cruelty_free),
-            title: const Text('Enfant'),
-            onTap: () {},
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
-            child: const Text(
-              '-- Compte --',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.person),
-            title: const Text("Profil"),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(Icons.favorite),
+            leading: const Icon(Icons.favorite_border_outlined),
             title: const Text('Favoris'),
             onTap: () {},
           ),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 50), child: Divider()),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+            child: Text(
+              'MON COMPTE',
+              style: GoogleFonts.lilitaOne(
+                textStyle: const TextStyle(color: Colors.black, fontSize: 20),
+              ),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.person_outline),
+            title: const Text("Mes informations"),
+            onTap: () {
+              if(isLog==false){
+                Navigator.popAndPushNamed(context, '/connexion');
+              }
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.local_shipping_outlined),
+            title: const Text('Mes commandes'),
+            onTap: () {},
+          ),
+          Padding(padding: EdgeInsets.only(top: 20)),
+          Padding(child: ElevatedButton(
+            child:Text(isLog ? 'Deconnexion' : 'Connexion',style: TextStyle(color: Colors.black),),
+            onPressed: () async{
+              if(isLog == true){
+                await storage.delete(key: "userData");
+                Navigator.popAndPushNamed(context, "/accueil");
+              }else{
+                Navigator.popAndPushNamed(context, "/connexion");
+              }
+            },
+            style: ButtonStyle(
+              backgroundColor:isLog ? MaterialStateProperty.all<Color>(Colors.red):MaterialStateProperty.all<Color>(Colors.green),
+            ),
+          ),padding: EdgeInsets.symmetric(horizontal: 15) ,)
         ],
       ),
     ),
+
   );
 }
