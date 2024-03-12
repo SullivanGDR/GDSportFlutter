@@ -1,3 +1,5 @@
+import 'article.dart';
+
 class User {
   final int _id;
   final String _token;
