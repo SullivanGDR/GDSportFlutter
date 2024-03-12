@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
           try {
             nameUser=user.getNom()+' '+user.getPrenom();
           } catch (e) {
-            print("Une erreur s'est produite lors du décodage JSON : $e");
+            print("Une erreur s'est produite lors du décodage json : $e");
           }
       }
     }
