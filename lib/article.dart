@@ -12,6 +12,7 @@ class Article extends StatefulWidget {
 class _ArticleState extends State<Article> {
   String selectedSize = 'S'; // Taille par défaut
   bool _isDescriptionVisible = false;
+  bool _isAvisVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,28 +33,27 @@ class _ArticleState extends State<Article> {
                 ],
               ),
             ),
-            const Padding(padding: EdgeInsets.only(top: 50)),
+            const SizedBox(height: 20),
             const Center(
               child: Text(
                 'Nom de l article',
                 style: TextStyle(color: Colors.black, fontSize: 25),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 30),
-            ),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  Divider(), // Divider au-dessus de la sélection des tailles
+                  const Divider(), // Divider avant la sélection de la taille
+                  Padding(padding: const EdgeInsets.only(top: 20)),
                   Row(
                     children: [
                       Text(
                         'Sélectionner la taille : ',
                         style: TextStyle(fontSize: 22.5),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       DropdownButton<String>(
                         value: selectedSize,
                         onChanged: (String? newValue) {
@@ -78,38 +78,51 @@ class _ArticleState extends State<Article> {
                       ),
                     ],
                   ),
-                  Divider(), // Divider au-dessus du bouton "Acheter"
-                  SizedBox(height: 5),
+                  const SizedBox(height: 20),
+                  const Divider(), // Divider après la sélection de la taille
+                  _buildExpansionPanel(
+                    // Expansion Panel pour la description
+                    title: 'Description',
+                    content:
+                        'Lorsque Bilbon Sacquet hérite d\'un anneau mystérieux, il est loin de se douter de sa vraie valeur et de l\'aventure qu\'il va vivre. Cet anneau est en fait l\'un des Anneaux de Pouvoir, autrefois créés par Sauron, le Seigneur des Ténèbres. Il découvre alors que cet anneau lui confère un pouvoir immense qui le rend très convoité. Ainsi, il quitte la Comté pour se lancer dans une quête périlleuse pour détruire l\'anneau et vaincre Sauron. Accompagné d\'une communauté hétéroclite, comprenant des Hobbits, des Hommes, des Elfes et des Nains, Bilbon affronte de nombreux dangers et doit surmonter de terribles épreuves dans sa lutte pour sauver la Terre du Milieu.',
+                    isVisible: _isDescriptionVisible,
+                    onPressed: () {
+                      setState(() {
+                        _isDescriptionVisible = !_isDescriptionVisible;
+                      });
+                    },
+                  ),
+                  const Divider(), // Divider après la description
+                  const SizedBox(height: 20),
                   Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: ExpansionPanelList(
-                      elevation: 0,
-                      expandedHeaderPadding: EdgeInsets.zero,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
                       children: [
-                        ExpansionPanel(
-                          headerBuilder:
-                              (BuildContext context, bool isExpanded) {
-                            return ListTile(
-                              title: Text('Description'),
-                              trailing: Icon(Icons.keyboard_arrow_down),
-                              onTap: () {
-                                setState(() {
-                                  _isDescriptionVisible =
-                                      !_isDescriptionVisible;
-                                });
-                              },
-                            );
-                          },
-                          body: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: _isDescriptionVisible
-                                ? Text(
-                                    'Lorsque Bilbon Sacquet hérite d\'un anneau mystérieux, il est loin de se douter de sa vraie valeur et de l\'aventure qu\'il va vivre. Cet anneau est en fait l\'un des Anneaux de Pouvoir, autrefois créés par Sauron, le Seigneur des Ténèbres. Il découvre alors que cet anneau lui confère un pouvoir immense qui le rend très convoité. Ainsi, il quitte la Comté pour se lancer dans une quête périlleuse pour détruire l\'anneau et vaincre Sauron. Accompagné d\'une communauté hétéroclite, comprenant des Hobbits, des Hommes, des Elfes et des Nains, Bilbon affronte de nombreux dangers et doit surmonter de terribles épreuves dans sa lutte pour sauver la Terre du Milieu.',
-                                    style: TextStyle(fontSize: 16),
-                                  )
-                                : SizedBox.shrink(),
+                        Expanded(
+                          flex: 3,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.black),
+                            ),
+                            onPressed: () {},
+                            child: const Text(
+                              'Acheter',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 35),
+                            ),
                           ),
-                          isExpanded: _isDescriptionVisible,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.favorite,
+                              color: Colors.black,
+                              size: 40,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -117,67 +130,95 @@ class _ArticleState extends State<Article> {
                 ],
               ),
             ),
-            const SizedBox(height: 30),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 45,
-                    width: 305,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.black),
-                      ),
-                      onPressed: () {},
-                      child: const Text(
-                        'Acheter',
-                        style: TextStyle(color: Colors.white, fontSize: 35),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 60,
-                    width: 60,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.favorite,
-                        color: Colors.black,
-                        size: 40,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 16),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: const [
+                  Divider(), // Divider avant l'avis
+                  SizedBox(height: 5),
                 ],
               ),
             ),
-            SizedBox(height: 80),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 60),
-              child: Divider(),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Container(
-                alignment: Alignment.bottomCenter,
-                child: Column(
-                  children: [
-                    Text('Créer un compte ?'),
-                    Text('ou'),
-                    Text('mot de passe oublié')
-                  ],
+            const SizedBox(height: 20),
+            Column(
+              children: [
+                const Text(
+                  'Avis',
+                  style: TextStyle(color: Colors.black, fontSize: 25),
                 ),
-              ),
-            )
+                const SizedBox(height: 10),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Michel C',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      SizedBox(
+                          height: 5), // Ajoute un espace entre le nom et l'avis
+                      Text(
+                        'Avis les projet est nul c de la merde !',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      bottom: 1), // Ajout du Padding en dessous de l'avis
+                ),
+              ],
+            ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildExpansionPanel({
+    required String title,
+    required String content,
+    required bool isVisible,
+    required VoidCallback onPressed,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: ExpansionPanelList(
+        elevation: 0,
+        expandedHeaderPadding: EdgeInsets.zero,
+        children: [
+          ExpansionPanel(
+            headerBuilder: (BuildContext context, bool isExpanded) {
+              return ListTile(
+                title: Text(
+                  title,
+                  style: const TextStyle(fontSize: 22.5),
+                ),
+                onTap: onPressed,
+              );
+            },
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: isVisible
+                  ? Text(
+                      content,
+                      style: const TextStyle(fontSize: 16),
+                    )
+                  : const SizedBox.shrink(),
+            ),
+            isExpanded: isVisible,
+          ),
+        ],
       ),
     );
   }
