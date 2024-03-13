@@ -32,3 +32,60 @@ Future<List<AjoutPanier>> getPanier(token, id, List<AjoutPanier> panier) async {
     return [];
   }
 }
+
+Future<void> addQte(token, id, qte) async {
+  String baseUrl = 's3-4672.nuage-peda.fr';
+  Map<String, String> header = {
+    "Content-type": "application/merge-patch+json",
+    "Accept": 'application/ld+json',
+    'Authorization': "Bearer $token"
+  };
+  final uri = Uri.http(baseUrl, '/GDSport/public/api/ajouters/$id');
+
+  final response = await http.patch(uri, headers: header,body: jsonEncode({
+    "quantite": qte+1
+  }),);
+
+  if (response.statusCode == 200) {
+    print("modification ok");
+  } else {
+    print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+  }
+}
+
+Future<void> supQte(token, id, qte) async {
+  String baseUrl = 's3-4672.nuage-peda.fr';
+  Map<String, String> header = {
+    "Content-type": "application/merge-patch+json",
+    "Accept": 'application/ld+json',
+    'Authorization': "Bearer $token"
+  };
+  final uri = Uri.http(baseUrl, '/GDSport/public/api/ajouters/$id');
+
+  final response = await http.patch(uri, headers: header,body: jsonEncode({
+    "quantite": qte-1
+  }),);
+
+  if (response.statusCode == 200) {
+    print("modification ok");
+  } else {
+    print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+  }
+}
+
+Future<void> delArticle(token, id) async {
+  String baseUrl = 's3-4672.nuage-peda.fr';
+  Map<String, String> header = {
+    "Accept": '*/*',
+    'Authorization': "Bearer $token"
+  };
+  final uri = Uri.http(baseUrl, '/GDSport/public/api/ajouters/$id');
+
+  final response = await http.delete(uri, headers: header);
+
+  if (response.statusCode == 204) {
+    print("delete ok");
+  } else {
+    print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+  }
+}
