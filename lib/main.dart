@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         '/catalogue': (BuildContext context) => const Catalogue(),
         '/register': (BuildContext context) => const Register(),
         '/article': (BuildContext context) => const Article(),
+        '/catalogue': (BuildContext context) => const Catalogue(),
       },
       debugShowCheckedModeBanner: false,
     );

@@ -74,9 +74,11 @@ Drawer appDrawer(BuildContext context) {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.woman),
-            title: const Text('Femme'),
-            onTap: () {},
+            leading: const Icon(Icons.man),
+            title: const Text("catalogue"),
+            onTap: () {
+              Navigator.pushNamed(context, '/catalogue');
+            },
           ),
           ListTile(
             leading: const Icon(Icons.cruelty_free),
