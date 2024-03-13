@@ -70,7 +70,7 @@ class _RegisterState extends State<Register> {
                       controller: _nomController,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Nom (*)'
+                          labelText: 'Nom'
                       ),
                     ),
                   ),
@@ -80,7 +80,7 @@ class _RegisterState extends State<Register> {
                       controller: _prenomController,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Prenom (*)'
+                          labelText: 'Prenom'
                       ),
                     ),
                   ),

@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-Drawer appDrawer(BuildContext context) {
+AndroidOptions _getAndroidOptions() => const AndroidOptions(
+  encryptedSharedPreferences: true,
+);
+
+final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
+
+
+Drawer appDrawer(BuildContext context,bool isLog,String nomUtilisateur) {
   return Drawer(
     child: Container(
       color: Colors.white,
@@ -44,7 +52,7 @@ Drawer appDrawer(BuildContext context) {
                     ),
                     SizedBox(width: 8),
                     Text(
-                      'utilisateur',
+                      isLog ? nomUtilisateur : 'utilisateur',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -93,15 +101,35 @@ Drawer appDrawer(BuildContext context) {
           ListTile(
             leading: const Icon(Icons.person_outline),
             title: const Text("Mes informations"),
-            onTap: () {},
+            onTap: () {
+              if(isLog==false){
+                Navigator.popAndPushNamed(context, '/connexion');
+              }
+            },
           ),
           ListTile(
             leading: const Icon(Icons.local_shipping_outlined),
             title: const Text('Mes commandes'),
             onTap: () {},
           ),
+          Padding(padding: EdgeInsets.only(top: 20)),
+          Padding(child: ElevatedButton(
+            child:Text(isLog ? 'Deconnexion' : 'Connexion',style: TextStyle(color: Colors.black),),
+            onPressed: () async{
+              if(isLog == true){
+                await storage.delete(key: "userData");
+                Navigator.popAndPushNamed(context, "/accueil");
+              }else{
+                Navigator.popAndPushNamed(context, "/connexion");
+              }
+            },
+            style: ButtonStyle(
+              backgroundColor:isLog ? MaterialStateProperty.all<Color>(Colors.red):MaterialStateProperty.all<Color>(Colors.green),
+            ),
+          ),padding: EdgeInsets.symmetric(horizontal: 15) ,)
         ],
       ),
     ),
+
   );
 }
