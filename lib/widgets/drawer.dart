@@ -3,13 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 AndroidOptions _getAndroidOptions() => const AndroidOptions(
-  encryptedSharedPreferences: true,
-);
+      encryptedSharedPreferences: true,
+    );
 
 final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
 
-
-Drawer appDrawer(BuildContext context,bool isLog,String nomUtilisateur) {
+Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
   return Drawer(
     child: Container(
       color: Colors.white,
@@ -98,38 +97,58 @@ Drawer appDrawer(BuildContext context,bool isLog,String nomUtilisateur) {
               ),
             ),
           ),
-          ListTile(
-            leading: const Icon(Icons.person_outline),
-            title: const Text("Mes informations"),
-            onTap: () {
-              if(isLog==false){
-                Navigator.popAndPushNamed(context, '/connexion');
-              }
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.local_shipping_outlined),
-            title: const Text('Mes commandes'),
-            onTap: () {},
-          ),
-          Padding(padding: EdgeInsets.only(top: 20)),
-          Padding(child: ElevatedButton(
-            child:Text(isLog ? 'Deconnexion' : 'Connexion',style: TextStyle(color: Colors.black),),
-            onPressed: () async{
-              if(isLog == true){
-                await storage.delete(key: "userData");
-                Navigator.popAndPushNamed(context, "/accueil");
-              }else{
-                Navigator.popAndPushNamed(context, "/connexion");
-              }
-            },
-            style: ButtonStyle(
-              backgroundColor:isLog ? MaterialStateProperty.all<Color>(Colors.red):MaterialStateProperty.all<Color>(Colors.green),
+          Visibility(
+            visible: isLog,
+            child: Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.person_outline),
+                  title: const Text("Mes informations"),
+                  onTap: () {
+                    if (isLog == false) {
+                      Navigator.popAndPushNamed(context, '/connexion');
+                    }
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.local_shipping_outlined),
+                  title: const Text('Mes commandes'),
+                  onTap: () {},
+                ),
+                ListTile(
+                  leading: const Icon(Icons.logout_outlined),
+                  title: const Text('Déconnexion'),
+                  onTap: () async {
+                    await storage.delete(key: "userData");
+                    Navigator.popAndPushNamed(context, "/accueil");
+                  },
+                ),
+              ],
             ),
-          ),padding: EdgeInsets.symmetric(horizontal: 15) ,)
+          ),
+          Visibility(
+            visible: !isLog,
+            child: Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.login_outlined),
+                  title: const Text('Connexion'),
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, "/connexion");
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.person_add_outlined),
+                  title: const Text('Inscription'),
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, "/register");
+                  },
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     ),
-
   );
 }
