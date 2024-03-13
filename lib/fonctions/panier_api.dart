@@ -42,9 +42,11 @@ Future<void> addQte(token, id, qte) async {
   };
   final uri = Uri.http(baseUrl, '/GDSport/public/api/ajouters/$id');
 
-  final response = await http.patch(uri, headers: header,body: jsonEncode({
-    "quantite": qte+1
-  }),);
+  final response = await http.patch(
+    uri,
+    headers: header,
+    body: jsonEncode({"quantite": qte + 1}),
+  );
 
   if (response.statusCode == 200) {
     print("modification ok");
@@ -62,9 +64,11 @@ Future<void> supQte(token, id, qte) async {
   };
   final uri = Uri.http(baseUrl, '/GDSport/public/api/ajouters/$id');
 
-  final response = await http.patch(uri, headers: header,body: jsonEncode({
-    "quantite": qte-1
-  }),);
+  final response = await http.patch(
+    uri,
+    headers: header,
+    body: jsonEncode({"quantite": qte - 1}),
+  );
 
   if (response.statusCode == 200) {
     print("modification ok");
@@ -73,19 +77,24 @@ Future<void> supQte(token, id, qte) async {
   }
 }
 
-Future<void> delArticle(token, id) async {
+Future<void> delArticle(String token, int id) async {
   String baseUrl = 's3-4672.nuage-peda.fr';
-  Map<String, String> header = {
-    "Accept": '*/*',
-    'Authorization': "Bearer $token"
-  };
-  final uri = Uri.http(baseUrl, '/GDSport/public/api/ajouters/$id');
+  Map<String, String> headers = {
+    "Authorization": "Bearer $token"
+  }; // Suppression de l'entrée vide dans les en-têtes
 
-  final response = await http.delete(uri, headers: header);
+  final uri = Uri.http(baseUrl,
+      '/GDSport/public/api/ajouters/$id'); // Utilisation de Uri.https pour une connexion sécurisée
 
-  if (response.statusCode == 204) {
-    print("delete ok");
-  } else {
-    print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+  try {
+    final response = await http.delete(uri, headers: headers);
+
+    if (response.statusCode == 204) {
+      print("delete ok");
+    } else {
+      print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+    }
+  } catch (e) {
+    print("Exception during delete: $e");
   }
 }
