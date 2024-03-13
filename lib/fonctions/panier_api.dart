@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../class/user.dart';
 import '../class/ajoutPanier.dart';
 import '../class/articleLight.dart';
 

@@ -21,7 +21,7 @@ class AjoutPanier {
     return _article;
   }
 
-  int getGte() {
+  int getQte() {
     return _qte;
   }
 
