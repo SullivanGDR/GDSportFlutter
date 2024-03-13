@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-Future<bool> register(email,mdp,nom,prenom,adresse,ville,cp,pays) async {
+Future<bool> register(email, mdp, nom, prenom, adresse, ville, cp, pays) async {
   String baseUrl = 's3-4672.nuage-peda.fr';
   Map<String, String> header = {
     "Content-type": "application/ld+json",
@@ -27,7 +27,7 @@ Future<bool> register(email,mdp,nom,prenom,adresse,ville,cp,pays) async {
   if (response.statusCode == 201) {
     print("compte créé");
     return true;
-  }else {
+  } else {
     print("Error: ${response.statusCode} - ${response.reasonPhrase}");
     return false;
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gdsport_flutter/class/user.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:badges/badges.dart' as badges;
 
 AndroidOptions _getAndroidOptions() => const AndroidOptions(
       encryptedSharedPreferences: true,
@@ -51,7 +53,7 @@ Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
                     ),
                     SizedBox(width: 8),
                     Text(
-                      isLog ? nomUtilisateur : 'utilisateur',
+                      isLog ? nomUtilisateur : 'Aucun profil',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -74,7 +76,9 @@ Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
           ListTile(
             leading: const Icon(Icons.home_outlined),
             title: const Text('Accueil'),
-            onTap: () {},
+            onTap: () {
+              Navigator.popAndPushNamed(context, '/accueil');
+            },
           ),
           ListTile(
             leading: const Icon(Icons.checkroom_outlined),
@@ -83,8 +87,26 @@ Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
           ),
           ListTile(
             leading: const Icon(Icons.favorite_border_outlined),
-            title: const Text('Favoris'),
-            onTap: () {},
+            title: isLog
+                ? badges.Badge(
+                    position: badges.BadgePosition.custom(end: 0, top: 0),
+                    badgeContent: Text(
+                      "0",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    badgeStyle: badges.BadgeStyle(
+                      shape: badges.BadgeShape.square,
+                      borderRadius: BorderRadius.circular(4),
+                      badgeColor: Colors.black,
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      elevation: 0,
+                    ),
+                    child: Text("Favoris"),
+                  )
+                : Text("Favoris"),
+            onTap: () {
+              Navigator.popAndPushNamed(context, '/favoris');
+            },
           ),
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 50), child: Divider()),

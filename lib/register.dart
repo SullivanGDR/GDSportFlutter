@@ -40,8 +40,8 @@ class _RegisterState extends State<Register> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Padding(padding: EdgeInsets.only(top: 10)),
-            Center(
+            const Padding(padding: EdgeInsets.only(top: 10)),
+            const Center(
               child: Text(
                 'Inscrivez-vous',
                 style: TextStyle(color: Colors.black, fontSize: 50),
@@ -53,7 +53,7 @@ class _RegisterState extends State<Register> {
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(), labelText: 'Email'),
               ),
             ),
@@ -79,31 +79,29 @@ class _RegisterState extends State<Register> {
                 ),
               ),
             ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment
-                    .spaceBetween, // ou MainAxisAlignment.spaceEvenly
-                children: [
-                  SizedBox(width: 15),
-                  Expanded(
-                    child: TextField(
-                      controller: _nomController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Nom'),
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment
+                  .spaceBetween, // ou MainAxisAlignment.spaceEvenly
+              children: [
+                const SizedBox(width: 15),
+                Expanded(
+                  child: TextField(
+                    controller: _nomController,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Nom'),
                   ),
-                  SizedBox(
-                      width: 10), // Espacement entre les deux champs de texte
-                  Expanded(
-                    child: TextField(
-                      controller: _prenomController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Prenom'),
-                    ),
+                ),
+                const SizedBox(
+                    width: 10), // Espacement entre les deux champs de texte
+                Expanded(
+                  child: TextField(
+                    controller: _prenomController,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Prenom'),
                   ),
-                  SizedBox(width: 15),
-                ],
-              ),
+                ),
+                const SizedBox(width: 15),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -111,44 +109,41 @@ class _RegisterState extends State<Register> {
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: _adresseController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(), labelText: 'Adresse (*)'),
               ),
             ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment
-                    .spaceBetween, // ou MainAxisAlignment.spaceEvenly
-                children: [
-                  SizedBox(width: 15),
-                  Expanded(
-                    child: TextField(
-                      controller: _villeController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Ville (*)'),
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(width: 15),
+                Expanded(
+                  child: TextField(
+                    controller: _villeController,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Ville (*)'),
                   ),
-                  SizedBox(
-                      width: 10), // Espacement entre les deux champs de texte
-                  Expanded(
-                    child: TextField(
-                      controller: _paysController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Pays (*)'),
-                    ),
+                ),
+                const SizedBox(
+                    width: 10), // Espacement entre les deux champs de texte
+                Expanded(
+                  child: TextField(
+                    controller: _paysController,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Pays (*)'),
                   ),
-                  SizedBox(
-                      width: 10), // Espacement entre les deux champs de texte
-                  Expanded(
-                    child: TextField(
-                      controller: _cpController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'CP (*)'),
-                    ),
+                ),
+                const SizedBox(
+                    width: 10), // Espacement entre les deux champs de texte
+                Expanded(
+                  child: TextField(
+                    controller: _cpController,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'CP (*)'),
                   ),
-                  SizedBox(width: 15),
-                ],
-              ),
+                ),
+                const SizedBox(width: 15),
+              ],
             ),
             const SizedBox(height: 40),
             const Text("(*) : Champs non obligatoires."),

@@ -20,34 +20,43 @@ Widget infoPanier(List<AjoutPanier> panier) {
               ),
             ),
             const SizedBox(width: 8),
-            SizedBox(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(children: [
-                    Text(
-                      overflow: TextOverflow.visible,
-                      ajout.getArticle().getDesignation(),
-                      style: GoogleFonts.lilitaOne(
-                        textStyle: const TextStyle(color: Colors.black),
+                  Text(
+                    ajout.getArticle().getDesignation(),
+                    style: GoogleFonts.lilitaOne(
+                      textStyle: const TextStyle(
+                        color: Colors.black,
                       ),
                     ),
-                  ]),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   Text("Taille : ${ajout.getTaille()}"),
-                  const Text('110 €'),
+                  Text('${ajout.getArticle().getPrix()} €'),
                   Row(
                     children: [
                       const Text("Quantité : "),
-                      const Icon(Icons.remove_circle_outline),
+                      InkWell(
+                        onTap: () {
+                          print('moins');
+                        },
+                        child: Icon(Icons.remove_circle_outline),
+                      ),
                       Text("${ajout.getQte()}"),
-                      const Icon(Icons.add_circle_outline)
+                      InkWell(
+                        onTap: () {
+                          print('plus');
+                        },
+                        child: Icon(Icons.add_circle_outline),
+                      ),
                     ],
                   )
                 ],
               ),
             ),
-            const Spacer(),
-            const Icon(Icons.delete),
+            const Icon(Icons.delete_outline),
           ],
         ),
       ),
