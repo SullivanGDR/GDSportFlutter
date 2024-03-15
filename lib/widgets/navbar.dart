@@ -4,9 +4,12 @@ PreferredSizeWidget appBar(BuildContext context) {
   return AppBar(
     backgroundColor: Colors.white,
     centerTitle: true,
-    title: const Text('GDSport', style: TextStyle(fontWeight: FontWeight.bold)),
+    title: const Text('GDSport',
+        style: TextStyle(fontWeight: FontWeight.bold)),
+    leading: const Icon(Icons.menu),
     actions: const <Widget>[
-      Padding(padding: EdgeInsets.only(right: 15), child: Icon(Icons.search)),
+      Padding(
+          padding: EdgeInsets.only(right: 15), child: Icon(Icons.search)),
     ],
   );
 }

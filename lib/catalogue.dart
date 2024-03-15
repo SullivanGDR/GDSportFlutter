@@ -1,86 +1,105 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gdsport_flutter/class/article.dart';
+import 'package:gdsport_flutter/fonctions/article_API.dart';
+import 'package:gdsport_flutter/widgets/carousels.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 
-class Catalogue extends StatefulWidget {
-  const Catalogue({super.key});
+class CataloguePage extends StatefulWidget {
+  const CataloguePage({super.key});
 
   @override
-  State<Catalogue> createState() => _CatalogueState();
+  State<CataloguePage> createState() => _CataloguePageState();
 }
 
-class _CatalogueState extends State<Catalogue> {
+class _CataloguePageState extends State<CataloguePage> {
+  List<Article> _articles = [];
+
+  void initState() {
+    super.initState();
+    chargement();
+  }
+
+  void chargement() async {
+    _articles = await initListArticleTendance(_articles);
+    setState(() {});
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: appBar(context),
-      body: SingleChildScrollView(
+      body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            const Padding(padding: EdgeInsets.only(top: 50)),
-            const Center(
-              child: Text(
-                'Connexion',
-                style: TextStyle(color: Colors.black, fontSize: 50),
+            CarouselSliderPub(context),
+            const Row(
+              children: [
+                Padding(padding: EdgeInsets.all(10),
+                child: Text("Dernières tendances", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18)))
+              ],
+            ),
+            CarouselSlider.builder(
+              itemCount: _articles.length,
+              itemBuilder: (BuildContext context, int index, int realIndex) {
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8.0),
+                    image: DecorationImage(
+                      image: NetworkImage('https://s3-4674.nuage-peda.fr/GDSport/public/articles/${_articles[index].getImages()[0]}'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              },
+              options: CarouselOptions(
+                height: 125.0,
+                aspectRatio: 16/9,
+                viewportFraction: 0.5,
+                initialPage: 0,
+                enableInfiniteScroll: true,
+                reverse: false,
+                autoPlay: true,
+                autoPlayInterval: const Duration(seconds: 3),
+                autoPlayAnimationDuration: const Duration(milliseconds: 2400),
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enlargeCenterPage: true,
+                onPageChanged: (index, reason) {
+                  print('Page changed to index $index, reason: $reason');
+                },
+                scrollDirection: Axis.horizontal,
               ),
             ),
-            const Padding(padding: EdgeInsets.only(top: 30)),
-            const Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: 'Email'),
-              ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(padding: EdgeInsets.all(15),
+                    child: Text("test"),)
+              ],
             ),
-            const Padding(
-              padding:
-                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: 'Mot de passe'),
-              ),
+            const Row(
+              children: [
+                Padding(padding: EdgeInsets.all(10),
+                    child: Text("Catalogue", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18)))
+              ],
             ),
-            const Padding(padding: EdgeInsets.only(top: 30)),
-            Container(
-              height: 50,
-              width: 250,
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black),
-                ),
-                onPressed: () {},
-                child: const Text(
-                  'Se connecter',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 80,
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 60),
-              child: Divider(),
-            ),
-            const Padding(padding: EdgeInsets.only(top: 15)),
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: const Column(
-                children: [
-                  Text('Créer un compte ?'),
-                  Text('ou'),
-                  Text('mot de passe oublié')
-                ],
-              ),
-            )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Favoris',
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        elevation: 10,
+        child: const Icon(CupertinoIcons.heart),
       ),
     );
   }
