@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gdsport_flutter/class/ajoutPanier.dart';
+import 'package:gdsport_flutter/class/articleLight.dart';
+import 'package:gdsport_flutter/fonctions/favoris_API.dart';
 import 'package:gdsport_flutter/fonctions/panier_api.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
@@ -29,6 +32,8 @@ class _FavorisPageState extends State<FavorisPage> {
   String nameUser = "";
   final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
   List<AjoutPanier> panier = [];
+  List<ArticleLight> favoris = [];
+  int nbFav = 0;
 
   @override
   void initState() {
@@ -45,6 +50,8 @@ class _FavorisPageState extends State<FavorisPage> {
         try {
           nameUser = '${user.getNom()} ${user.getPrenom()}';
           panier = await getPanier(user.getToken(), user.getId(), panier);
+          favoris = await getFavoris(user.getToken(), user.getId(), favoris);
+          nbFav = favoris.length;
         } catch (e) {
           print("Une erreur s'est produite lors du décodage json : $e");
         }
@@ -53,6 +60,53 @@ class _FavorisPageState extends State<FavorisPage> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  Widget infoFavoris() {
+    Column affichageFavoris = Column(
+      children: <Widget>[],
+    );
+    for (var favori in favoris) {
+      affichageFavoris.children.add(
+        InkWell(
+          onTap: () {},
+          child: Row(
+            children: [
+              SizedBox(
+                width: 90,
+                height: 90,
+                child: Image.network(
+                  'https://s3-4672.nuage-peda.fr/GDSport/public/articles/${favori.getImages()[0]["name"]}',
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${favori.getDesignation()}",
+                      style: GoogleFonts.lilitaOne(
+                        textStyle: const TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.close),
+            ],
+          ),
+        ),
+      );
+      affichageFavoris.children.add(const Padding(
+        padding: EdgeInsets.symmetric(vertical: 8),
+        child: Divider(),
+      ));
+    }
+    return affichageFavoris;
   }
 
   Widget infoPanier(StateSetter mystate) {
@@ -163,7 +217,7 @@ class _FavorisPageState extends State<FavorisPage> {
   Widget _buildContent() {
     return Scaffold(
         appBar: appBar(context),
-        drawer: appDrawer(context, _isLog, nameUser),
+        drawer: appDrawer(context, _isLog, nameUser, nbFav),
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -216,7 +270,7 @@ class _FavorisPageState extends State<FavorisPage> {
               Padding(
                 padding: const EdgeInsets.all(15),
                 child: Text(
-                  'FAVORIS (0)',
+                  'FAVORIS ${nbFav}',
                   style: GoogleFonts.lilitaOne(
                     textStyle:
                         const TextStyle(color: Colors.black, fontSize: 20),
@@ -225,283 +279,7 @@ class _FavorisPageState extends State<FavorisPage> {
               ),
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Column(
-                    children: [
-                      InkWell(
-                        onTap: () {},
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 90,
-                              height: 90,
-                              child: Image.asset(
-                                'assets/images/image_article_test.webp',
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Adidas Campus 00s",
-                                    style: GoogleFonts.lilitaOne(
-                                      textStyle: const TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const Text("Taille : 30 EU"),
-                                  const Text('100 €'),
-                                ],
-                              ),
-                            ),
-                            const Icon(Icons.close),
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 90,
-                              height: 90,
-                              child: Image.asset(
-                                'assets/images/image_article_test.webp',
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Adidas Campus 00s",
-                                    style: GoogleFonts.lilitaOne(
-                                      textStyle: const TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const Text("Taille : 30 EU"),
-                                  const Text('100 €'),
-                                ],
-                              ),
-                            ),
-                            const Icon(Icons.close),
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 90,
-                              height: 90,
-                              child: Image.asset(
-                                'assets/images/image_article_test.webp',
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Adidas Campus 00s",
-                                    style: GoogleFonts.lilitaOne(
-                                      textStyle: const TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const Text("Taille : 30 EU"),
-                                  const Text('100 €'),
-                                ],
-                              ),
-                            ),
-                            const Icon(Icons.close),
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 90,
-                              height: 90,
-                              child: Image.asset(
-                                'assets/images/image_article_test.webp',
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Adidas Campus 00s",
-                                    style: GoogleFonts.lilitaOne(
-                                      textStyle: const TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const Text("Taille : 30 EU"),
-                                  const Text('100 €'),
-                                ],
-                              ),
-                            ),
-                            const Icon(Icons.close),
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 90,
-                              height: 90,
-                              child: Image.asset(
-                                'assets/images/image_article_test.webp',
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Adidas Campus 00s",
-                                    style: GoogleFonts.lilitaOne(
-                                      textStyle: const TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const Text("Taille : 30 EU"),
-                                  const Text('100 €'),
-                                ],
-                              ),
-                            ),
-                            const Icon(Icons.close),
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 90,
-                              height: 90,
-                              child: Image.asset(
-                                'assets/images/image_article_test.webp',
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Adidas Campus 00s",
-                                    style: GoogleFonts.lilitaOne(
-                                      textStyle: const TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const Text("Taille : 30 EU"),
-                                  const Text('100 €'),
-                                ],
-                              ),
-                            ),
-                            const Icon(Icons.close),
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 90,
-                              height: 90,
-                              child: Image.asset(
-                                'assets/images/image_article_test.webp',
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Adidas Campus 00s",
-                                    style: GoogleFonts.lilitaOne(
-                                      textStyle: const TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const Text("Taille : 30 EU"),
-                                  const Text('100 €'),
-                                ],
-                              ),
-                            ),
-                            const Icon(Icons.close),
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 90,
-                              height: 90,
-                              child: Image.asset(
-                                'assets/images/image_article_test.webp',
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Adidas Campus 00s",
-                                    style: GoogleFonts.lilitaOne(
-                                      textStyle: const TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const Text("Taille : 30 EU"),
-                                  const Text('100 €'),
-                                ],
-                              ),
-                            ),
-                            const Icon(Icons.close),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 100)
-                    ],
-                  ))
+                  child: infoFavoris())
             ],
           ),
         ),

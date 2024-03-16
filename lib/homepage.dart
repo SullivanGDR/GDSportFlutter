@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/class/ajoutPanier.dart';
 import 'package:gdsport_flutter/class/article.dart';
 import 'package:gdsport_flutter/fonctions/article_API.dart';
+import 'package:gdsport_flutter/fonctions/favoris_API.dart';
 import 'package:gdsport_flutter/fonctions/panier_api.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
@@ -33,6 +34,8 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _isLog = false;
   String nameUser = "";
   List<AjoutPanier> panier = [];
+  List favoris = [];
+  int nbFav = 0;
 
   @override
   void initState() {
@@ -50,6 +53,9 @@ class _MyHomePageState extends State<MyHomePage> {
         try {
           nameUser = user.getNom() + ' ' + user.getPrenom();
           panier = await getPanier(user.getToken(), user.getId(), panier);
+          favoris = await getFavoris(user.getToken(), user.getId(), []);
+          nbFav = favoris.length;
+          print(nbFav);
         } catch (e) {
           print("Une erreur s'est produite lors du décodage json : $e");
         }
@@ -178,7 +184,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildContent() {
     return Scaffold(
         appBar: appBar(context),
-        drawer: appDrawer(context, _isLog, nameUser),
+        drawer: appDrawer(context, _isLog, nameUser, nbFav),
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

@@ -9,7 +9,8 @@ AndroidOptions _getAndroidOptions() => const AndroidOptions(
 
 final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
 
-Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
+Drawer appDrawer(
+    BuildContext context, bool isLog, String nomUtilisateur, int nbFav) {
   return Drawer(
     child: Container(
       color: Colors.white,
@@ -89,8 +90,8 @@ Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
             title: isLog
                 ? badges.Badge(
                     position: badges.BadgePosition.custom(end: 0, top: 0),
-                    badgeContent: const Text(
-                      "0",
+                    badgeContent: Text(
+                      '${nbFav}',
                       style: TextStyle(color: Colors.white),
                     ),
                     badgeStyle: badges.BadgeStyle(
