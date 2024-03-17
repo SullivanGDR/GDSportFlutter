@@ -28,14 +28,14 @@ Future<List<ArticleLight>> getFavoris(
   }
 }
 
-Future<void> delFavori(String token, int id) async {
+Future<void> delFavori(String token, int id, int idFav) async {
   String baseUrl = 's3-4672.nuage-peda.fr';
   Map<String, String> headers = {
     "Authorization": "Bearer $token"
   }; // Suppression de l'entrée vide dans les en-têtes
 
   final uri = Uri.http(baseUrl,
-      '/GDSport/public/api/ajouters/$id'); // Utilisation de Uri.https pour une connexion sécurisée
+      '/GDSport/public/api/users/$id/favoris/$idFav'); // Utilisation de Uri.https pour une connexion sécurisée
 
   try {
     final response = await http.delete(uri, headers: headers);

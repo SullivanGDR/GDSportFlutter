@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gdsport_flutter/class/ajoutPanier.dart';
 import 'package:gdsport_flutter/class/articleLight.dart';
 import 'package:gdsport_flutter/fonctions/favoris_API.dart';
@@ -19,14 +18,14 @@ AndroidOptions _getAndroidOptions() => const AndroidOptions(
       encryptedSharedPreferences: true,
     );
 
-class FavorisPage extends StatefulWidget {
-  const FavorisPage({super.key});
+class Profil extends StatefulWidget {
+  const Profil({super.key});
 
   @override
-  State<FavorisPage> createState() => _FavorisPageState();
+  State<Profil> createState() => _ProfilState();
 }
 
-class _FavorisPageState extends State<FavorisPage> {
+class _ProfilState extends State<Profil> {
   bool _isLoading = true;
   bool _isLog = false;
   String nameUser = "";
@@ -34,8 +33,6 @@ class _FavorisPageState extends State<FavorisPage> {
   List<AjoutPanier> panier = [];
   List<ArticleLight> favoris = [];
   int nbFav = 0;
-  User user = User(0, "_email", "_token", "_prenom", "_nom", "_adresse",
-      "_ville", "_codePostal");
 
   @override
   void initState() {
@@ -46,7 +43,7 @@ class _FavorisPageState extends State<FavorisPage> {
   void chargement() async {
     var value = await storage.read(key: "userData");
     if (value != null) {
-      user = User.fromJson(jsonDecode(value));
+      User user = User.fromJson(jsonDecode(value));
       _isLog = await isLogin(user.getToken(), user.getId());
       if (_isLog == true) {
         try {
@@ -62,57 +59,6 @@ class _FavorisPageState extends State<FavorisPage> {
     setState(() {
       _isLoading = false;
     });
-  }
-
-  Widget infoFavoris() {
-    Column affichageFavoris = Column(
-      children: <Widget>[],
-    );
-    for (var favori in favoris) {
-      affichageFavoris.children.add(
-        InkWell(
-          onTap: () {},
-          child: Row(
-            children: [
-              SizedBox(
-                width: 90,
-                height: 90,
-                child: Image.network(
-                  'https://s3-4672.nuage-peda.fr/GDSport/public/articles/${favori.getImages()[0]["name"]}',
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      favori.getDesignation(),
-                      style: GoogleFonts.lilitaOne(
-                        textStyle: const TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-              IconButton(
-                  onPressed: () {
-                    delFavori(user.getToken(), user.getId(), favori.getId());
-                  },
-                  icon: const Icon(Icons.close)),
-            ],
-          ),
-        ),
-      );
-      affichageFavoris.children.add(const Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
-        child: Divider(),
-      ));
-    }
-    return affichageFavoris;
   }
 
   Widget infoPanier(StateSetter mystate) {
@@ -276,7 +222,61 @@ class _FavorisPageState extends State<FavorisPage> {
               Padding(
                 padding: const EdgeInsets.all(15),
                 child: Text(
-                  'FAVORIS ${nbFav}',
+                  'Mes informations ',
+                  style: GoogleFonts.lilitaOne(
+                    textStyle:
+                        const TextStyle(color: Colors.black, fontSize: 20),
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Text("Nom prenom : Hamlaoui Thoma")],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Text("email : thoma@gmail.com")],
+                    ),
+                  ],
+                ),
+              ),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: Text(
+                  'Votre adresse',
+                  style: GoogleFonts.lilitaOne(
+                    textStyle:
+                        const TextStyle(color: Colors.black, fontSize: 20),
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("58 Grand rue , 62217 , Neuville-Vitasse")
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Text("France")],
+                    ),
+                  ],
+                ),
+              ),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: Text(
+                  'Vos commandes',
                   style: GoogleFonts.lilitaOne(
                     textStyle:
                         const TextStyle(color: Colors.black, fontSize: 20),
@@ -284,8 +284,63 @@ class _FavorisPageState extends State<FavorisPage> {
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: infoFavoris())
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            // Action à effectuer lorsque le bouton est pressé
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(10.0), // Bords arrondis
+                            ), // Texte en noir
+                            side: const BorderSide(
+                                color: Colors.black), // Contour noir
+                          ),
+                          child: const Text(
+                            'Voir les commandes',
+                            style:
+                                TextStyle(color: Colors.black), // Texte en noir
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+                child: Divider(),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // Action à effectuer lorsque le bouton est pressé
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(10.0), // Bords arrondis
+                      ), // Texte en noir
+                      side:
+                          const BorderSide(color: Colors.black), // Contour noir
+                    ),
+                    child: const Text(
+                      'Modifier le profil',
+                      style: TextStyle(color: Colors.black), // Texte en noir
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),
