@@ -82,7 +82,9 @@ Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
           ListTile(
             leading: const Icon(Icons.checkroom_outlined),
             title: const Text("Catalogue"),
-            onTap: () {},
+            onTap: () {
+              Navigator.popAndPushNamed(context, '/catalogue');
+            },
           ),
           ListTile(
             leading: const Icon(Icons.favorite_border_outlined),

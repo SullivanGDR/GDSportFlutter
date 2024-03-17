@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/fonctions/register_API.dart';
-import 'package:gdsport_flutter/widgets/navbar.dart';
 
 TextEditingController _passwordController = TextEditingController();
 TextEditingController _emailController = TextEditingController();
@@ -50,7 +49,6 @@ class _RegisterState extends State<Register> {
             Padding(
               padding: const EdgeInsets.only(
                   left: 15.0, right: 15.0, top: 15, bottom: 0),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: _emailController,
                 decoration: const InputDecoration(
@@ -219,6 +217,7 @@ class _RegisterState extends State<Register> {
                 ),
               ),
             ),
+            const SizedBox(height: 10)
           ],
         ),
       ),

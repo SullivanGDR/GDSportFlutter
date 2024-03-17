@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/class/ajoutPanier.dart';
 import 'package:gdsport_flutter/fonctions/panier_api.dart';
+import 'package:gdsport_flutter/widgets/carousels.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -170,49 +171,7 @@ class _FavorisPageState extends State<FavorisPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               // CAROUSEL D'INFORMATIONS
-              CarouselSlider(
-                items: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.black87,
-                    child: const Center(
-                      child: Text(
-                        'SOLDES DERNIERES DEMARQUES',
-                        style: TextStyle(fontSize: 18.0, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.black87,
-                    child: const Center(
-                      child: Text(
-                        'RESTOCK DES AF1',
-                        style: TextStyle(fontSize: 18.0, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.black87,
-                    child: const Center(
-                      child: Text(
-                        'OFFRES ETUDIANTES',
-                        style: TextStyle(fontSize: 18.0, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
-                options: CarouselOptions(
-                  height: 50,
-                  autoPlay: true,
-                  viewportFraction: 1,
-                  autoPlayInterval: const Duration(seconds: 3),
-                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  enableInfiniteScroll: true,
-                ),
-              ),
+              CarouselSliderPub(context),
               Padding(
                 padding: const EdgeInsets.all(15),
                 child: Text(
