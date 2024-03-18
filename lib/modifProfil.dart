@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:gdsport_flutter/class/ajoutPanier.dart';
 import 'package:gdsport_flutter/class/articleLight.dart';
 import 'package:gdsport_flutter/fonctions/favoris_API.dart';
-import 'package:gdsport_flutter/fonctions/modifProfil_API.dart';
+import 'package:gdsport_flutter/fonctions/user_API.dart';
 import 'package:gdsport_flutter/fonctions/panier_api.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
@@ -361,7 +361,7 @@ class _ModifProfilState extends State<ModifProfil> {
                             String pays = _paysController.text;
                             String cp = _cpController.text;
                             var rep = await modifProfil(user.getToken(),user.getId(), nom, prenom,email, adresse, ville, pays, cp);
-
+                            await resetDataUserLocal(user.getToken(),user.getId());
                             if(rep == true){
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Compte modifié avec succès')),
