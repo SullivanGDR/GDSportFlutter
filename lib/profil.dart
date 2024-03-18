@@ -33,6 +33,7 @@ class _ProfilState extends State<Profil> {
   List<AjoutPanier> panier = [];
   List<ArticleLight> favoris = [];
   int nbFav = 0;
+  User user = User(0, "_email", "_token", "_prenom", "_nom", "_adresse", "_ville", "_codePostal","pays");
 
   @override
   void initState() {
@@ -43,7 +44,7 @@ class _ProfilState extends State<Profil> {
   void chargement() async {
     var value = await storage.read(key: "userData");
     if (value != null) {
-      User user = User.fromJson(jsonDecode(value));
+      user = User.fromJson(jsonDecode(value));
       _isLog = await isLogin(user.getToken(), user.getId());
       if (_isLog == true) {
         try {
@@ -229,17 +230,17 @@ class _ProfilState extends State<Profil> {
                   ),
                 ),
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Text("Nom prenom : Hamlaoui Thoma")],
+                      children: [Text("Nom prenom : ${user.getNom()} ${user.getPrenom()}")],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Text("email : thoma@gmail.com")],
+                      children: [Text("email : ${user.getEmail()}")],
                     ),
                   ],
                 ),
@@ -255,19 +256,19 @@ class _ProfilState extends State<Profil> {
                   ),
                 ),
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("58 Grand rue , 62217 , Neuville-Vitasse")
+                        Text("${user.getAdresse()} , ${user.getCodePostal()} , ${user.getVille()}")
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Text("France")],
+                      children: [Text("${user.getPays()}")],
                     ),
                   ],
                 ),
@@ -323,7 +324,7 @@ class _ProfilState extends State<Profil> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // Action à effectuer lorsque le bouton est pressé
+                      Navigator.popAndPushNamed(context, '/modifProfil');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,

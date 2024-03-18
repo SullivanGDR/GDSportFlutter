@@ -28,24 +28,56 @@ Future<List<ArticleLight>> getFavoris(
   }
 }
 
-Future<void> delFavori(String token, int id, int idFav) async {
+Future<bool> delFavori(String token, int id, int idFav) async {
   String baseUrl = 's3-4672.nuage-peda.fr';
   Map<String, String> headers = {
+    "Content-type": "application/ld+json",
+    "Accept": 'application/ld+json',
     "Authorization": "Bearer $token"
-  }; // Suppression de l'entrée vide dans les en-têtes
+  };
 
   final uri = Uri.http(baseUrl,
-      '/GDSport/public/api/users/$id/favoris/$idFav'); // Utilisation de Uri.https pour une connexion sécurisée
+      '/GDSport/public/api/users/$id/remove_favori/$idFav'); // Utilisation de Uri.https pour une connexion sécurisée
 
   try {
-    final response = await http.delete(uri, headers: headers);
+    final response = await http.post(uri, headers: headers,body: jsonEncode({}),);
 
-    if (response.statusCode == 204) {
+    if (response.statusCode == 201) {
       print("delete ok");
+      return true;
     } else {
       print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+      return false;
     }
   } catch (e) {
     print("Exception during delete: $e");
+    return false;
+  }
+}
+
+Future<bool> addFavori(String token, int id, int idFav) async {
+  String baseUrl = 's3-4672.nuage-peda.fr';
+  Map<String, String> headers = {
+    "Content-type": "application/ld+json",
+    "Accept": 'application/ld+json',
+    "Authorization": "Bearer $token"
+  };
+
+  final uri = Uri.http(baseUrl,
+      '/GDSport/public/api/users/$id/add_favori/$idFav'); // Utilisation de Uri.https pour une connexion sécurisée
+
+  try {
+    final response = await http.post(uri, headers: headers,body: jsonEncode({}),);
+
+    if (response.statusCode == 201) {
+      print("delete ok");
+      return true;
+    } else {
+      print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+      return false;
+    }
+  } catch (e) {
+    print("Exception during delete: $e");
+    return false;
   }
 }

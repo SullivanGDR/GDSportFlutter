@@ -35,7 +35,7 @@ class _FavorisPageState extends State<FavorisPage> {
   List<ArticleLight> favoris = [];
   int nbFav = 0;
   User user = User(0, "_email", "_token", "_prenom", "_nom", "_adresse",
-      "_ville", "_codePostal");
+      "_ville", "_codePostal","pays");
 
   @override
   void initState() {
@@ -99,8 +99,18 @@ class _FavorisPageState extends State<FavorisPage> {
                 ),
               ),
               IconButton(
-                  onPressed: () {
-                    delFavori(user.getToken(), user.getId(), favori.getId());
+                  onPressed: () async{
+                    // Appel à l'API pour supprimer le favori
+                    await delFavori(user.getToken(), user.getId(), favori.getId());
+
+                    // Recharger la liste de favoris après la suppression
+                    var nouveauxFavoris = await getFavoris(user.getToken(), user.getId(), []);
+
+                    // Mettre à jour l'état pour refléter les changements
+                    setState(() {
+                      favoris = nouveauxFavoris;
+                      nbFav = favoris.length; // Mettre à jour également le compteur de favoris
+                    });
                   },
                   icon: const Icon(Icons.close)),
             ],
