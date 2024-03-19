@@ -36,7 +36,7 @@ class _FavorisPageState extends State<FavorisPage> {
   List<ArticleLight> favoris = [];
   int nbFav = 0;
   User user = User(0, "_email", "_token", "_prenom", "_nom", "_adresse",
-      "_ville", "_codePostal","pays");
+      "_ville", "_codePostal", "pays");
 
   @override
   void initState() {
@@ -100,10 +100,11 @@ class _FavorisPageState extends State<FavorisPage> {
                 ),
               ),
               IconButton(
-                  onPressed: () async{
-
-                    await delFavori(user.getToken(), user.getId(), favori.getId());
-                    var nouveauxFavoris = await getFavoris(user.getToken(), user.getId(), []);
+                  onPressed: () async {
+                    await delFavori(
+                        user.getToken(), user.getId(), favori.getId());
+                    var nouveauxFavoris =
+                        await getFavoris(user.getToken(), user.getId(), []);
                     setState(() {
                       favoris = nouveauxFavoris;
                       nbFav = favoris.length;
@@ -123,7 +124,7 @@ class _FavorisPageState extends State<FavorisPage> {
   }
 
   Widget infoPanier(StateSetter mystate) {
-    Column affichagePanier = const Column(
+    Column affichagePanier = Column(
       children: <Widget>[],
     );
     for (var ajout in panier) {

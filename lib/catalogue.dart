@@ -17,12 +17,13 @@ class Catalogue extends StatefulWidget {
 class _CatalogueState extends State<Catalogue> {
   String nomUtilisateur = "";
   bool _isLog = false;
+  int fav = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(context),
-      drawer: appDrawer(context, _isLog, nomUtilisateur),
+      drawer: appDrawer(context, _isLog, nomUtilisateur, fav),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -32,62 +33,63 @@ class _CatalogueState extends State<Catalogue> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  color: Colors.black,
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {},
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                            child: Text("Homme",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: Colors.white,
-                                  decorationThickness: 1
+                    color: Colors.black,
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {},
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              child: Text(
+                                "Homme",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.white,
+                                    decorationThickness: 1),
                               ),
                             ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                            child: Text("Femme",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: Colors.white,
-                                  decorationThickness: 1
+                          GestureDetector(
+                            onTap: () {},
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              child: Text(
+                                "Femme",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.white,
+                                    decorationThickness: 1),
                               ),
                             ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                            child: Text("Enfant",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: Colors.white,
-                                decorationThickness: 1
+                          GestureDetector(
+                            onTap: () {},
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              child: Text(
+                                "Enfant",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.white,
+                                    decorationThickness: 1),
                               ),
                             ),
-                          ),
-                        )
-                      ],
-                    ),)
-                ),
+                          )
+                        ],
+                      ),
+                    )),
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 15),
                   child: Text(
                     'Nouveautés',
                     style: GoogleFonts.lilitaOne(
-                      textStyle: const TextStyle(letterSpacing: .5, fontSize: 23),
+                      textStyle:
+                          const TextStyle(letterSpacing: .5, fontSize: 23),
                     ),
                   ),
                 ),
@@ -158,12 +160,15 @@ class _CatalogueState extends State<Catalogue> {
                         onPressed: () {},
                         label: const Text(
                           'Afficher tout',
-                          style: TextStyle(color: Colors.black), // Couleur du texte
+                          style: TextStyle(
+                              color: Colors.black), // Couleur du texte
                         ),
-                        icon: const Icon(Icons.arrow_forward, color: Colors.black), // Couleur de l'icône
+                        icon: const Icon(Icons.arrow_forward,
+                            color: Colors.black), // Couleur de l'icône
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white, // Couleur de fond
-                          side: const BorderSide(color: Colors.black), // Couleur du contour
+                          side: const BorderSide(
+                              color: Colors.black), // Couleur du contour
                         ),
                       ),
                     ],
