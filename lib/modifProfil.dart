@@ -1,42 +1,50 @@
 import 'dart:convert';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gdsport_flutter/class/ajoutPanier.dart';
-import 'package:gdsport_flutter/class/article.dart';
-import 'package:gdsport_flutter/fonctions/article_API.dart';
+import 'package:gdsport_flutter/class/articleLight.dart';
 import 'package:gdsport_flutter/fonctions/favoris_API.dart';
+import 'package:gdsport_flutter/fonctions/user_API.dart';
 import 'package:gdsport_flutter/fonctions/panier_api.dart';
-import 'package:gdsport_flutter/widgets/carousels.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:gdsport_flutter/fonctions/login_API.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../class/user.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:badges/badges.dart' as badges;
 
 AndroidOptions _getAndroidOptions() => const AndroidOptions(
   encryptedSharedPreferences: true,
 );
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+TextEditingController _emailController = TextEditingController();
+TextEditingController _nomController = TextEditingController();
+TextEditingController _prenomController = TextEditingController();
+TextEditingController _adresseController = TextEditingController();
+TextEditingController _villeController = TextEditingController();
+TextEditingController _paysController = TextEditingController();
+TextEditingController _cpController = TextEditingController();
+
+class ModifProfil extends StatefulWidget {
+  const ModifProfil({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<ModifProfil> createState() => _ModifProfilState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  List<Article> _articlesTendance = [];
-  final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
+class _ModifProfilState extends State<ModifProfil> {
   bool _isLoading = true;
   bool _isLog = false;
   String nameUser = "";
+  final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
   List<AjoutPanier> panier = [];
-  List favoris = [];
+  List<ArticleLight> favoris = [];
   int nbFav = 0;
+  User user = User(0, "_email", "_token", "_prenom", "_nom", "_adresse",
+      "_ville", "_codePostal","pays");
 
   @override
   void initState() {
@@ -45,18 +53,23 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void chargement() async {
-    _articlesTendance = await initListArticleTendance(_articlesTendance);
     var value = await storage.read(key: "userData");
     if (value != null) {
-      User user = User.fromJson(jsonDecode(value));
+      user = User.fromJson(jsonDecode(value));
       _isLog = await isLogin(user.getToken(), user.getId());
       if (_isLog == true) {
         try {
-          nameUser = user.getNom() + ' ' + user.getPrenom();
+          nameUser = '${user.getNom()} ${user.getPrenom()}';
           panier = await getPanier(user.getToken(), user.getId(), panier);
-          favoris = await getFavoris(user.getToken(), user.getId(), []);
+          favoris = await getFavoris(user.getToken(), user.getId(), favoris);
           nbFav = favoris.length;
-          print(nbFav);
+          _emailController.text=user.getEmail();
+          _nomController.text=user.getNom();
+          _prenomController.text=user.getPrenom();
+          _adresseController.text=user.getAdresse().toString();
+          _villeController.text=user.getVille().toString();
+          _cpController.text=user.getCodePostal().toString();
+          _paysController.text=user.getPays().toString();
         } catch (e) {
           print("Une erreur s'est produite lors du décodage json : $e");
         }
@@ -68,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget infoPanier(StateSetter mystate) {
-    Column affichagePanier = Column(
+    Column affichagePanier = const Column(
       children: <Widget>[],
     );
     for (var ajout in panier) {
@@ -115,21 +128,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                   panier.clear();
                                   panier = await getPanier(
                                       user.getToken(), user.getId(), panier);
-                                  mystate(() {});
+                                  mystate(
+                                          () {}); // Appel de la fonction updatePanier
                                 }
                               } else {
-                                var value = await storage.read(key: "userData");
-                                if (value != null) {
-                                  User user = User.fromJson(jsonDecode(value));
-                                  await delArticle(
-                                    user.getToken(),
-                                    ajout.getId(),
-                                  );
-                                  panier.clear();
-                                  panier = await getPanier(
-                                      user.getToken(), user.getId(), panier);
-                                  mystate(() {});
-                                }
+                                // Autre logique
                               }
                             }),
                         Text(" ${ajout.getQte()} "),
@@ -192,165 +195,195 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               // CAROUSEL D'INFORMATIONS
-              CarouselSliderPub(context),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 15),
-                    child: Text(
-                      'TENDANCES',
-                      style: GoogleFonts.lilitaOne(
-                        textStyle:
-                        const TextStyle(letterSpacing: .5, fontSize: 23),
+              CarouselSlider(
+                items: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.black87,
+                    child: const Center(
+                      child: Text(
+                        'SOLDES DERNIERES DEMARQUES',
+                        style: TextStyle(fontSize: 18.0, color: Colors.white),
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10, left: 10),
-                    child: SizedBox(
-                      height: 220,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: _articlesTendance.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {},
-                            child: Container(
-                              width: 200,
-                              margin: const EdgeInsets.symmetric(horizontal: 2),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.network(
-                                    'https://s3-4672.nuage-peda.fr/GDSport/public/articles/${_articlesTendance[index].getImages()[0]}',
-                                    width: 250,
-                                    fit: BoxFit.contain,
-                                  ),
-                                  const SizedBox(
-                                      height:
-                                      10), // Espacement entre l'image et les textes
-                                  Text(
-                                    _articlesTendance[index].designation,
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Text(
-                                    '${_articlesTendance[index].prix} €',
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.black87,
+                    child: const Center(
+                      child: Text(
+                        'RESTOCK DES AF1',
+                        style: TextStyle(fontSize: 18.0, color: Colors.white),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20, left: 15),
-                    child: Text(
-                      'NOUVELLES ARRIVÉES',
-                      style: GoogleFonts.lilitaOne(
-                        textStyle:
-                        const TextStyle(letterSpacing: .5, fontSize: 23),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.black87,
+                    child: const Center(
+                      child: Text(
+                        'OFFRES ETUDIANTES',
+                        style: TextStyle(fontSize: 18.0, color: Colors.white),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Image.asset('assets/images/accueil_femme.jpg'),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.black,
-                          backgroundColor: Colors.white,
-                          elevation: 0,
-                          minimumSize: const Size(250, 40),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            side: const BorderSide(color: Colors.black),
-                          ),
-                        ),
-                        child: const Text(
-                          'Acheter',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20, left: 15),
-                    child: Text(
-                      'NOUVEAU PARTENAIRE',
-                      style: GoogleFonts.lilitaOne(
-                        textStyle:
-                        const TextStyle(letterSpacing: .5, fontSize: 23),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Image.asset('assets/images/decouvrirnike2.jpg'),
-                  Image.asset('assets/images/decouvrirnike.webp'),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.black,
-                          backgroundColor: Colors.white,
-                          elevation: 0,
-                          minimumSize: const Size(250, 40),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            side: const BorderSide(color: Colors.black),
-                          ),
-                        ),
-                        child: const Text(
-                          'Découvrir',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const Center(
-                    child: Column(
-                      children: [
-                        Text('© 2024 GDSport, Inc. Tous droits réservés.')
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
                   ),
                 ],
+                options: CarouselOptions(
+                  height: 50,
+                  autoPlay: true,
+                  viewportFraction: 1,
+                  autoPlayInterval: const Duration(seconds: 3),
+                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enableInfiniteScroll: true,
+                ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: Text(
+                  'Modification du profil',
+                  style: GoogleFonts.lilitaOne(
+                    textStyle:
+                    const TextStyle(color: Colors.black, fontSize: 20),
+                  ),
+                ),
+              ),
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(padding: EdgeInsets.only(top: 10)),
+
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 15.0, right: 15.0, top: 15, bottom: 15),
+                        //padding: EdgeInsets.symmetric(horizontal: 15),
+                        child: TextField(
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Email'),
+                        ),
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween, // ou MainAxisAlignment.spaceEvenly
+                          children: [
+                            SizedBox(width: 15),
+                            Expanded(
+                              child: TextField(
+                                controller: _nomController,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Nom'
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 10), // Espacement entre les deux champs de texte
+                            Expanded(
+                              child: TextField(
+                                controller: _prenomController,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Prenom'
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 15),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 15.0, right: 15.0, top: 15, bottom: 15),
+                        //padding: EdgeInsets.symmetric(horizontal: 15),
+                        child: TextField(
+                          controller: _adresseController,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Adresse'),
+                        ),
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween, // ou MainAxisAlignment.spaceEvenly
+                          children: [
+                            SizedBox(width: 15),
+                            Expanded(
+                              child: TextField(
+                                controller: _villeController,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Ville'
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 10), // Espacement entre les deux champs de texte
+                            Expanded(
+                              child: TextField(
+                                controller: _paysController,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Pays'
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 10), // Espacement entre les deux champs de texte
+                            Expanded(
+                              child: TextField(
+                                controller: _cpController,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'CP'
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 15),
+                          ],
+                        ),
+                      ),
+                      Padding(padding: EdgeInsets.only(top: 30)),
+                      Container(
+                        height: 50,
+                        width: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                          ),
+                          onPressed: () async {
+                            String email = _emailController.text;
+                            String nom = _nomController.text;
+                            String prenom = _prenomController.text;
+                            String adresse = _adresseController.text;
+                            String ville = _villeController.text;
+                            String pays = _paysController.text;
+                            String cp = _cpController.text;
+                            var rep = await modifProfil(user.getToken(),user.getId(), nom, prenom,email, adresse, ville, pays, cp);
+                            await resetDataUserLocal(user.getToken(),user.getId());
+                            if(rep == true){
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Compte modifié avec succès')),
+                              );
+                              Navigator.popAndPushNamed(context, '/accueil');
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Erreur lors de la modification du compte')),
+                              );
+                            }
+                          },
+                          child: Text(
+                            "Modifier",
+                            style: TextStyle(color: Colors.white, fontSize: 25),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),)
             ],
           ),
         ),
@@ -648,148 +681,151 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _loading() {
     return Scaffold(
       appBar: appBar(context),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            // CAROUSEL D'INFORMATIONS
-            CarouselSlider(
-              items: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.black87,
-                  child: const Center(
-                    child: Text(
-                      'SOLDES DERNIERES DEMARQUES',
-                      style: TextStyle(fontSize: 18.0, color: Colors.white),
-                    ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          // CAROUSEL D'INFORMATIONS
+          CarouselSlider(
+            items: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                color: Colors.black87,
+                child: const Center(
+                  child: Text(
+                    'SOLDES DERNIERES DEMARQUES',
+                    style: TextStyle(fontSize: 18.0, color: Colors.white),
                   ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.black87,
-                  child: const Center(
-                    child: Text(
-                      'RESTOCK DES AF1',
-                      style: TextStyle(fontSize: 18.0, color: Colors.white),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.black87,
-                  child: const Center(
-                    child: Text(
-                      'OFFRES ETUDIANTES',
-                      style: TextStyle(fontSize: 18.0, color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
-              options: CarouselOptions(
-                height: 50,
-                autoPlay: true,
-                viewportFraction: 1,
-                autoPlayInterval: const Duration(seconds: 3),
-                autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                autoPlayCurve: Curves.fastOutSlowIn,
-                enableInfiniteScroll: true,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'TENDANCES',
-                    style: GoogleFonts.lilitaOne(
-                      textStyle:
-                      const TextStyle(letterSpacing: .5, fontSize: 25),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    height:
-                    250, // Définissez une hauteur fixe pour votre ListView
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5, // Pour le test, utilisez un nombre fixe
-                      itemBuilder: (context, index) {
-                        return Container(
-                          width:
-                          180, // Assurez-vous de définir une largeur pour chaque élément dans une liste horizontale
-                          margin: const EdgeInsets.all(10),
-                          child: Shimmer.fromColors(
-                            baseColor: Colors.grey.shade300,
-                            highlightColor: Colors.grey.shade100,
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 200,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.grey,
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(15),
-                                        topRight: Radius.circular(15),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              width: double.infinity,
-                                              height: 10,
-                                              color: Colors.white,
-                                            ),
-                                            const SizedBox(height: 5),
-                                            Container(
-                                              width: double.infinity,
-                                              height: 10,
-                                              color: Colors.white,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20, left: 15),
-              child: Text(
-                'NOUVELLES ARRIVÉES',
-                style: GoogleFonts.lilitaOne(
-                  textStyle: const TextStyle(letterSpacing: .5, fontSize: 23),
                 ),
               ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                color: Colors.black87,
+                child: const Center(
+                  child: Text(
+                    'RESTOCK DES AF1',
+                    style: TextStyle(fontSize: 18.0, color: Colors.white),
+                  ),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                color: Colors.black87,
+                child: const Center(
+                  child: Text(
+                    'OFFRES ETUDIANTES',
+                    style: TextStyle(fontSize: 18.0, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+            options: CarouselOptions(
+              height: 50,
+              autoPlay: true,
+              viewportFraction: 1,
+              autoPlayInterval: const Duration(seconds: 3),
+              autoPlayAnimationDuration: const Duration(milliseconds: 800),
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enableInfiniteScroll: true,
             ),
-            Shimmer.fromColors(
-              baseColor: Colors.grey.shade300,
-              highlightColor: Colors.grey.shade100,
-              child: Image.asset('assets/images/accueil_femme.jpg'),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Text(
+              'FAVORIS (0)',
+              style: GoogleFonts.lilitaOne(
+                textStyle: const TextStyle(color: Colors.black, fontSize: 20),
+              ),
             ),
-          ],
-        ),
+          ),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Column(children: [
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: const SizedBox(
+                    height: 90,
+                    width: double.infinity, // Prend toute la largeur disponible
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.grey, // Couleur gris
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: const SizedBox(
+                    height: 90,
+                    width: double.infinity, // Prend toute la largeur disponible
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.grey, // Couleur gris
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: const SizedBox(
+                    height: 90,
+                    width: double.infinity, // Prend toute la largeur disponible
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.grey, // Couleur gris
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: const SizedBox(
+                    height: 90,
+                    width: double.infinity, // Prend toute la largeur disponible
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.grey, // Couleur gris
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: const SizedBox(
+                    height: 90,
+                    width: double.infinity, // Prend toute la largeur disponible
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.grey, // Couleur gris
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: const SizedBox(
+                    height: 90,
+                    width: double.infinity, // Prend toute la largeur disponible
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.grey, // Couleur gris
+                      ),
+                    ),
+                  ),
+                ),
+              ]))
+        ],
       ),
     );
   }

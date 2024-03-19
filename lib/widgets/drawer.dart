@@ -9,7 +9,8 @@ AndroidOptions _getAndroidOptions() => const AndroidOptions(
 
 final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
 
-Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
+Drawer appDrawer(
+    BuildContext context, bool isLog, String nomUtilisateur, int nbFav) {
   return Drawer(
     child: Container(
       color: Colors.white,
@@ -52,7 +53,7 @@ Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      isLog ? nomUtilisateur : 'Aucun profil',
+                      isLog ? nomUtilisateur : 'Connectez-vous !',
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -86,28 +87,31 @@ Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
               Navigator.popAndPushNamed(context, '/catalogue');
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.favorite_border_outlined),
-            title: isLog
-                ? badges.Badge(
-                    position: badges.BadgePosition.custom(end: 0, top: 0),
-                    badgeContent: const Text(
-                      "0",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    badgeStyle: badges.BadgeStyle(
-                      shape: badges.BadgeShape.square,
-                      borderRadius: BorderRadius.circular(4),
-                      badgeColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      elevation: 0,
-                    ),
-                    child: const Text("Favoris"),
-                  )
-                : const Text("Favoris"),
-            onTap: () {
-              Navigator.popAndPushNamed(context, '/favoris');
-            },
+          Visibility(
+            visible: isLog,
+            child: ListTile(
+              leading: const Icon(Icons.favorite_border_outlined),
+              title: isLog
+                  ? badges.Badge(
+                      position: badges.BadgePosition.custom(end: 0, top: 0),
+                      badgeContent: Text(
+                        '$nbFav',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      badgeStyle: badges.BadgeStyle(
+                        shape: badges.BadgeShape.square,
+                        borderRadius: BorderRadius.circular(4),
+                        badgeColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        elevation: 0,
+                      ),
+                      child: const Text("Favoris"),
+                    )
+                  : const Text("Favoris"),
+              onTap: () {
+                Navigator.popAndPushNamed(context, '/favoris');
+              },
+            ),
           ),
           const Padding(
               padding: EdgeInsets.symmetric(horizontal: 50), child: Divider()),
@@ -128,9 +132,7 @@ Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
                   leading: const Icon(Icons.person_outline),
                   title: const Text("Mes informations"),
                   onTap: () {
-                    if (isLog == false) {
-                      Navigator.popAndPushNamed(context, '/connexion');
-                    }
+                    Navigator.popAndPushNamed(context, '/profil');
                   },
                 ),
                 ListTile(
