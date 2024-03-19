@@ -100,16 +100,12 @@ class _FavorisPageState extends State<FavorisPage> {
               ),
               IconButton(
                   onPressed: () async{
-                    // Appel à l'API pour supprimer le favori
+
                     await delFavori(user.getToken(), user.getId(), favori.getId());
-
-                    // Recharger la liste de favoris après la suppression
                     var nouveauxFavoris = await getFavoris(user.getToken(), user.getId(), []);
-
-                    // Mettre à jour l'état pour refléter les changements
                     setState(() {
                       favoris = nouveauxFavoris;
-                      nbFav = favoris.length; // Mettre à jour également le compteur de favoris
+                      nbFav = favoris.length;
                     });
                   },
                   icon: const Icon(Icons.close)),
