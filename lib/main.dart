@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/catalogue.dart';
+import 'package:gdsport_flutter/commande.dart';
 import 'package:gdsport_flutter/connexion.dart';
 import 'package:gdsport_flutter/favoris.dart';
 import 'package:gdsport_flutter/homepage.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         '/favoris': (BuildContext context) => const FavorisPage(),
         '/profil': (BuildContext context) => const Profil(),
         '/modifProfil': (BuildContext context) => const ModifProfil(),
+        '/commande': (BuildContext context) => const Commande(),
       },
       debugShowCheckedModeBanner: false,
     );

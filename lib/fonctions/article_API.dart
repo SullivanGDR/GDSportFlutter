@@ -53,7 +53,7 @@ Future<List<Article>> initListArticle(List<Article> listeArticles) async {
 
 Future<List<Article>> initListArticleTendance(
     List<Article> listeArticles) async {
-  String baseUrl = 's3-4672.nuage-peda.fr';
+  String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> header = {
     "Content-type": "application/json; charset=UTF-8",
     "Accept": 'application/ld+json',

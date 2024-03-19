@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../class/user.dart';
 
 Future<User?> login(email, mdp) async {
-  String baseUrl = 's3-4672.nuage-peda.fr';
+  String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> header = {
     "Content-type": "application/json",
     "Accept": 'application/json',
@@ -27,8 +27,7 @@ Future<User?> login(email, mdp) async {
         data["data"]["adresse"],
         data["data"]["ville"],
         data["data"]["codePostal"],
-        data["data"]["pays"]
-    );
+        data["data"]["pays"]);
     return user;
   } else {
     print("Error: ${response.statusCode} - ${response.reasonPhrase}");
@@ -37,7 +36,7 @@ Future<User?> login(email, mdp) async {
 }
 
 Future<bool> isLogin(token, id) async {
-  String baseUrl = 's3-4672.nuage-peda.fr';
+  String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> header = {
     "Content-type": "application/json; charset=UTF-8",
     "Accept": 'application/ld+json',

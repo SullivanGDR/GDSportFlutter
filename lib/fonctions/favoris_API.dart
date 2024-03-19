@@ -4,7 +4,7 @@ import '../class/articleLight.dart';
 
 Future<List<ArticleLight>> getFavoris(
     token, id, List<ArticleLight> listFavoris) async {
-  String baseUrl = 's3-4672.nuage-peda.fr';
+  String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> header = {
     "Content-type": "application/json; charset=UTF-8",
     "Accept": 'application/ld+json',
@@ -29,7 +29,7 @@ Future<List<ArticleLight>> getFavoris(
 }
 
 Future<bool> delFavori(String token, int id, int idFav) async {
-  String baseUrl = 's3-4672.nuage-peda.fr';
+  String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> headers = {
     "Content-type": "application/ld+json",
     "Accept": 'application/ld+json',
@@ -40,7 +40,11 @@ Future<bool> delFavori(String token, int id, int idFav) async {
       '/GDSport/public/api/users/$id/remove_favori/$idFav'); // Utilisation de Uri.https pour une connexion sécurisée
 
   try {
-    final response = await http.post(uri, headers: headers,body: jsonEncode({}),);
+    final response = await http.post(
+      uri,
+      headers: headers,
+      body: jsonEncode({}),
+    );
 
     if (response.statusCode == 201) {
       print("delete ok");
@@ -56,7 +60,7 @@ Future<bool> delFavori(String token, int id, int idFav) async {
 }
 
 Future<bool> addFavori(String token, int id, int idFav) async {
-  String baseUrl = 's3-4672.nuage-peda.fr';
+  String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> headers = {
     "Content-type": "application/ld+json",
     "Accept": 'application/ld+json',
@@ -67,7 +71,11 @@ Future<bool> addFavori(String token, int id, int idFav) async {
       '/GDSport/public/api/users/$id/add_favori/$idFav'); // Utilisation de Uri.https pour une connexion sécurisée
 
   try {
-    final response = await http.post(uri, headers: headers,body: jsonEncode({}),);
+    final response = await http.post(
+      uri,
+      headers: headers,
+      body: jsonEncode({}),
+    );
 
     if (response.statusCode == 201) {
       print("delete ok");
