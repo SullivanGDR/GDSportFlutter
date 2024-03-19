@@ -19,7 +19,7 @@ Drawer appDrawer(BuildContext context) {
                 Center(
                   child: Text(
                     'GDSport',
-                    style: GoogleFonts.lilitaOne(
+                    style: GoogleFonts.zcoolKuaiLe(
                       textStyle: const TextStyle(
                           color: Colors.black, letterSpacing: .5, fontSize: 25),
                     ),
@@ -78,6 +78,13 @@ Drawer appDrawer(BuildContext context) {
             title: const Text("catalogue"),
             onTap: () {
               Navigator.pushNamed(context, '/catalogue');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.man),
+            title: const Text("catalAll"),
+            onTap: () {
+              Navigator.pushNamed(context, '/CatalAll');
             },
           ),
           ListTile(
