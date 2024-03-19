@@ -1,12 +1,13 @@
 import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/class/ajoutPanier.dart';
 import 'package:gdsport_flutter/class/article.dart';
 import 'package:gdsport_flutter/fonctions/article_API.dart';
 import 'package:gdsport_flutter/fonctions/panier_api.dart';
+import 'package:gdsport_flutter/widgets/carousels.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
-import 'package:gdsport_flutter/widgets/infoPanier.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
@@ -16,8 +17,8 @@ import '../class/user.dart';
 import 'package:badges/badges.dart' as badges;
 
 AndroidOptions _getAndroidOptions() => const AndroidOptions(
-      encryptedSharedPreferences: true,
-    );
+  encryptedSharedPreferences: true,
+);
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -60,6 +61,114 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Widget infoPanier(StateSetter mystate) {
+    Column affichagePanier = Column(
+      children: <Widget>[],
+    );
+    for (var ajout in panier) {
+      affichagePanier.children.add(
+        InkWell(
+          onTap: () {},
+          child: Row(
+            children: [
+              SizedBox(
+                width: 90,
+                height: 90,
+                child: Image.network(
+                  'https://s3-4672.nuage-peda.fr/GDSport/public/articles/${ajout.getArticle().getImages()[0]["name"]}',
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      ajout.getArticle().getDesignation(),
+                      style: GoogleFonts.lilitaOne(
+                        textStyle: const TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const Text("Taille : "),
+                    Text('${ajout.getArticle().getPrix()} €'),
+                    Row(
+                      children: [
+                        const Text("Quantité : "),
+                        InkWell(
+                            child: const Icon(Icons.remove_circle_outline),
+                            onTap: () async {
+                              if (ajout.getQte() > 1) {
+                                var value = await storage.read(key: "userData");
+                                if (value != null) {
+                                  User user = User.fromJson(jsonDecode(value));
+                                  await supQte(user.getToken(), ajout.getId(),
+                                      ajout.getQte());
+                                  panier.clear();
+                                  panier = await getPanier(
+                                      user.getToken(), user.getId(), panier);
+                                  mystate(() {});
+                                }
+                              } else {
+                                var value = await storage.read(key: "userData");
+                                if (value != null) {
+                                  User user = User.fromJson(jsonDecode(value));
+                                  await delArticle(
+                                    user.getToken(),
+                                    ajout.getId(),
+                                  );
+                                  panier.clear();
+                                  panier = await getPanier(
+                                      user.getToken(), user.getId(), panier);
+                                  mystate(() {});
+                                }
+                              }
+                            }),
+                        Text(" ${ajout.getQte()} "),
+                        InkWell(
+                            child: const Icon(Icons.add_circle_outline),
+                            onTap: () async {
+                              var value = await storage.read(key: "userData");
+                              if (value != null) {
+                                User user = User.fromJson(jsonDecode(value));
+                                await addQte(user.getToken(), ajout.getId(),
+                                    ajout.getQte());
+                                panier.clear();
+                                panier = await getPanier(
+                                    user.getToken(), user.getId(), panier);
+                                mystate(() {});
+                              }
+                            }),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              InkWell(
+                child: const Icon(Icons.delete_outline),
+                onTap: () async {
+                  var value = await storage.read(key: "userData");
+                  if (value != null) {
+                    User user = User.fromJson(jsonDecode(value));
+                    await delArticle(user.getToken(), ajout.getId());
+                    panier.clear();
+                    panier =
+                    await getPanier(user.getToken(), user.getId(), panier);
+                    mystate(() {});
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      );
+      affichagePanier.children.add(const SizedBox(height: 8));
+    }
+    return affichagePanier;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,49 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               // CAROUSEL D'INFORMATIONS
-              CarouselSlider(
-                items: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.black87,
-                    child: const Center(
-                      child: Text(
-                        'SOLDES DERNIERES DEMARQUES',
-                        style: TextStyle(fontSize: 18.0, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.black87,
-                    child: const Center(
-                      child: Text(
-                        'RESTOCK DES AF1',
-                        style: TextStyle(fontSize: 18.0, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.black87,
-                    child: const Center(
-                      child: Text(
-                        'OFFRES ETUDIANTES',
-                        style: TextStyle(fontSize: 18.0, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
-                options: CarouselOptions(
-                  height: 50,
-                  autoPlay: true,
-                  viewportFraction: 1,
-                  autoPlayInterval: const Duration(seconds: 3),
-                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  enableInfiniteScroll: true,
-                ),
-              ),
+              CarouselSliderPub(context),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -129,7 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       'TENDANCES',
                       style: GoogleFonts.lilitaOne(
                         textStyle:
-                            const TextStyle(letterSpacing: .5, fontSize: 23),
+                        const TextStyle(letterSpacing: .5, fontSize: 23),
                       ),
                     ),
                   ),
@@ -159,7 +226,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                   const SizedBox(
                                       height:
-                                          10), // Espacement entre l'image et les textes
+                                      10), // Espacement entre l'image et les textes
                                   Text(
                                     _articlesTendance[index].designation,
                                     style: const TextStyle(
@@ -190,7 +257,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       'NOUVELLES ARRIVÉES',
                       style: GoogleFonts.lilitaOne(
                         textStyle:
-                            const TextStyle(letterSpacing: .5, fontSize: 23),
+                        const TextStyle(letterSpacing: .5, fontSize: 23),
                       ),
                     ),
                   ),
@@ -229,7 +296,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       'NOUVEAU PARTENAIRE',
                       style: GoogleFonts.lilitaOne(
                         textStyle:
-                            const TextStyle(letterSpacing: .5, fontSize: 23),
+                        const TextStyle(letterSpacing: .5, fontSize: 23),
                       ),
                     ),
                   ),
@@ -284,9 +351,9 @@ class _MyHomePageState extends State<MyHomePage> {
         floatingActionButton: badges.Badge(
           badgeContent: Text(
             "${panier.length}",
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
-          badgeStyle: badges.BadgeStyle(
+          badgeStyle: const badges.BadgeStyle(
             badgeColor: Colors.black,
             padding: EdgeInsets.all(8),
             elevation: 0,
@@ -298,78 +365,266 @@ class _MyHomePageState extends State<MyHomePage> {
                 isScrollControlled: true,
                 backgroundColor: Colors.white,
                 builder: (BuildContext context) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height *
-                        0.8, // 80% de la hauteur de l'écran
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 25, right: 25, left: 25),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'PANIER',
-                                style: GoogleFonts.lilitaOne(
-                                  textStyle: const TextStyle(
-                                      color: Colors.black, fontSize: 20),
+                  return StatefulBuilder(
+                      builder: (BuildContext context, StateSetter mystate) {
+                        if (_isLog == false) {
+                          return SizedBox(
+                            height: MediaQuery.of(context).size.height *
+                                0.8, // 80% de la hauteur de l'écran
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 25, right: 25, left: 25),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'PANIER',
+                                        style: GoogleFonts.lilitaOne(
+                                          textStyle: const TextStyle(
+                                              color: Colors.black, fontSize: 20),
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(
+                                          Icons.close,
+                                          color: Colors.black,
+                                        ),
+                                        onPressed: () => Navigator.pop(context),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.close,
+                                const Divider(
                                   color: Colors.black,
+                                  indent: 50,
+                                  endIndent: 50,
                                 ),
-                                onPressed: () => Navigator.pop(context),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Divider(
-                          color: Colors.black,
-                          indent: 50,
-                          endIndent: 50,
-                        ),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Padding(
-                                padding: const EdgeInsets.only(
-                                    bottom: 10, right: 25, left: 25),
-                                child: infoPanier(panier)),
-                          ),
-                        ),
-                        Container(
-                          width: double
-                              .infinity, // Prend toute la largeur de l'écran
-                          color: Colors.white, // Fond blanc pour le bouton
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                backgroundColor: Colors.black,
-                                elevation: 0,
-                                minimumSize: const Size(250, 40),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  side: const BorderSide(color: Colors.black),
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            bottom: 10, right: 25, left: 25),
+                                        child: Column(
+                                          children: [
+                                            const Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                              children: [
+                                                Text("Vous n'etes pas connecté"),
+                                              ],
+                                            ),
+                                            const Padding(
+                                                padding: EdgeInsets.all(10)),
+                                            Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                              children: [
+                                                InkWell(
+                                                    child: const Text(
+                                                        "Connectez-vous"),
+                                                    onTap: () {
+                                                      Navigator.popAndPushNamed(
+                                                          context, "/connexion");
+                                                    })
+                                              ],
+                                            ),
+                                          ],
+                                        )),
+                                  ),
                                 ),
-                              ),
-                              child: const Text(
-                                'Commander',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16.0,
+                                Container(
+                                  width: double
+                                      .infinity, // Prend toute la largeur de l'écran
+                                  color: Colors.white, // Fond blanc pour le bouton
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                        foregroundColor: Colors.white,
+                                        backgroundColor: Colors.black,
+                                        elevation: 0,
+                                        minimumSize: const Size(250, 40),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20.0),
+                                          side:
+                                          const BorderSide(color: Colors.black),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        'Commander',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
+                          );
+                        } else if (_isLog == true && panier.isEmpty) {
+                          return SizedBox(
+                            height: MediaQuery.of(context).size.height *
+                                0.8, // 80% de la hauteur de l'écran
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 25, right: 25, left: 25),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'PANIER',
+                                        style: GoogleFonts.lilitaOne(
+                                          textStyle: const TextStyle(
+                                              color: Colors.black, fontSize: 20),
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(
+                                          Icons.close,
+                                          color: Colors.black,
+                                        ),
+                                        onPressed: () => Navigator.pop(context),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const Divider(
+                                  color: Colors.black,
+                                  indent: 50,
+                                  endIndent: 50,
+                                ),
+                                const Expanded(
+                                  child: SingleChildScrollView(
+                                    child: Padding(
+                                        padding: EdgeInsets.only(
+                                            bottom: 10, right: 25, left: 25),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                          children: [
+                                            Text("Votre panier est vide"),
+                                          ],
+                                        )),
+                                  ),
+                                ),
+                                Container(
+                                  width: double
+                                      .infinity, // Prend toute la largeur de l'écran
+                                  color: Colors.white, // Fond blanc pour le bouton
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                        foregroundColor: Colors.white,
+                                        backgroundColor: Colors.black,
+                                        elevation: 0,
+                                        minimumSize: const Size(250, 40),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20.0),
+                                          side:
+                                          const BorderSide(color: Colors.black),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        'Commander',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return SizedBox(
+                            height: MediaQuery.of(context).size.height *
+                                0.8, // 80% de la hauteur de l'écran
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 25, right: 25, left: 25),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'PANIER',
+                                        style: GoogleFonts.lilitaOne(
+                                          textStyle: const TextStyle(
+                                              color: Colors.black, fontSize: 20),
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(
+                                          Icons.close,
+                                          color: Colors.black,
+                                        ),
+                                        onPressed: () => Navigator.pop(context),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const Divider(
+                                  color: Colors.black,
+                                  indent: 50,
+                                  endIndent: 50,
+                                ),
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            bottom: 10, right: 25, left: 25),
+                                        child: infoPanier(mystate)),
+                                  ),
+                                ),
+                                Container(
+                                  width: double
+                                      .infinity, // Prend toute la largeur de l'écran
+                                  color: Colors.white, // Fond blanc pour le bouton
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                        foregroundColor: Colors.white,
+                                        backgroundColor: Colors.black,
+                                        elevation: 0,
+                                        minimumSize: const Size(250, 40),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20.0),
+                                          side:
+                                          const BorderSide(color: Colors.black),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        'Commander',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      });
                 },
               );
             },
@@ -444,20 +699,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     'TENDANCES',
                     style: GoogleFonts.lilitaOne(
                       textStyle:
-                          const TextStyle(letterSpacing: .5, fontSize: 25),
+                      const TextStyle(letterSpacing: .5, fontSize: 25),
                     ),
                   ),
                   const SizedBox(height: 10),
                   SizedBox(
                     height:
-                        250, // Définissez une hauteur fixe pour votre ListView
+                    250, // Définissez une hauteur fixe pour votre ListView
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: 5, // Pour le test, utilisez un nombre fixe
                       itemBuilder: (context, index) {
                         return Container(
                           width:
-                              180, // Assurez-vous de définir une largeur pour chaque élément dans une liste horizontale
+                          180, // Assurez-vous de définir une largeur pour chaque élément dans une liste horizontale
                           margin: const EdgeInsets.all(10),
                           child: Shimmer.fromColors(
                             baseColor: Colors.grey.shade300,
@@ -484,7 +739,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       child: SingleChildScrollView(
                                         child: Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             Container(
                                               width: double.infinity,
