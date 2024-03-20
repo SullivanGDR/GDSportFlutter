@@ -1,11 +1,15 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:gdsport_flutter/fonctions/commande_API.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'class/ajoutPanier.dart';
+import 'class/user.dart';
+import 'fonctions/panier_api.dart';
 
-enum PaymentMethod {
-  creditCard,
-  paypal,
-  // Ajoutez d'autres méthodes de paiement selon vos besoins
-}
+AndroidOptions _getAndroidOptions() => const AndroidOptions(
+      encryptedSharedPreferences: true,
+    );
 
 class Commande extends StatefulWidget {
   const Commande() : super();
@@ -15,6 +19,9 @@ class Commande extends StatefulWidget {
 }
 
 class _CommandeState extends State<Commande> {
+  final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
+  List<AjoutPanier> panier = [];
+  User? user;
   int _currentPageIndex = 0;
 
   final TextEditingController _emailController = TextEditingController();
@@ -29,6 +36,40 @@ class _CommandeState extends State<Commande> {
   TextEditingController _expiryDateController = TextEditingController();
   TextEditingController _cvvController = TextEditingController();
   String? typeLivraison;
+  int totalArticle = 0;
+  double fraisDePort = 0;
+  DateTime estimatedDeliveryDate = DateTime.now();
+  double totalCommande = 0;
+  var commandeId;
+
+  @override
+  void initState() {
+    super.initState();
+    chargement();
+  }
+
+  void chargement() async {
+    var value = await storage.read(key: "userData");
+    if (value != null) {
+      user = User.fromJson(jsonDecode(value));
+      panier = await getPanier(user?.getToken(), user?.getId(), panier);
+    }
+  }
+
+  void commander() async {
+    totalCommande = fraisDePort + totalArticle;
+    commandeId = await createCommande(user!.getId().toString(), DateTime.now(),
+        typeLivraison!, estimatedDeliveryDate, totalCommande);
+    for (var ajout in panier) {
+      await createAjoutCommande(
+          commandeId,
+          ajout.getArticle().getId().toString(),
+          ajout.getQte(),
+          ajout.getArticle().getPrix(),
+          ajout.getTaille());
+      await delArticle(user!.getToken(), ajout.getId());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,9 +138,31 @@ class _CommandeState extends State<Commande> {
                         },
                       );
                     } else {
-                      // Tous les champs sont remplis, passer à la page suivante
+                      // Tous les champs sont remplis, passer à la page suivante ou effectuer le paiement
                       setState(() {
-                        _currentPageIndex += 1;
+                        if (_currentPageIndex < 2) {
+                          _currentPageIndex += 1; // Passer à la page suivante
+                        } else {
+                          commander();
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Paiement effectué'),
+                                content: Text(
+                                    'Votre paiement a été effectué avec succès.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
                       });
                     }
                   },
@@ -340,7 +403,48 @@ class _CommandeState extends State<Commande> {
   }
 
   Widget _buildPage3() {
-    DateTime estimatedDeliveryDate = DateTime.now();
+    if (typeLivraison == "standard") {
+      fraisDePort = 0;
+    } else {
+      fraisDePort = 9.95;
+    }
+    Column affichagePanier = Column(
+      children: <Widget>[],
+    );
+    for (var ajout in panier) {
+      totalArticle =
+          totalArticle + (ajout.getArticle().getPrix() * ajout.getQte());
+      affichagePanier.children.add(
+        Row(
+          children: [
+            SizedBox(
+              width: 90,
+              height: 90,
+              child: Image.network(
+                'https://s3-4674.nuage-peda.fr/GDSport/public/articles/${ajout.getArticle().getImages()[0]["name"]}',
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    ajout.getArticle().getDesignation(),
+                    style: TextStyle(color: Colors.black),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text("Taille : ${ajout.getTaille()}"),
+                  Text("Quantité : ${ajout.getQte()}"),
+                  Text('${ajout.getArticle().getPrix()} €'),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+      affichagePanier.children.add(const SizedBox(height: 8));
+    }
     if (typeLivraison == "standard") {
       estimatedDeliveryDate = DateTime.now().add(Duration(days: 6));
     } else {
@@ -407,6 +511,25 @@ class _CommandeState extends State<Commande> {
         Text(
           'Articles commandés :',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        affichagePanier,
+        Divider(),
+        Text(
+          'Total article(s): ${totalArticle} €',
+          style: TextStyle(fontSize: 15),
+        ),
+        Text(
+          'Réduction(s) : 0.0 €',
+          style: TextStyle(fontSize: 15),
+        ),
+        Text(
+          'Frais de port : ${fraisDePort} €',
+          style: TextStyle(fontSize: 15),
+        ),
+        Divider(),
+        Text(
+          'Total de la commande : ${fraisDePort + totalArticle} €',
+          style: TextStyle(fontSize: 15),
         ),
       ],
     );

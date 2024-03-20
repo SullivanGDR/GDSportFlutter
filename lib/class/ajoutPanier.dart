@@ -25,7 +25,7 @@ class AjoutPanier {
     return _qte;
   }
 
-  String? getTaille() {
+  String getTaille() {
     return _taille;
   }
 }
