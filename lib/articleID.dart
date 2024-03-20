@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-class Article extends StatefulWidget {
-  const Article({super.key});
+class ArticleID extends StatefulWidget {
+  const ArticleID({super.key});
 
   @override
-  State<Article> createState() => _ArticleState();
+  State<ArticleID> createState() => _ArticleIDState();
 }
 
-class _ArticleState extends State<Article> {
+class _ArticleIDState extends State<ArticleID> {
   String selectedSize = 'S'; // Taille par défaut
   bool _isDescriptionVisible = false;
-  bool _isAvisVisible = false;
 
   @override
   Widget build(BuildContext context) {

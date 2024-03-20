@@ -1,12 +1,9 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/class/article.dart';
 import 'package:gdsport_flutter/fonctions/article_API.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shimmer/shimmer.dart';
-
 
 class CatalAll extends StatefulWidget {
   const CatalAll({super.key});
@@ -18,85 +15,131 @@ class CatalAll extends StatefulWidget {
 class _CatalAllState extends State<CatalAll> {
   List<Article> _articles = [];
   List<Article> _filteredArticles = [];
-  String _selectedFilter = 'Tous';
+  Set<String> _genres = {'Tous'};
+  Set<String> _types = {'Tous'};
+  String _selectedGenre = 'Tous';
+  String _selectedType = 'Tous';
 
   @override
   void initState() {
     super.initState();
-    // Initiez vos articles ici (en utilisant initListArticle ou initListArticleTendance)
     initArticles();
   }
 
   void initArticles() async {
-    _articles = await initListArticle([]); // ou initListArticleTendance
+    // Simuler la récupération des articles
+    // Vous devez remplacer ceci par votre fonction réelle d'appel API
+    // et assurez-vous que vos articles ont les propriétés 'genre' et 'type'
+    _articles = await initListArticle([]);
+    // Extraction des genres et des types uniques
+    _articles.forEach((article) {
+      _genres.add(article.genre);
+      _types.add(article.type);
+    });
     _filteredArticles = _articles;
     setState(() {});
   }
 
-  void filterArticles(String filter) {
-    if (filter == 'Tous') {
-      _filteredArticles = _articles;
-    } else {
-      _filteredArticles = _articles.where((article) {
-        return article.genre == filter || article.type == filter;
-      }).toList();
-    }
-    setState(() {});
+  void filterArticles() {
+    List<Article> tempArticles = _articles.where((article) {
+      return (_selectedGenre == 'Tous' || article.genre == _selectedGenre) &&
+          (_selectedType == 'Tous' || article.type == _selectedType);
+    }).toList();
+    setState(() {
+      _filteredArticles = tempArticles;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Articles', style: GoogleFonts.lilitaOne()),
-        actions: [
-          DropdownButton<String>(
-            value: _selectedFilter,
-            items: <String>['Tous', 'Genre 1', 'Type 1', 'Genre 2', 'Type 2'] // Remplacez par vos genres et types
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            onChanged: (value) {
-              if (value != null) {
-                setState(() {
-                  _selectedFilter = value;
-                  filterArticles(value);
-                });
-              }
-            },
-          ),
-        ],
-      ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(10),
-        itemCount: _filteredArticles.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-        itemBuilder: (context, index) {
-          final article = _filteredArticles[index];
-          return InkWell(
-            onTap: () {
-              // Action à effectuer lors du clic sur l'article
-            },
-            child: Column(
+      appBar: appBar(context),
+      drawer: appDrawer(context),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Image.network(
-                  article.images.isNotEmpty ? article.images[0] : 'https://example.com/default.jpg',
-                  height: 100,
-                  fit: BoxFit.cover,
+                Expanded(
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: _selectedGenre,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedGenre = newValue!;
+                        filterArticles();
+                      });
+                    },
+                    items:
+                        _genres.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
                 ),
-                Text(article.designation),
-                Text('${article.prix} €'),
+                SizedBox(width: 20), // Add some spacing
+                Expanded(
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: _selectedType,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedType = newValue!;
+                        filterArticles();
+                      });
+                    },
+                    items: _types.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
               ],
             ),
-          );
-        },
+          ),
+          Expanded(
+            child: GridView.builder(
+              padding: const EdgeInsets.all(10),
+              itemCount: _filteredArticles.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+              ),
+              itemBuilder: (context, index) {
+                final article = _filteredArticles[index];
+                return InkWell(
+                  onTap: () {
+                    // Action à effectuer lors du clic sur l'article
+                  },
+                  child: GridTile(
+                    child: Image.network(
+                      'https://s3-4674.nuage-peda.fr/GDSport/public/articles/${article.getImages()[0]}',
+                      fit: BoxFit.cover,
+                    ),
+                    footer: GridTileBar(
+                      backgroundColor: Colors.black45,
+                      title: Text(
+                        article.designation,
+                        textAlign: TextAlign.center,
+                      ),
+                      subtitle: Text(
+                        '${article.prix} €',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
