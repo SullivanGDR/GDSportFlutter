@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:gdsport_flutter/class/commande.dart';
 import 'package:gdsport_flutter/class/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -25,6 +26,16 @@ Future<void> resetDataUserLocal(token, id) async {
     if (value != null) {
       var token = User.fromJson(jsonDecode(value)).getToken();
       final Map<String, dynamic> data = json.decode(response.body);
+      List commandes = [];
+      for (var commande in data["commandes"]) {
+        Commande commandeData = Commande(
+            commande['id'],
+            commande['DateCommande'],
+            commande['DateLivraison'],
+            commande['livraison'],
+            commande['totalPrix']);
+        commandes.add(commandeData);
+      }
       User user = User(
           data["id"],
           data["email"],
@@ -34,7 +45,8 @@ Future<void> resetDataUserLocal(token, id) async {
           data["adresse"],
           data["ville"],
           data["codePostal"],
-          data["pays"]);
+          data["pays"],
+          commandes);
       await storage.write(key: "userData", value: jsonEncode(user.toJson()));
       print("mise à jour des données effectuer");
     }

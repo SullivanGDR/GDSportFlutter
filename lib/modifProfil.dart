@@ -17,8 +17,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:badges/badges.dart' as badges;
 
 AndroidOptions _getAndroidOptions() => const AndroidOptions(
-  encryptedSharedPreferences: true,
-);
+      encryptedSharedPreferences: true,
+    );
 
 TextEditingController _emailController = TextEditingController();
 TextEditingController _nomController = TextEditingController();
@@ -44,7 +44,7 @@ class _ModifProfilState extends State<ModifProfil> {
   List<ArticleLight> favoris = [];
   int nbFav = 0;
   User user = User(0, "_email", "_token", "_prenom", "_nom", "_adresse",
-      "_ville", "_codePostal","pays");
+      "_ville", "_codePostal", "pays", []);
 
   @override
   void initState() {
@@ -63,13 +63,13 @@ class _ModifProfilState extends State<ModifProfil> {
           panier = await getPanier(user.getToken(), user.getId(), panier);
           favoris = await getFavoris(user.getToken(), user.getId(), favoris);
           nbFav = favoris.length;
-          _emailController.text=user.getEmail();
-          _nomController.text=user.getNom();
-          _prenomController.text=user.getPrenom();
-          _adresseController.text=user.getAdresse().toString();
-          _villeController.text=user.getVille().toString();
-          _cpController.text=user.getCodePostal().toString();
-          _paysController.text=user.getPays().toString();
+          _emailController.text = user.getEmail();
+          _nomController.text = user.getNom();
+          _prenomController.text = user.getPrenom();
+          _adresseController.text = user.getAdresse().toString();
+          _villeController.text = user.getVille().toString();
+          _cpController.text = user.getCodePostal().toString();
+          _paysController.text = user.getPays().toString();
         } catch (e) {
           print("Une erreur s'est produite lors du décodage json : $e");
         }
@@ -129,7 +129,7 @@ class _ModifProfilState extends State<ModifProfil> {
                                   panier = await getPanier(
                                       user.getToken(), user.getId(), panier);
                                   mystate(
-                                          () {}); // Appel de la fonction updatePanier
+                                      () {}); // Appel de la fonction updatePanier
                                 }
                               } else {
                                 // Autre logique
@@ -164,7 +164,7 @@ class _ModifProfilState extends State<ModifProfil> {
                     await delArticle(user.getToken(), ajout.getId());
                     panier.clear();
                     panier =
-                    await getPanier(user.getToken(), user.getId(), panier);
+                        await getPanier(user.getToken(), user.getId(), panier);
                     mystate(() {});
                   }
                 },
@@ -244,146 +244,161 @@ class _ModifProfilState extends State<ModifProfil> {
                   'Modification du profil',
                   style: GoogleFonts.lilitaOne(
                     textStyle:
-                    const TextStyle(color: Colors.black, fontSize: 20),
+                        const TextStyle(color: Colors.black, fontSize: 20),
                   ),
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Column(
-                    children: <Widget>[
-                      Padding(padding: EdgeInsets.only(top: 10)),
-
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15.0, right: 15.0, top: 15, bottom: 15),
-                        //padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: TextField(
-                          controller: _emailController,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Email'),
-                        ),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  children: <Widget>[
+                    Padding(padding: EdgeInsets.only(top: 10)),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 15.0, right: 15.0, top: 15, bottom: 15),
+                      //padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: TextField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(), labelText: 'Email'),
                       ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween, // ou MainAxisAlignment.spaceEvenly
-                          children: [
-                            SizedBox(width: 15),
-                            Expanded(
-                              child: TextField(
-                                controller: _nomController,
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'Nom'
-                                ),
-                              ),
+                    ),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment
+                            .spaceBetween, // ou MainAxisAlignment.spaceEvenly
+                        children: [
+                          SizedBox(width: 15),
+                          Expanded(
+                            child: TextField(
+                              controller: _nomController,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Nom'),
                             ),
-                            SizedBox(width: 10), // Espacement entre les deux champs de texte
-                            Expanded(
-                              child: TextField(
-                                controller: _prenomController,
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'Prenom'
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 15),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15.0, right: 15.0, top: 15, bottom: 15),
-                        //padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: TextField(
-                          controller: _adresseController,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Adresse'),
-                        ),
-                      ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween, // ou MainAxisAlignment.spaceEvenly
-                          children: [
-                            SizedBox(width: 15),
-                            Expanded(
-                              child: TextField(
-                                controller: _villeController,
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'Ville'
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10), // Espacement entre les deux champs de texte
-                            Expanded(
-                              child: TextField(
-                                controller: _paysController,
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'Pays'
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10), // Espacement entre les deux champs de texte
-                            Expanded(
-                              child: TextField(
-                                controller: _cpController,
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'CP'
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 15),
-                          ],
-                        ),
-                      ),
-                      Padding(padding: EdgeInsets.only(top: 30)),
-                      Container(
-                        height: 50,
-                        width: 250,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20)),
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
                           ),
-                          onPressed: () async {
-                            String email = _emailController.text;
-                            String nom = _nomController.text;
-                            String prenom = _prenomController.text;
-                            String adresse = _adresseController.text;
-                            String ville = _villeController.text;
-                            String pays = _paysController.text;
-                            String cp = _cpController.text;
-                            var rep = await modifProfil(user.getToken(),user.getId(), nom, prenom,email, adresse, ville, pays, cp);
-                            await resetDataUserLocal(user.getToken(),user.getId());
-                            if(rep == true){
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Compte modifié avec succès')),
-                              );
-                              Navigator.popAndPushNamed(context, '/accueil');
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Erreur lors de la modification du compte')),
-                              );
-                            }
-                          },
-                          child: Text(
-                            "Modifier",
-                            style: TextStyle(color: Colors.white, fontSize: 25),
+                          SizedBox(
+                              width:
+                                  10), // Espacement entre les deux champs de texte
+                          Expanded(
+                            child: TextField(
+                              controller: _prenomController,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Prenom'),
+                            ),
                           ),
+                          SizedBox(width: 15),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 15.0, right: 15.0, top: 15, bottom: 15),
+                      //padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: TextField(
+                        controller: _adresseController,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(), labelText: 'Adresse'),
+                      ),
+                    ),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment
+                            .spaceBetween, // ou MainAxisAlignment.spaceEvenly
+                        children: [
+                          SizedBox(width: 15),
+                          Expanded(
+                            child: TextField(
+                              controller: _villeController,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Ville'),
+                            ),
+                          ),
+                          SizedBox(
+                              width:
+                                  10), // Espacement entre les deux champs de texte
+                          Expanded(
+                            child: TextField(
+                              controller: _paysController,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Pays'),
+                            ),
+                          ),
+                          SizedBox(
+                              width:
+                                  10), // Espacement entre les deux champs de texte
+                          Expanded(
+                            child: TextField(
+                              controller: _cpController,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'CP'),
+                            ),
+                          ),
+                          SizedBox(width: 15),
+                        ],
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.only(top: 30)),
+                    Container(
+                      height: 50,
+                      width: 250,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.black),
+                        ),
+                        onPressed: () async {
+                          String email = _emailController.text;
+                          String nom = _nomController.text;
+                          String prenom = _prenomController.text;
+                          String adresse = _adresseController.text;
+                          String ville = _villeController.text;
+                          String pays = _paysController.text;
+                          String cp = _cpController.text;
+                          var rep = await modifProfil(
+                              user.getToken(),
+                              user.getId(),
+                              nom,
+                              prenom,
+                              email,
+                              adresse,
+                              ville,
+                              pays,
+                              cp);
+                          await resetDataUserLocal(
+                              user.getToken(), user.getId());
+                          if (rep == true) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Compte modifié avec succès')),
+                            );
+                            Navigator.popAndPushNamed(context, '/accueil');
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      'Erreur lors de la modification du compte')),
+                            );
+                          }
+                        },
+                        child: Text(
+                          "Modifier",
+                          style: TextStyle(color: Colors.white, fontSize: 25),
                         ),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                    ],
-                  ),)
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -406,264 +421,264 @@ class _ModifProfilState extends State<ModifProfil> {
                 builder: (BuildContext context) {
                   return StatefulBuilder(
                       builder: (BuildContext context, StateSetter mystate) {
-                        if (_isLog == false) {
-                          return SizedBox(
-                            height: MediaQuery.of(context).size.height *
-                                0.8, // 80% de la hauteur de l'écran
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 25, right: 25, left: 25),
-                                  child: Row(
-                                    mainAxisAlignment:
+                    if (_isLog == false) {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height *
+                            0.8, // 80% de la hauteur de l'écran
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 25, right: 25, left: 25),
+                              child: Row(
+                                mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'PANIER',
-                                        style: GoogleFonts.lilitaOne(
-                                          textStyle: const TextStyle(
-                                              color: Colors.black, fontSize: 20),
-                                        ),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.close,
-                                          color: Colors.black,
-                                        ),
-                                        onPressed: () => Navigator.pop(context),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const Divider(
-                                  color: Colors.black,
-                                  indent: 50,
-                                  endIndent: 50,
-                                ),
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            bottom: 10, right: 25, left: 25),
-                                        child: Column(
-                                          children: [
-                                            const Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                              children: [
-                                                Text("Vous n'etes pas connecté"),
-                                              ],
-                                            ),
-                                            const Padding(
-                                                padding: EdgeInsets.all(10)),
-                                            Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                              children: [
-                                                InkWell(
-                                                    child: const Text(
-                                                        "Connectez-vous"),
-                                                    onTap: () {
-                                                      Navigator.popAndPushNamed(
-                                                          context, "/connexion");
-                                                    })
-                                              ],
-                                            ),
-                                          ],
-                                        )),
-                                  ),
-                                ),
-                                Container(
-                                  width: double
-                                      .infinity, // Prend toute la largeur de l'écran
-                                  color: Colors.white, // Fond blanc pour le bouton
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: ElevatedButton(
-                                      onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                        backgroundColor: Colors.black,
-                                        elevation: 0,
-                                        minimumSize: const Size(250, 40),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(20.0),
-                                          side:
-                                          const BorderSide(color: Colors.black),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        'Commander',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.0,
-                                        ),
-                                      ),
+                                children: [
+                                  Text(
+                                    'PANIER',
+                                    style: GoogleFonts.lilitaOne(
+                                      textStyle: const TextStyle(
+                                          color: Colors.black, fontSize: 20),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
-                        } else if (_isLog == true && panier.isEmpty) {
-                          return SizedBox(
-                            height: MediaQuery.of(context).size.height *
-                                0.8, // 80% de la hauteur de l'écran
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 25, right: 25, left: 25),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'PANIER',
-                                        style: GoogleFonts.lilitaOne(
-                                          textStyle: const TextStyle(
-                                              color: Colors.black, fontSize: 20),
-                                        ),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.close,
-                                          color: Colors.black,
-                                        ),
-                                        onPressed: () => Navigator.pop(context),
-                                      ),
-                                    ],
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.close,
+                                      color: Colors.black,
+                                    ),
+                                    onPressed: () => Navigator.pop(context),
                                   ),
-                                ),
-                                const Divider(
-                                  color: Colors.black,
-                                  indent: 50,
-                                  endIndent: 50,
-                                ),
-                                const Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Padding(
-                                        padding: EdgeInsets.only(
-                                            bottom: 10, right: 25, left: 25),
-                                        child: Row(
+                                ],
+                              ),
+                            ),
+                            const Divider(
+                              color: Colors.black,
+                              indent: 50,
+                              endIndent: 50,
+                            ),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 10, right: 25, left: 25),
+                                    child: Column(
+                                      children: [
+                                        const Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                              MainAxisAlignment.center,
                                           children: [
-                                            Text("Votre panier est vide"),
+                                            Text("Vous n'etes pas connecté"),
                                           ],
-                                        )),
-                                  ),
-                                ),
-                                Container(
-                                  width: double
-                                      .infinity, // Prend toute la largeur de l'écran
-                                  color: Colors.white, // Fond blanc pour le bouton
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: ElevatedButton(
-                                      onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                        backgroundColor: Colors.black,
-                                        elevation: 0,
-                                        minimumSize: const Size(250, 40),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(20.0),
-                                          side:
+                                        ),
+                                        const Padding(
+                                            padding: EdgeInsets.all(10)),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            InkWell(
+                                                child: const Text(
+                                                    "Connectez-vous"),
+                                                onTap: () {
+                                                  Navigator.popAndPushNamed(
+                                                      context, "/connexion");
+                                                })
+                                          ],
+                                        ),
+                                      ],
+                                    )),
+                              ),
+                            ),
+                            Container(
+                              width: double
+                                  .infinity, // Prend toute la largeur de l'écran
+                              color: Colors.white, // Fond blanc pour le bouton
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: Colors.black,
+                                    elevation: 0,
+                                    minimumSize: const Size(250, 40),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      side:
                                           const BorderSide(color: Colors.black),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        'Commander',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.0,
-                                        ),
-                                      ),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    'Commander',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.0,
                                     ),
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
-                          );
-                        } else {
-                          return SizedBox(
-                            height: MediaQuery.of(context).size.height *
-                                0.8, // 80% de la hauteur de l'écran
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 25, right: 25, left: 25),
-                                  child: Row(
-                                    mainAxisAlignment:
+                          ],
+                        ),
+                      );
+                    } else if (_isLog == true && panier.isEmpty) {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height *
+                            0.8, // 80% de la hauteur de l'écran
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 25, right: 25, left: 25),
+                              child: Row(
+                                mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'PANIER',
-                                        style: GoogleFonts.lilitaOne(
-                                          textStyle: const TextStyle(
-                                              color: Colors.black, fontSize: 20),
-                                        ),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.close,
-                                          color: Colors.black,
-                                        ),
-                                        onPressed: () => Navigator.pop(context),
-                                      ),
-                                    ],
+                                children: [
+                                  Text(
+                                    'PANIER',
+                                    style: GoogleFonts.lilitaOne(
+                                      textStyle: const TextStyle(
+                                          color: Colors.black, fontSize: 20),
+                                    ),
                                   ),
-                                ),
-                                const Divider(
-                                  color: Colors.black,
-                                  indent: 50,
-                                  endIndent: 50,
-                                ),
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            bottom: 10, right: 25, left: 25),
-                                        child: infoPanier(mystate)),
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.close,
+                                      color: Colors.black,
+                                    ),
+                                    onPressed: () => Navigator.pop(context),
                                   ),
-                                ),
-                                Container(
-                                  width: double
-                                      .infinity, // Prend toute la largeur de l'écran
-                                  color: Colors.white, // Fond blanc pour le bouton
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: ElevatedButton(
-                                      onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                        backgroundColor: Colors.black,
-                                        elevation: 0,
-                                        minimumSize: const Size(250, 40),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(20.0),
-                                          side:
+                                ],
+                              ),
+                            ),
+                            const Divider(
+                              color: Colors.black,
+                              indent: 50,
+                              endIndent: 50,
+                            ),
+                            const Expanded(
+                              child: SingleChildScrollView(
+                                child: Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom: 10, right: 25, left: 25),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text("Votre panier est vide"),
+                                      ],
+                                    )),
+                              ),
+                            ),
+                            Container(
+                              width: double
+                                  .infinity, // Prend toute la largeur de l'écran
+                              color: Colors.white, // Fond blanc pour le bouton
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: Colors.black,
+                                    elevation: 0,
+                                    minimumSize: const Size(250, 40),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      side:
                                           const BorderSide(color: Colors.black),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        'Commander',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.0,
-                                        ),
-                                      ),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    'Commander',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.0,
                                     ),
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
-                          );
-                        }
-                      });
+                          ],
+                        ),
+                      );
+                    } else {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height *
+                            0.8, // 80% de la hauteur de l'écran
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 25, right: 25, left: 25),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'PANIER',
+                                    style: GoogleFonts.lilitaOne(
+                                      textStyle: const TextStyle(
+                                          color: Colors.black, fontSize: 20),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.close,
+                                      color: Colors.black,
+                                    ),
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Divider(
+                              color: Colors.black,
+                              indent: 50,
+                              endIndent: 50,
+                            ),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 10, right: 25, left: 25),
+                                    child: infoPanier(mystate)),
+                              ),
+                            ),
+                            Container(
+                              width: double
+                                  .infinity, // Prend toute la largeur de l'écran
+                              color: Colors.white, // Fond blanc pour le bouton
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: Colors.black,
+                                    elevation: 0,
+                                    minimumSize: const Size(250, 40),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      side:
+                                          const BorderSide(color: Colors.black),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    'Commander',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  });
                 },
               );
             },

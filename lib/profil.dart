@@ -33,7 +33,8 @@ class _ProfilState extends State<Profil> {
   List<AjoutPanier> panier = [];
   List<ArticleLight> favoris = [];
   int nbFav = 0;
-  User user = User(0, "_email", "_token", "_prenom", "_nom", "_adresse", "_ville", "_codePostal","pays");
+  User user = User(0, "_email", "_token", "_prenom", "_nom", "_adresse",
+      "_ville", "_codePostal", "pays", []);
 
   @override
   void initState() {
@@ -236,7 +237,10 @@ class _ProfilState extends State<Profil> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Text("Nom prenom : ${user.getNom()} ${user.getPrenom()}")],
+                      children: [
+                        Text(
+                            "Nom prenom : ${user.getNom()} ${user.getPrenom()}")
+                      ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -263,7 +267,8 @@ class _ProfilState extends State<Profil> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("${user.getAdresse()} , ${user.getCodePostal()} , ${user.getVille()}")
+                        Text(
+                            "${user.getAdresse()} , ${user.getCodePostal()} , ${user.getVille()}")
                       ],
                     ),
                     Row(
@@ -304,8 +309,8 @@ class _ProfilState extends State<Profil> {
                             side: const BorderSide(
                                 color: Colors.black), // Contour noir
                           ),
-                          child: const Text(
-                            'Voir les commandes',
+                          child: Text(
+                            '',
                             style:
                                 TextStyle(color: Colors.black), // Texte en noir
                           ),

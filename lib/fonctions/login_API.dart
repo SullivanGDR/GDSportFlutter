@@ -27,7 +27,8 @@ Future<User?> login(email, mdp) async {
         data["data"]["adresse"],
         data["data"]["ville"],
         data["data"]["codePostal"],
-        data["data"]["pays"]);
+        data["data"]["pays"],
+        data["data"]["commandes"]);
     return user;
   } else {
     print("Error: ${response.statusCode} - ${response.reasonPhrase}");
