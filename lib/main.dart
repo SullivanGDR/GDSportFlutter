@@ -25,7 +25,6 @@ class MyApp extends StatelessWidget {
         '/connexion': (BuildContext context) => const Connexion(),
         '/catalogue': (BuildContext context) => const Catalogue(),
         '/register': (BuildContext context) => const Register(),
-        '/article': (BuildContext context) => const ArticleID(),
         '/CatalAll': (BuildContext context) => const CatalAll(),
       },
       debugShowCheckedModeBanner: false,

@@ -4,6 +4,7 @@ import 'package:gdsport_flutter/fonctions/article_API.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gdsport_flutter/articleID.dart';
 
 class CatalAll extends StatefulWidget {
   const CatalAll({super.key});
@@ -27,9 +28,6 @@ class _CatalAllState extends State<CatalAll> {
   }
 
   void initArticles() async {
-    // Simuler la récupération des articles
-    // Vous devez remplacer ceci par votre fonction réelle d'appel API
-    // et assurez-vous que vos articles ont les propriétés 'genre' et 'type'
     _articles = await initListArticle([]);
     // Extraction des genres et des types uniques
     _articles.forEach((article) {
@@ -116,7 +114,13 @@ class _CatalAllState extends State<CatalAll> {
                 final article = _filteredArticles[index];
                 return InkWell(
                   onTap: () {
-                    // Action à effectuer lors du clic sur l'article
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ArticlePage(articleId: article.id),
+                      ),
+                    );
                   },
                   child: GridTile(
                     child: Image.network(

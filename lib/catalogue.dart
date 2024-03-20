@@ -15,8 +15,32 @@ class Catalogue extends StatefulWidget {
 }
 
 class _CatalogueState extends State<Catalogue> {
+  List<Article> _articlesTendance = [];
+
+  bool _isLoading = true;
+
+  void initState() {
+    super.initState();
+    chargement();
+  }
+
+  void chargement() async {
+    _articlesTendance = await initListArticleTendance(_articlesTendance);
+
+    setState(() {
+      _isLoading = false;
+      print('test');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: _isLoading ? _loading() : _buildContent(),
+    );
+  }
+
+  Widget _buildContent() {
     return Scaffold(
       appBar: appBar(context),
       drawer: appDrawer(context),
@@ -31,7 +55,7 @@ class _CatalogueState extends State<Catalogue> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 15),
                   child: Text(
-                    'Nouveautés',
+                    'Tendances',
                     style: GoogleFonts.lilitaOne(
                       textStyle:
                           const TextStyle(letterSpacing: .5, fontSize: 23),
@@ -42,12 +66,12 @@ class _CatalogueState extends State<Catalogue> {
                   height: 10,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 10, left: 10, top: 10),
+                  padding: const EdgeInsets.only(right: 10, left: 10),
                   child: SizedBox(
                     height: 220,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 5, // Nombre d'éléments à afficher
+                      itemCount: _articlesTendance.length,
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {},
@@ -57,30 +81,26 @@ class _CatalogueState extends State<Catalogue> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  height: 150,
-                                  color: Colors.grey[300],
-                                  alignment: Alignment.center,
-                                  child: const Text(
-                                    'Image Placeholder',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
+                                Image.network(
+                                  'https://s3-4674.nuage-peda.fr/GDSport/public/articles/${_articlesTendance[index].getImages()[0]}',
+                                  width: 250,
+                                  fit: BoxFit.contain,
                                 ),
                                 const SizedBox(
-                                  height: 10,
-                                ),
-                                const Text(
-                                  'Nom de l\'article',
-                                  style: TextStyle(
+                                    height:
+                                        10), // Espacement entre l'image et les textes
+                                Text(
+                                  '${_articlesTendance[index].designation}',
+                                  style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                const Text(
-                                  'Prix',
-                                  style: TextStyle(
+                                Text(
+                                  '${_articlesTendance[index].prix} €',
+                                  style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),

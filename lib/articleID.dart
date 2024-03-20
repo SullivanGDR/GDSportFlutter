@@ -1,224 +1,114 @@
 import 'package:flutter/material.dart';
+import 'package:gdsport_flutter/class/article.dart';
+import 'package:gdsport_flutter/fonctions/article_API.dart';
+import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:gdsport_flutter/articleID.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-class ArticleID extends StatefulWidget {
-  const ArticleID({super.key});
+class ArticlePage extends StatefulWidget {
+  final int articleId;
+  const ArticlePage({Key? key, required this.articleId}) : super(key: key);
 
   @override
-  State<ArticleID> createState() => _ArticleIDState();
+  _ArticlePageState createState() => _ArticlePageState();
 }
 
-class _ArticleIDState extends State<ArticleID> {
-  String selectedSize = 'S'; // Taille par défaut
+class _ArticlePageState extends State<ArticlePage> {
+  late Future<Article> _articleFuture;
   bool _isDescriptionVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _articleFuture = fetchArticleById(widget
+        .articleId); // Assurez-vous que cette fonction existe et est correctement implémentée pour récupérer un Article
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: appBar(context),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 80),
-              child: CarouselSlider(
-                options: CarouselOptions(),
-                items: [
-                  Text('Première image ou texte'),
-                  Text('Deuxième image ou texte'),
-                  Text('Troisième image ou texte'),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Center(
-              child: Text(
-                'Nom de l article',
-                style: TextStyle(color: Colors.black, fontSize: 25),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  const Divider(), // Divider avant la sélection de la taille
-                  Padding(padding: const EdgeInsets.only(top: 20)),
-                  Row(
-                    children: [
-                      Text(
-                        'Sélectionner la taille : ',
-                        style: TextStyle(fontSize: 22.5),
-                      ),
-                      const SizedBox(width: 10),
-                      DropdownButton<String>(
-                        value: selectedSize,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            selectedSize = newValue!;
-                          });
-                        },
-                        items: <String>[
-                          'XS',
-                          'S',
-                          'M',
-                          'L',
-                          'XL',
-                          'XXL',
-                          'XXXL'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
+      appBar: AppBar(
+        title: Text('Détails de l\'article'),
+      ),
+      body: FutureBuilder<Article>(
+        future: _articleFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              Article article = snapshot.data!;
+              return SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 80),
+                      child: CarouselSlider(
+                        options: CarouselOptions(
+                          autoPlay: true,
+                          aspectRatio: 2.0,
+                          enlargeCenterPage: true,
+                        ),
+                        items: article.images.map((image) {
+                          return Builder(
+                            builder: (BuildContext context) {
+                              return Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                child: Image.network(image, fit: BoxFit.cover),
+                              );
+                            },
                           );
                         }).toList(),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  const Divider(), // Divider après la sélection de la taille
-                  _buildExpansionPanel(
-                    // Expansion Panel pour la description
-                    title: 'Description',
-                    content:
-                        'Lorsque Bilbon Sacquet hérite d\'un anneau mystérieux, il est loin de se douter de sa vraie valeur et de l\'aventure qu\'il va vivre. Cet anneau est en fait l\'un des Anneaux de Pouvoir, autrefois créés par Sauron, le Seigneur des Ténèbres. Il découvre alors que cet anneau lui confère un pouvoir immense qui le rend très convoité. Ainsi, il quitte la Comté pour se lancer dans une quête périlleuse pour détruire l\'anneau et vaincre Sauron. Accompagné d\'une communauté hétéroclite, comprenant des Hobbits, des Hommes, des Elfes et des Nains, Bilbon affronte de nombreux dangers et doit surmonter de terribles épreuves dans sa lutte pour sauver la Terre du Milieu.',
-                    isVisible: _isDescriptionVisible,
-                    onPressed: () {
-                      setState(() {
-                        _isDescriptionVisible = !_isDescriptionVisible;
-                      });
-                    },
-                  ),
-                  const Divider(), // Divider après la description
-                  const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        article.designation,
+                        style: Theme.of(context).textTheme.headline6,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    ExpansionPanelList(
+                      expansionCallback: (int index, bool isExpanded) {
+                        setState(() {
+                          _isDescriptionVisible = !isExpanded;
+                        });
+                      },
                       children: [
-                        Expanded(
-                          flex: 3,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.black),
-                            ),
-                            onPressed: () {},
-                            child: const Text(
-                              'Acheter',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 35),
-                            ),
+                        ExpansionPanel(
+                          headerBuilder:
+                              (BuildContext context, bool isExpanded) {
+                            return ListTile(
+                              title: Text('Description'),
+                            );
+                          },
+                          body: ListTile(
+                            title: Text(
+                                "${article.description}\n\nID: ${article.id}"),
                           ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.favorite,
-                              color: Colors.black,
-                              size: 40,
-                            ),
-                          ),
+                          isExpanded: _isDescriptionVisible,
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: const [
-                  Divider(), // Divider avant l'avis
-                  SizedBox(height: 5),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            Column(
-              children: [
-                const Text(
-                  'Avis',
-                  style: TextStyle(color: Colors.black, fontSize: 25),
+                    // Ajoutez ici d'autres détails de l'article comme les tailles, avis, etc.
+                  ],
                 ),
-                const SizedBox(height: 10),
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Michel C',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      SizedBox(
-                          height: 5), // Ajoute un espace entre le nom et l'avis
-                      Text(
-                        'Avis les projet est nul c de la merde !',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      bottom: 1), // Ajout du Padding en dessous de l'avis
-                ),
-              ],
-            ),
-          ],
-        ),
+              );
+            } else {
+              return Text('Aucune donnée');
+            }
+          }
+          return CircularProgressIndicator();
+        },
       ),
     );
   }
 
-  Widget _buildExpansionPanel({
-    required String title,
-    required String content,
-    required bool isVisible,
-    required VoidCallback onPressed,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: ExpansionPanelList(
-        elevation: 0,
-        expandedHeaderPadding: EdgeInsets.zero,
-        children: [
-          ExpansionPanel(
-            headerBuilder: (BuildContext context, bool isExpanded) {
-              return ListTile(
-                title: Text(
-                  title,
-                  style: const TextStyle(fontSize: 22.5),
-                ),
-                onTap: onPressed,
-              );
-            },
-            body: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: isVisible
-                  ? Text(
-                      content,
-                      style: const TextStyle(fontSize: 16),
-                    )
-                  : const SizedBox.shrink(),
-            ),
-            isExpanded: isVisible,
-          ),
-        ],
-      ),
-    );
+  // Vous devez implémenter cette fonction pour récupérer les détails de l'article
+  Future<Article> fetchArticleById(int id) async {
+    // Votre logique de récupération d'article ici
+    throw UnimplementedError();
   }
 }
