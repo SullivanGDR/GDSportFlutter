@@ -56,19 +56,22 @@ class _CommandeState extends State<Commande> {
     }
   }
 
-  void commander() async {
+  Future<void> commander() async {
+    totalCommande = 0;
     totalCommande = fraisDePort + totalArticle;
     commandeId = await createCommande(user!.getId().toString(), DateTime.now(),
         typeLivraison!, estimatedDeliveryDate, totalCommande);
     for (var ajout in panier) {
       await createAjoutCommande(
-          commandeId,
+          commandeId.toString(),
           ajout.getArticle().getId().toString(),
           ajout.getQte(),
           ajout.getArticle().getPrix(),
           ajout.getTaille());
       await delArticle(user!.getToken(), ajout.getId());
     }
+    print(commandeId);
+    Navigator.popAndPushNamed(context, "/accueil");
   }
 
   @override

@@ -1,22 +1,23 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
-Future<String> createCommande(String user, DateTime dateCommande,
-    String livraison, DateTime dateLivraison, double totalPrix) async {
+Future<int> createCommande(String user, DateTime dateCommande, String livraison,
+    DateTime dateLivraison, double totalPrix) async {
   String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> header = {
     "Content-type": "application/ld+json",
     "Accept": 'application/ld+json',
   };
-  final uri = Uri.http(baseUrl, '/GestionStockNeuville/public/api/commandess');
+  final uri = Uri.http(baseUrl, '/GDSport/public/api/commandess');
 
   try {
     Map<String, dynamic> jsonData = {
-      "User": '/GDSport/public/api/types_bienss/$user',
-      "DateCommande": dateCommande,
       "livraison": livraison,
-      "DateLivraison": dateLivraison,
-      "totalPrix": totalPrix
+      "totalPrix": totalPrix,
+      "user": '/GDSport/public/api/users/$user',
+      "dateCommande": DateFormat('yyyy-MM-ddTHH:mm:ss').format(dateCommande),
+      "dateLivraison": DateFormat('yyyy-MM-ddTHH:mm:ss').format(dateLivraison),
     };
 
     final response = await http.post(
@@ -30,10 +31,13 @@ Future<String> createCommande(String user, DateTime dateCommande,
       print("Stock créé avec succès!");
       return responseJson['id'];
     } else {
-      return ("Erreur lors de la création du bien: ${response.statusCode} - ${response.reasonPhrase}");
+      print(
+          "Erreur lors de la création du bien: ${response.statusCode} - ${response.reasonPhrase}");
+      return 0;
     }
   } catch (error) {
-    return ("Erreur lors de la création du bien: $error");
+    print("Erreur lors de la création du bien: $error");
+    return 0;
   }
 }
 
@@ -44,14 +48,13 @@ Future<void> createAjoutCommande(String commande, String article, int quantite,
     "Content-type": "application/ld+json",
     "Accept": 'application/ld+json',
   };
-  final uri =
-      Uri.http(baseUrl, '/GestionStockNeuville/public/api/ajout_commandes');
+  final uri = Uri.http(baseUrl, '/GDSport/public/api/ajout_commandes');
 
   try {
     Map<String, dynamic> jsonData = {
       "quantite": quantite,
       "prixUnit": prixUnit,
-      "Commande": '/GDSport/public/api/commandess/$commande',
+      "commande": '/GDSport/public/api/commandess/$commande',
       "article": '/GDSport/public/api/articles/$article',
       "taille": taille
     };
