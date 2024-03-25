@@ -110,20 +110,6 @@ class _ConnexionState extends State<Connexion> {
                   ),
                 ),
               ),
-              Text('ou'),
-              GestureDetector(
-                onTap: () {
-                  // Action à effectuer lorsque le texte est cliqué
-                  // Par exemple, naviguer vers une autre page pour créer un compte
-                },
-                child: Text(
-                  'mot de passe oublié',
-                  style: TextStyle(
-                    color: Colors.black, // Couleur du texte
-                    decoration: TextDecoration.underline, // Soulignement du texte
-                  ),
-                ),
-              )
             ],
             ),
             )

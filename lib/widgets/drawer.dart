@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:gdsport_flutter/class/user.dart';
+import 'package:gdsport_flutter/fonctions/login_API.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:badges/badges.dart' as badges;
@@ -9,8 +13,7 @@ AndroidOptions _getAndroidOptions() => const AndroidOptions(
 
 final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
 
-Drawer appDrawer(
-    BuildContext context, bool isLog, String nomUtilisateur, int nbFav) {
+Drawer appDrawer(BuildContext context, isLog, user) {
   return Drawer(
     child: Container(
       color: Colors.white,
@@ -53,7 +56,9 @@ Drawer appDrawer(
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      isLog ? nomUtilisateur : 'Connectez-vous !',
+                      isLog
+                          ? "${user.getNom()} ${user.getPrenom()}"
+                          : 'Connectez-vous !',
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -93,7 +98,7 @@ Drawer appDrawer(
                   ? badges.Badge(
                       position: badges.BadgePosition.custom(end: 0, top: 0),
                       badgeContent: Text(
-                        '$nbFav',
+                        user.getNbFav().toString(),
                         style: const TextStyle(color: Colors.white),
                       ),
                       badgeStyle: badges.BadgeStyle(

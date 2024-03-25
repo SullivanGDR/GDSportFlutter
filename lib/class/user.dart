@@ -1,5 +1,6 @@
 class User {
   final int _id;
+  final int _nbFav;
   final String _token;
   final String _email;
   final String _prenom;
@@ -9,11 +10,15 @@ class User {
   final String? _codePostal;
   final String? _pays;
 
-  User(this._id, this._email, this._token, this._prenom, this._nom,
-      this._adresse, this._ville, this._codePostal,this._pays);
+  User(this._id, this._nbFav, this._email, this._token, this._prenom, this._nom,
+      this._adresse, this._ville, this._codePostal, this._pays);
 
   int getId() {
     return _id;
+  }
+
+  int getNbFav() {
+    return _nbFav;
   }
 
   String getToken() {
@@ -49,13 +54,23 @@ class User {
   }
 
   factory User.fromJson(Map<String, dynamic> json) {
-    return User(json['id'], json['email'], json['token'], json['prenom'],
-        json['name'], json['adresse'], json['ville'], json['codePostal'],json['pays']);
+    return User(
+        json['id'],
+        json['nbFav'],
+        json['email'],
+        json['token'],
+        json['prenom'],
+        json['name'],
+        json['adresse'],
+        json['ville'],
+        json['codePostal'],
+        json['pays']);
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': _id,
+      'nbFav': _nbFav,
       'token': _token,
       'email': _email,
       'prenom': _prenom,
@@ -63,7 +78,7 @@ class User {
       'adresse': _ville,
       'ville': _ville,
       'codePostal': _codePostal,
-      'pays':_pays
+      'pays': _pays
     };
   }
 }

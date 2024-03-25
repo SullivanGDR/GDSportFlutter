@@ -77,7 +77,7 @@ Future<void> supQte(token, id, qte) async {
   }
 }
 
-Future<void> delArticle(String token, int id) async {
+Future<void> delArticleP(String token, int id) async {
   String baseUrl = 's3-4672.nuage-peda.fr';
   Map<String, String> headers = {
     "Authorization": "Bearer $token"
