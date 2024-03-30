@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:gdsport_flutter/class/commande.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -74,4 +75,39 @@ Future<void> createAjoutCommande(String commande, String article, int quantite,
   } catch (error) {
     print("Erreur lors de la création du bien: $error");
   }
+}
+
+Future<List<Commande>> getCommandesByIdUser(int userId, List<Commande> listeCommandes) async {
+  String baseUrl = 's3-4674.nuage-peda.fr';
+  Map<String, String> header = {
+    "Content-type": "application/json; charset=UTF-8",
+    "Accept": 'application/ld+json',
+  };
+  final uri = Uri.http(baseUrl, '/GDSport/public/api/commandess', {'User.id' : '$userId'});
+
+  final response = await http.get(uri, headers: header);
+
+  if (response.statusCode == 200) {
+    final List<dynamic> dataList = json.decode(response.body)['hydra:member'];
+    for (var commande in dataList) {
+      // Convertir les chaînes de caractères en objets DateTime
+      DateTime dateCommande = DateTime.parse(commande["DateCommande"]);
+      DateTime dateLivraison = DateTime.parse(commande["DateLivraison"]);
+
+      // Créer une nouvelle instance de Commande en utilisant les objets DateTime
+      Commande newCommande = Commande(
+          commande["id"],
+          dateCommande,
+          dateLivraison,
+          commande["livraison"],
+          commande["totalPrix"].toDouble()
+      );
+
+      listeCommandes.add(newCommande);
+    }
+    print("Chargement terminé !");
+  } else {
+    print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+  }
+  return listeCommandes;
 }

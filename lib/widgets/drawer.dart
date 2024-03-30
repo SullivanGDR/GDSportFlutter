@@ -138,7 +138,9 @@ Drawer appDrawer(
                 ListTile(
                   leading: const Icon(Icons.local_shipping_outlined),
                   title: const Text('Mes commandes'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, '/mes-commandes');
+                  },
                 ),
                 ListTile(
                   leading: const Icon(Icons.logout_outlined),

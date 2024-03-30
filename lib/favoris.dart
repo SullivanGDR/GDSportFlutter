@@ -36,7 +36,7 @@ class _FavorisPageState extends State<FavorisPage> {
   List<ArticleLight> favoris = [];
   int nbFav = 0;
   User user = User(0, "_email", "_token", "_prenom", "_nom", "_adresse",
-      "_ville", "_codePostal", "pays", []);
+      "_ville", "_codePostal", "pays");
 
   @override
   void initState() {
@@ -79,7 +79,7 @@ class _FavorisPageState extends State<FavorisPage> {
                 width: 90,
                 height: 90,
                 child: Image.network(
-                  'https://s3-4672.nuage-peda.fr/GDSport/public/articles/${favori.getImages()[0]["name"]}',
+                  'https://s3-4674.nuage-peda.fr/GDSport/public/articles/${favori.getImages()[0]["name"]}',
                 ),
               ),
               const SizedBox(width: 8),
@@ -137,7 +137,7 @@ class _FavorisPageState extends State<FavorisPage> {
                 width: 90,
                 height: 90,
                 child: Image.network(
-                  'https://s3-4672.nuage-peda.fr/GDSport/public/articles/${ajout.getArticle().getImages()[0]["name"]}',
+                  'https://s3-4674.nuage-peda.fr/GDSport/public/articles/${ajout.getArticle().getImages()[0]["name"]}',
                 ),
               ),
               const SizedBox(width: 8),

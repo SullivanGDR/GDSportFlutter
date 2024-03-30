@@ -34,7 +34,7 @@ class _ProfilState extends State<Profil> {
   List<ArticleLight> favoris = [];
   int nbFav = 0;
   User user = User(0, "_email", "_token", "_prenom", "_nom", "_adresse",
-      "_ville", "_codePostal", "pays", []);
+      "_ville", "_codePostal", "pays");
 
   @override
   void initState() {

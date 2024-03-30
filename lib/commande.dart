@@ -11,14 +11,14 @@ AndroidOptions _getAndroidOptions() => const AndroidOptions(
       encryptedSharedPreferences: true,
     );
 
-class Commande extends StatefulWidget {
-  const Commande() : super();
+class CommandePage extends StatefulWidget {
+  const CommandePage() : super();
 
   @override
-  State<Commande> createState() => _CommandeState();
+  State<CommandePage> createState() => _CommandePageState();
 }
 
-class _CommandeState extends State<Commande> {
+class _CommandePageState extends State<CommandePage> {
   final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
   List<AjoutPanier> panier = [];
   User? user;

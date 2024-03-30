@@ -10,7 +10,8 @@ AndroidOptions _getAndroidOptions() => const AndroidOptions(
 
 final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
 
-Future<void> resetDataUserLocal(token, id) async {
+Future<void> resetDataUserLocal(
+    token, id) async {
   String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> header = {
     "Content-type": "application/json; charset=UTF-8",
@@ -26,32 +27,13 @@ Future<void> resetDataUserLocal(token, id) async {
     if (value != null) {
       var token = User.fromJson(jsonDecode(value)).getToken();
       final Map<String, dynamic> data = json.decode(response.body);
-      List commandes = [];
-      for (var commande in data["commandes"]) {
-        Commande commandeData = Commande(
-            commande['id'],
-            commande['DateCommande'],
-            commande['DateLivraison'],
-            commande['livraison'],
-            commande['totalPrix']);
-        commandes.add(commandeData);
-      }
-      User user = User(
-          data["id"],
-          data["email"],
-          token,
-          data["prenom"],
-          data["nom"],
-          data["adresse"],
-          data["ville"],
-          data["codePostal"],
-          data["pays"],
-          commandes);
+      User user = User(data["id"], data["email"], token, data["prenom"], data["nom"], data["adresse"], data["ville"], data["codePostal"], data["pays"]);
       await storage.write(key: "userData", value: jsonEncode(user.toJson()));
       print("mise à jour des données effectuer");
     }
   } else {
     print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+
   }
 }
 

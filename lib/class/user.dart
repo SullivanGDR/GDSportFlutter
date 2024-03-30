@@ -1,5 +1,3 @@
-import '../commande.dart';
-
 class User {
   final int _id;
   final String _token;
@@ -10,10 +8,9 @@ class User {
   final String? _ville;
   final String? _codePostal;
   final String? _pays;
-  final List commandes;
 
   User(this._id, this._email, this._token, this._prenom, this._nom,
-      this._adresse, this._ville, this._codePostal, this._pays, this.commandes);
+      this._adresse, this._ville, this._codePostal, this._pays);
 
   int getId() {
     return _id;
@@ -51,10 +48,6 @@ class User {
     return _pays;
   }
 
-  List getCommandes() {
-    return commandes;
-  }
-
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
         json['id'],
@@ -65,8 +58,7 @@ class User {
         json['adresse'],
         json['ville'],
         json['codePostal'],
-        json['pays'],
-        json['commandes']);
+        json['pays']);
   }
 
   Map<String, dynamic> toJson() {
@@ -79,8 +71,7 @@ class User {
       'adresse': _ville,
       'ville': _ville,
       'codePostal': _codePostal,
-      'pays': _pays,
-      'commandes': commandes
+      'pays': _pays
     };
   }
 }
