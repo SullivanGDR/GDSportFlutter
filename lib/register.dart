@@ -19,10 +19,12 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  Future<bool> inscription(email, mdp,nom,prenom,adresse,ville,cp,pays) async {
-    var rep = await register(email, mdp,nom,prenom,adresse,ville,cp,pays);
+  Future<bool> inscription(
+      email, mdp, nom, prenom, adresse, ville, cp, pays) async {
+    var rep = await register(email, mdp, nom, prenom, adresse, ville, cp, pays);
     return rep;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,12 +34,13 @@ class _RegisterState extends State<Register> {
         child: Column(
           children: <Widget>[
             Padding(padding: EdgeInsets.only(top: 10)),
-            Center(child: Text(
-              'Inscrivez-vous',
-              style: TextStyle(color: Colors.black, fontSize: 50),
-            ),),
+            Center(
+              child: Text(
+                'Inscrivez-vous',
+                style: TextStyle(color: Colors.black, fontSize: 50),
+              ),
+            ),
             Padding(padding: EdgeInsets.only(top: 30)),
-
             Padding(
               padding: const EdgeInsets.only(
                   left: 15.0, right: 15.0, top: 15, bottom: 0),
@@ -45,8 +48,7 @@ class _RegisterState extends State<Register> {
               child: TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email'),
+                    border: OutlineInputBorder(), labelText: 'Email'),
               ),
             ),
             Padding(
@@ -56,32 +58,29 @@ class _RegisterState extends State<Register> {
                 controller: _passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Mot de passe'),
+                    border: OutlineInputBorder(), labelText: 'Mot de passe'),
               ),
             ),
             Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween, // ou MainAxisAlignment.spaceEvenly
+                mainAxisAlignment: MainAxisAlignment
+                    .spaceBetween, // ou MainAxisAlignment.spaceEvenly
                 children: [
                   SizedBox(width: 15),
                   Expanded(
                     child: TextField(
                       controller: _nomController,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Nom'
-                      ),
+                          border: OutlineInputBorder(), labelText: 'Nom'),
                     ),
                   ),
-                  SizedBox(width: 10), // Espacement entre les deux champs de texte
+                  SizedBox(
+                      width: 10), // Espacement entre les deux champs de texte
                   Expanded(
                     child: TextField(
                       controller: _prenomController,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Prenom'
-                      ),
+                          border: OutlineInputBorder(), labelText: 'Prenom'),
                     ),
                   ),
                   SizedBox(width: 15),
@@ -95,42 +94,38 @@ class _RegisterState extends State<Register> {
               child: TextField(
                 controller: _adresseController,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Adresse (*)'),
+                    border: OutlineInputBorder(), labelText: 'Adresse (*)'),
               ),
             ),
             Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween, // ou MainAxisAlignment.spaceEvenly
+                mainAxisAlignment: MainAxisAlignment
+                    .spaceBetween, // ou MainAxisAlignment.spaceEvenly
                 children: [
                   SizedBox(width: 15),
                   Expanded(
                     child: TextField(
                       controller: _villeController,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Ville (*)'
-                      ),
+                          border: OutlineInputBorder(), labelText: 'Ville (*)'),
                     ),
                   ),
-                  SizedBox(width: 10), // Espacement entre les deux champs de texte
+                  SizedBox(
+                      width: 10), // Espacement entre les deux champs de texte
                   Expanded(
                     child: TextField(
                       controller: _paysController,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Pays (*)'
-                      ),
+                          border: OutlineInputBorder(), labelText: 'Pays (*)'),
                     ),
                   ),
-                  SizedBox(width: 10), // Espacement entre les deux champs de texte
+                  SizedBox(
+                      width: 10), // Espacement entre les deux champs de texte
                   Expanded(
                     child: TextField(
                       controller: _cpController,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'CP (*)'
-                      ),
+                          border: OutlineInputBorder(), labelText: 'CP (*)'),
                     ),
                   ),
                   SizedBox(width: 15),
@@ -143,11 +138,12 @@ class _RegisterState extends State<Register> {
             Container(
               height: 50,
               width: 250,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20)),
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
               child: ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.black),
                 ),
                 onPressed: () async {
                   String password = _passwordController.text;
@@ -158,15 +154,18 @@ class _RegisterState extends State<Register> {
                   String ville = _villeController.text;
                   String pays = _paysController.text;
                   String cp = _cpController.text;
-                  var rep = await inscription(email, password, nom, prenom, adresse, ville, cp, pays);
-                  if(rep == true){
+                  var rep = await inscription(
+                      email, password, nom, prenom, adresse, ville, cp, pays);
+                  if (rep == true) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Compte créé avec succès')),
                     );
                     Navigator.popAndPushNamed(context, '/connexion');
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Erreur lors de la création du compte')),
+                      const SnackBar(
+                          content:
+                              Text('Erreur lors de la création du compte')),
                     );
                   }
                 },
@@ -179,24 +178,30 @@ class _RegisterState extends State<Register> {
             SizedBox(
               height: 10,
             ),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 60),child: Divider(),),
-            Padding(padding: EdgeInsets.only(top: 15)),
-            Container(alignment: Alignment.bottomCenter ,child:
-            Column(children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.popAndPushNamed(context, '/connexion');
-                },
-                child: Text(
-                  'Se connecter ?',
-                  style: TextStyle(
-                    color: Colors.black, // Couleur du texte
-                    decoration: TextDecoration.underline, // Soulignement du texte
-                  ),
-                ),
-              ),
-            ],
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 60),
+              child: Divider(),
             ),
+            Padding(padding: EdgeInsets.only(top: 15)),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.popAndPushNamed(context, '/connexion');
+                    },
+                    child: Text(
+                      'Se connecter ?',
+                      style: TextStyle(
+                        color: Colors.black, // Couleur du texte
+                        decoration:
+                            TextDecoration.underline, // Soulignement du texte
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             )
           ],
         ),
