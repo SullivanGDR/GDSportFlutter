@@ -20,6 +20,7 @@ Future<User?> login(email, mdp) async {
     final Map<String, dynamic> data = json.decode(response.body);
     var user = User(
         data["data"]["id"],
+        data["data"]["nbFav"],
         data["data"]["email"],
         data["token"],
         data["data"]["prenom"],
@@ -27,8 +28,7 @@ Future<User?> login(email, mdp) async {
         data["data"]["adresse"],
         data["data"]["ville"],
         data["data"]["codePostal"],
-        data["data"]["pays"]
-    );
+        data["data"]["pays"]);
     return user;
   } else {
     print("Error: ${response.statusCode} - ${response.reasonPhrase}");
