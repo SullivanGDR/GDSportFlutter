@@ -1,11 +1,8 @@
 import 'dart:convert';
-
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/class/ajoutPanier.dart';
 import 'package:gdsport_flutter/class/article.dart';
 import 'package:gdsport_flutter/fonctions/article_API.dart';
-import 'package:gdsport_flutter/fonctions/favoris_API.dart';
 import 'package:gdsport_flutter/fonctions/panier_api.dart';
 import 'package:gdsport_flutter/widgets/caroussel.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
@@ -16,7 +13,6 @@ import 'package:shimmer/shimmer.dart';
 import 'package:gdsport_flutter/fonctions/login_API.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../class/user.dart';
-import 'package:badges/badges.dart' as badges;
 
 AndroidOptions _getAndroidOptions() => const AndroidOptions(
       encryptedSharedPreferences: true,

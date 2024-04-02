@@ -1,8 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:gdsport_flutter/class/user.dart';
-import 'package:gdsport_flutter/fonctions/login_API.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:badges/badges.dart' as badges;
