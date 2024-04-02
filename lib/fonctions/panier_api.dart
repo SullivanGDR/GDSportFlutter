@@ -4,7 +4,7 @@ import '../class/ajoutPanier.dart';
 import '../class/articleLight.dart';
 
 Future<List<AjoutPanier>> getPanier(token, id, List<AjoutPanier> panier) async {
-  String baseUrl = 's3-4672.nuage-peda.fr';
+  String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> header = {
     "Content-type": "application/json; charset=UTF-8",
     "Accept": 'application/ld+json',
@@ -34,7 +34,7 @@ Future<List<AjoutPanier>> getPanier(token, id, List<AjoutPanier> panier) async {
 }
 
 Future<void> addQte(token, id, qte) async {
-  String baseUrl = 's3-4672.nuage-peda.fr';
+  String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> header = {
     "Content-type": "application/merge-patch+json",
     "Accept": 'application/ld+json',
@@ -56,7 +56,7 @@ Future<void> addQte(token, id, qte) async {
 }
 
 Future<void> supQte(token, id, qte) async {
-  String baseUrl = 's3-4672.nuage-peda.fr';
+  String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> header = {
     "Content-type": "application/merge-patch+json",
     "Accept": 'application/ld+json',
@@ -78,7 +78,7 @@ Future<void> supQte(token, id, qte) async {
 }
 
 Future<void> delArticleP(String token, int id) async {
-  String baseUrl = 's3-4672.nuage-peda.fr';
+  String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> headers = {
     "Authorization": "Bearer $token"
   }; // Suppression de l'entrée vide dans les en-têtes
