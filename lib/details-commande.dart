@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gdsport_flutter/class/commande.dart';
+import 'package:gdsport_flutter/class/detailsCommande.dart';
+import 'package:intl/intl.dart';
+
+import 'fonctions/commande_API.dart';
 
 class DetailsCommandePage extends StatefulWidget {
   final int commandeId;
@@ -11,7 +14,8 @@ class DetailsCommandePage extends StatefulWidget {
 }
 
 class _DetailsCommandePageState extends State<DetailsCommandePage> {
-  var detailsCommande;
+  DetailsCommande? detailsCommande;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -20,11 +24,48 @@ class _DetailsCommandePageState extends State<DetailsCommandePage> {
   }
 
   void chargement() async {
-    //detailsCommande = await getCommandesById(user!.getId(), listeCommandes);
+    detailsCommande = await getCommandeById(widget.commandeId);
+    setState(() {
+      detailsCommande;
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    Column affichagePanier = Column(
+      children: <Widget>[],
+    );
+    for (var ajout in detailsCommande!.ajoutCommande) {
+      affichagePanier.children.add(
+        Row(
+          children: [
+            SizedBox(
+              width: 90,
+              height: 90,
+              child: Text('${ajout.article.getImages()[1]}'),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    ajout.article.getDesignation(),
+                    style: TextStyle(color: Colors.black),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text("Taille : ${ajout.taille}"),
+                  Text("Quantité : ${ajout.quantite}"),
+                  Text('${ajout.prixUnit} €'),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+      affichagePanier.children.add(const SizedBox(height: 8));
+    }
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -32,119 +73,59 @@ class _DetailsCommandePageState extends State<DetailsCommandePage> {
           title: const Text('GDSport',
               style: TextStyle(fontWeight: FontWeight.bold)),
         ),
-        body: ListView(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(padding: const EdgeInsets.all(10), child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Card(
-                      color: Colors.white70,
-                      child: ListTile(
-                        leading: const Icon(Icons.info_outline),
-                        //title: Text('ID du bien : ${widget.bien.getBienId()}'),
+        body: isLoading
+            ? CircularProgressIndicator()
+            : ListView(
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        'Récapitulatif de la commande :',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    const SizedBox(height: 5),
-                    Card(
-                      color: Colors.white70,
-                      child: ListTile(
-                        leading: const Icon(Icons.person_2_outlined),
-                        //title: Text('Propriétaire : ${widget.bien.getProprietaire()}'),
+                      Divider(),
+                      Text(
+                        'Date de livraison estimée:',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    const SizedBox(height: 5),
-                    Card(
-                      color: Colors.white70,
-                      child: ListTile(
-                        leading: const Icon(Icons.inventory_2_outlined),
-                        //title: Text('Quantité : ${widget.bien.getQuantite()} (${widget.bien.getQuantitePrets()})'),
+                      Text(
+                        '${DateFormat('dd/MM/yyyy').format(detailsCommande!.dateLivraison)}',
+                        style: TextStyle(fontSize: 18),
                       ),
-                    ),
-                    const SizedBox(height: 5),
-                    Card(
-                      color: Colors.white70,
-                      child: ListTile(
-                        leading: const Icon(Icons.menu_book_outlined),
-                        //title: Text('Type : ${widget.bien.getType()}'),
+                      Text(
+                        'Livraison ${detailsCommande!.livraison}',
+                        style: TextStyle(fontSize: 18),
                       ),
-                    ),
-                    const SizedBox(height: 5),
-                    Card(
-                      color: Colors.white70,
-                      child: ListTile(
-                        leading: const Icon(Icons.place),
-                        //title: Text('Lieu : ${widget.bien.getEmplacement()}'),
+                      Divider(),
+                      Text(
+                        'Articles commandés :',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    const SizedBox(height: 5),
-                    Card(
-                      color: Colors.white70,
-                      child: ListTile(
-                        leading: const Icon(Icons.message),
-                        //title: Text('Commentaire : ${widget.bien.getCommentaire()}'),
+                      affichagePanier,
+                      Divider(),
+                      Text(
+                        'Total article(s): ${detailsCommande!.totalPrix} €',
+                        style: TextStyle(fontSize: 15),
                       ),
-                    ),
-                    const SizedBox(height: 15),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        // Bouton Modifier
-                        /*ElevatedButton.icon(
-                          icon: const Icon(Icons.edit, color: Colors.white), // Icône pour Modifier
-                          label: const Text('Modifier', style: TextStyle(color: Colors.white)),
-                          /*onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                             // MaterialPageRoute(builder: (context) => UpdateInventairePage(inventaire: widget.bien)),
-                            );
-                          },*/
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white70)),
-                        ),*/
-                        ElevatedButton.icon(
-                          icon: const Icon(Icons.delete, color: Colors.white), // Icône pour Supprimer
-                          label: const Text('Supprimer', style: TextStyle(color: Colors.white)),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text("Confirmation"),
-                                  content: const Text("Êtes-vous sûr de vouloir supprimer cette réservation ?"),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text("Annuler"),
-                                    ),
-                                    /*TextButton(
-                                      /*onPressed: () async {
-                                       // await deleteInventaire(widget.bien.getId());
-                                        Navigator.pushReplacement(
-                                          context,
-                                          //MaterialPageRoute(builder: (context) => const StocksPage()),
-                                        );
-                                      },*/
-                                      child: const Text("Supprimer"),
-                                    ),*/
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
-                        ),
-                      ],
-                    )
-                  ],
-                ),)
-              ],
-            ),
-          ],
-        )
-    );
+                      Text(
+                        'Réduction(s) : 0.0 €',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      Text(
+                        'Frais de port : a modif €',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      Divider(),
+                      Text(
+                        'Total de la commande : ${detailsCommande!.totalPrix} €',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ],
+                  )
+                ],
+              ));
   }
 }

@@ -68,7 +68,7 @@ class _CommandePageState extends State<CommandePage> {
           ajout.getQte(),
           ajout.getArticle().getPrix(),
           ajout.getTaille());
-      await delArticle(user!.getToken(), ajout.getId());
+      await delArticleP(user!.getToken(), ajout.getId());
     }
     print(commandeId);
     Navigator.popAndPushNamed(context, "/accueil");

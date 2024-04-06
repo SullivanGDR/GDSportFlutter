@@ -17,13 +17,12 @@ class Catalogue extends StatefulWidget {
 class _CatalogueState extends State<Catalogue> {
   String nomUtilisateur = "";
   bool _isLog = false;
-  int fav = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(context),
-      drawer: appDrawer(context, _isLog, nomUtilisateur, fav),
+      drawer: appDrawer(context, _isLog, nomUtilisateur),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

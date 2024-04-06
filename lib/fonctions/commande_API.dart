@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'package:gdsport_flutter/class/ajoutCommande.dart';
+import 'package:gdsport_flutter/class/articleLight.dart';
 import 'package:gdsport_flutter/class/commande.dart';
+import 'package:gdsport_flutter/class/detailsCommande.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -77,13 +80,15 @@ Future<void> createAjoutCommande(String commande, String article, int quantite,
   }
 }
 
-Future<List<Commande>> getCommandesByIdUser(int userId, List<Commande> listeCommandes) async {
+Future<List<Commande>> getCommandesByIdUser(
+    int userId, List<Commande> listeCommandes) async {
   String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> header = {
     "Content-type": "application/json; charset=UTF-8",
     "Accept": 'application/ld+json',
   };
-  final uri = Uri.http(baseUrl, '/GDSport/public/api/commandess', {'User.id' : '$userId'});
+  final uri = Uri.http(
+      baseUrl, '/GDSport/public/api/commandess', {'User.id': '$userId'});
 
   final response = await http.get(uri, headers: header);
 
@@ -100,8 +105,7 @@ Future<List<Commande>> getCommandesByIdUser(int userId, List<Commande> listeComm
           dateCommande,
           dateLivraison,
           commande["livraison"],
-          commande["totalPrix"].toDouble()
-      );
+          commande["totalPrix"].toDouble());
 
       listeCommandes.add(newCommande);
     }
@@ -110,4 +114,48 @@ Future<List<Commande>> getCommandesByIdUser(int userId, List<Commande> listeComm
     print("Error: ${response.statusCode} - ${response.reasonPhrase}");
   }
   return listeCommandes;
+}
+
+Future<DetailsCommande?> getCommandeById(int commandeId) async {
+  String baseUrl = 's3-4674.nuage-peda.fr';
+  Map<String, String> header = {
+    "Content-type": "application/json; charset=UTF-8",
+    "Accept": 'application/ld+json',
+  };
+  final uri = Uri.http(baseUrl, '/GDSport/public/api/commandess/$commandeId');
+
+  final response = await http.get(uri, headers: header);
+
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> dataList = json.decode(response.body);
+
+    List<AjoutCommande> ajoutCommandess = [];
+    for (var ajoutCommande in dataList['ajoutCommandes']) {
+      ArticleLight article = ArticleLight(
+          ajoutCommande['Article']['id'],
+          ajoutCommande['Article']['prix'],
+          ajoutCommande['Article']['designation'],
+          ajoutCommande['Article']['image']);
+      AjoutCommande ajoutCommandeInfo = AjoutCommande(ajoutCommande['quantite'],
+          ajoutCommande['prixUnit'], article, ajoutCommande['taille']);
+      ajoutCommandess.add(ajoutCommandeInfo);
+    }
+
+    DateTime dateCommande = DateTime.parse(dataList["DateCommande"]);
+    DateTime dateLivraison = DateTime.parse(dataList["DateLivraison"]);
+
+    DetailsCommande commande = DetailsCommande(
+        dataList['id'],
+        dateCommande,
+        dateLivraison,
+        dataList['livraison'],
+        dataList['totalPrix'],
+        ajoutCommandess);
+
+    print("Chargement terminé !");
+    return commande;
+  } else {
+    print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+  }
+  return null;
 }

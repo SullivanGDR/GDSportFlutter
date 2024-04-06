@@ -10,7 +10,7 @@ AndroidOptions _getAndroidOptions() => const AndroidOptions(
 final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
 
 Future<void> resetDataUserLocal(token, id) async {
-  String baseUrl = 's3-4672.nuage-peda.fr';
+  String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> header = {
     "Content-type": "application/json; charset=UTF-8",
     "Accept": 'application/ld+json',
@@ -46,7 +46,7 @@ Future<void> resetDataUserLocal(token, id) async {
 
 Future<bool> modifProfil(String token, int id, String nom, String prenom,
     String email, String adresse, String ville, String pays, String cp) async {
-  String baseUrl = 's3-4672.nuage-peda.fr';
+  String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> headers = {
     "Content-type": "application/merge-patch+json",
     "Accept": 'application/ld+json',
