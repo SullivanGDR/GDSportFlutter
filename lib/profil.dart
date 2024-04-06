@@ -1,10 +1,5 @@
 import 'dart:convert';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:gdsport_flutter/class/ajoutPanier.dart';
-import 'package:gdsport_flutter/class/articleLight.dart';
-import 'package:gdsport_flutter/fonctions/favoris_API.dart';
-import 'package:gdsport_flutter/fonctions/panier_api.dart';
 import 'package:gdsport_flutter/widgets/caroussel.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
@@ -13,7 +8,6 @@ import 'package:shimmer/shimmer.dart';
 import 'package:gdsport_flutter/fonctions/login_API.dart';
 import '../class/user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:badges/badges.dart' as badges;
 
 AndroidOptions _getAndroidOptions() => const AndroidOptions(
       encryptedSharedPreferences: true,
@@ -141,7 +135,7 @@ class _ProfilState extends State<Profil> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          // Action à effectuer lorsque le bouton est pressé
+                          Navigator.popAndPushNamed(context, '/mes-commandes');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,

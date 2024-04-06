@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gdsport_flutter/details-commande.dart';
 import 'package:gdsport_flutter/fonctions/commande_API.dart';
+import 'package:intl/intl.dart';
 import 'class/commande.dart';
 import 'class/user.dart';
 
@@ -47,39 +48,54 @@ class _MesCommandePageState extends State<MesCommandePage> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           centerTitle: true,
-          title: const Text('GDSport',
+          title: const Text('Vos commandes',
               style: TextStyle(fontWeight: FontWeight.bold)),
         ),
         body: isLoading
             ? CircularProgressIndicator()
             : ListView.builder(
-                itemCount: listeCommandes.length,
-                itemBuilder: (context, index) {
-                  Commande commande = listeCommandes[index];
-                  return ListTile(
-                    title: Text("Commande #${commande.getId()}"),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                            "Livraison prévue: ${commande.getDateLivraison()}"),
-                        Text("Date de commande: ${commande.getDateCommande()}"),
-                      ],
+          itemCount: listeCommandes.length,
+          itemBuilder: (context, index) {
+            Commande commande = listeCommandes[index];
+            return Card(
+              elevation: 2,
+              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              color: Colors.white, // Couleur de la carte
+              child: ListTile(
+                title: Text(
+                  "Commande #${commande.getId()}",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Livraison prévue: ${DateFormat('dd/MM/yyyy').format(commande.getDateLivraison())}",
+                      style: TextStyle(color: Colors.grey[700]),
                     ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.remove_red_eye),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                DetailsCommandePage(commande.getId()),
-                          ),
-                        );
-                      },
+                    Text(
+                      "Date de commande: ${DateFormat('dd/MM/yyyy').format(commande.getDateCommande())}",
+                      style: TextStyle(color: Colors.grey[700]),
+                    ),
+                  ],
+                ),
+                trailing: Icon(
+                  Icons.remove_red_eye,
+                  color: Colors.black, // Change la couleur de l'icône
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailsCommandePage(commande.getId()),
                     ),
                   );
                 },
-              ));
+              ),
+            );
+          },
+        ),
+
+    );
   }
 }

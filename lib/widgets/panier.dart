@@ -27,7 +27,7 @@ Widget infoPanier(StateSetter mystate, panier) {
               width: 90,
               height: 90,
               child: Image.network(
-                'https://s3-4672.nuage-peda.fr/GDSport/public/articles/${ajout.getArticle().getImages()[0]["name"]}',
+                'https://s3-4674.nuage-peda.fr/GDSport/public/articles/${ajout.getArticle().getImages()[0]["name"]}',
               ),
             ),
             const SizedBox(width: 8),

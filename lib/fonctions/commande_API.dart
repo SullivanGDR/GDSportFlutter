@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:gdsport_flutter/class/ajoutCommande.dart';
 import 'package:gdsport_flutter/class/articleLight.dart';
 import 'package:gdsport_flutter/class/commande.dart';
-import 'package:gdsport_flutter/class/detailsCommande.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+
+import '../class/detailsCommande.dart';
 
 Future<int> createCommande(String user, DateTime dateCommande, String livraison,
     DateTime dateLivraison, double totalPrix) async {
@@ -131,11 +132,15 @@ Future<DetailsCommande?> getCommandeById(int commandeId) async {
 
     List<AjoutCommande> ajoutCommandess = [];
     for (var ajoutCommande in dataList['ajoutCommandes']) {
+      final List<String> articleImages = [];
+      for (var image in ajoutCommande['Article']['image']) {
+        articleImages.add(image['name']);
+      }
       ArticleLight article = ArticleLight(
           ajoutCommande['Article']['id'],
           ajoutCommande['Article']['prix'],
           ajoutCommande['Article']['designation'],
-          ajoutCommande['Article']['image']);
+          articleImages);
       AjoutCommande ajoutCommandeInfo = AjoutCommande(ajoutCommande['quantite'],
           ajoutCommande['prixUnit'], article, ajoutCommande['taille']);
       ajoutCommandess.add(ajoutCommandeInfo);
@@ -144,12 +149,14 @@ Future<DetailsCommande?> getCommandeById(int commandeId) async {
     DateTime dateCommande = DateTime.parse(dataList["DateCommande"]);
     DateTime dateLivraison = DateTime.parse(dataList["DateLivraison"]);
 
+    double totalPrix = dataList['totalPrix'].toDouble();
+
     DetailsCommande commande = DetailsCommande(
         dataList['id'],
         dateCommande,
         dateLivraison,
         dataList['livraison'],
-        dataList['totalPrix'],
+        totalPrix,
         ajoutCommandess);
 
     print("Chargement terminé !");
