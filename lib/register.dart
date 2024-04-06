@@ -25,35 +25,29 @@ class _RegisterState extends State<Register> {
     return rep;
   }
 
-  bool _obscureText = true;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: const Text('GDSport',
-            style: TextStyle(fontWeight: FontWeight.bold)),
-      ),
+      appBar: appBar(context),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            const Padding(padding: EdgeInsets.only(top: 10)),
-            const Center(
+            Padding(padding: EdgeInsets.only(top: 10)),
+            Center(
               child: Text(
                 'Inscrivez-vous',
                 style: TextStyle(color: Colors.black, fontSize: 50),
               ),
             ),
+            Padding(padding: EdgeInsets.only(top: 30)),
             Padding(
               padding: const EdgeInsets.only(
                   left: 15.0, right: 15.0, top: 15, bottom: 0),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: _emailController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     border: OutlineInputBorder(), labelText: 'Email'),
               ),
             ),
@@ -62,46 +56,36 @@ class _RegisterState extends State<Register> {
                   left: 15.0, right: 15.0, top: 15, bottom: 15),
               child: TextField(
                 controller: _passwordController,
-                obscureText: _obscureText,
+                obscureText: true,
                 decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  labelText: 'Mot de passe',
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                        _obscureText ? Icons.visibility : Icons.visibility_off),
-                    onPressed: () {
-                      setState(() {
-                        _obscureText =
-                            !_obscureText; // Inverse l'état d'obscurcissement du texte
-                      });
-                    },
-                  ),
-                ),
+                    border: OutlineInputBorder(), labelText: 'Mot de passe'),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment
-                  .spaceBetween, // ou MainAxisAlignment.spaceEvenly
-              children: [
-                const SizedBox(width: 15),
-                Expanded(
-                  child: TextField(
-                    controller: _nomController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Nom'),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment
+                    .spaceBetween, // ou MainAxisAlignment.spaceEvenly
+                children: [
+                  SizedBox(width: 15),
+                  Expanded(
+                    child: TextField(
+                      controller: _nomController,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), labelText: 'Nom'),
+                    ),
                   ),
-                ),
-                const SizedBox(
-                    width: 10), // Espacement entre les deux champs de texte
-                Expanded(
-                  child: TextField(
-                    controller: _prenomController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Prenom'),
+                  SizedBox(
+                      width: 10), // Espacement entre les deux champs de texte
+                  Expanded(
+                    child: TextField(
+                      controller: _prenomController,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), labelText: 'Prenom'),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 15),
-              ],
+                  SizedBox(width: 15),
+                ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -109,75 +93,48 @@ class _RegisterState extends State<Register> {
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: _adresseController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     border: OutlineInputBorder(), labelText: 'Adresse (*)'),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const SizedBox(width: 15),
-                Expanded(
-                  child: TextField(
-                    controller: _villeController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Ville (*)'),
-                  ),
-                ),
-                const SizedBox(
-                    width: 10), // Espacement entre les deux champs de texte
-                Expanded(
-                  child: TextField(
-                    controller: _paysController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Pays (*)'),
-                  ),
-                ),
-                const SizedBox(
-                    width: 10), // Espacement entre les deux champs de texte
-                Expanded(
-                  child: TextField(
-                    controller: _cpController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'CP (*)'),
-                  ),
-                ),
-                const SizedBox(width: 15),
-              ],
-            ),
-            const SizedBox(height: 40),
-            const Text("(*) : Champs non obligatoires."),
-            const SizedBox(height: 5),
-            const Divider(
-              indent: 150,
-              endIndent: 150,
-              color: Color.fromRGBO(0, 0, 0, 0.10),
-            ),
-            const SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Déjà inscrit ? ',
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.popAndPushNamed(context, "/connexion");
-                  },
-                  child: const Text(
-                    'Connexion',
-                    style: TextStyle(
-                      color: Colors.black,
-                      decoration: TextDecoration.underline,
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment
+                    .spaceBetween, // ou MainAxisAlignment.spaceEvenly
+                children: [
+                  SizedBox(width: 15),
+                  Expanded(
+                    child: TextField(
+                      controller: _villeController,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), labelText: 'Ville (*)'),
                     ),
                   ),
-                )
-              ],
+                  SizedBox(
+                      width: 10), // Espacement entre les deux champs de texte
+                  Expanded(
+                    child: TextField(
+                      controller: _paysController,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), labelText: 'Pays (*)'),
+                    ),
+                  ),
+                  SizedBox(
+                      width: 10), // Espacement entre les deux champs de texte
+                  Expanded(
+                    child: TextField(
+                      controller: _cpController,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), labelText: 'CP (*)'),
+                    ),
+                  ),
+                  SizedBox(width: 15),
+                ],
+              ),
             ),
-            const SizedBox(height: 15),
+            Padding(padding: EdgeInsets.only(top: 10)),
+            Text("(*) : Champs non obligatoires."),
+            Padding(padding: EdgeInsets.only(top: 30)),
             Container(
               height: 50,
               width: 250,
@@ -207,18 +164,45 @@ class _RegisterState extends State<Register> {
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                          backgroundColor: Colors.red,
                           content:
                               Text('Erreur lors de la création du compte')),
                     );
                   }
                 },
-                child: const Text(
+                child: Text(
                   "S'inscrire",
                   style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 60),
+              child: Divider(),
+            ),
+            Padding(padding: EdgeInsets.only(top: 15)),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.popAndPushNamed(context, '/connexion');
+                    },
+                    child: Text(
+                      'Se connecter ?',
+                      style: TextStyle(
+                        color: Colors.black, // Couleur du texte
+                        decoration:
+                            TextDecoration.underline, // Soulignement du texte
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),

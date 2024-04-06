@@ -4,7 +4,7 @@ import '../class/ajoutPanier.dart';
 import '../class/articleLight.dart';
 
 Future<List<AjoutPanier>> getPanier(token, id, List<AjoutPanier> panier) async {
-  String baseUrl = 's3-4672.nuage-peda.fr';
+  String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> header = {
     "Content-type": "application/json; charset=UTF-8",
     "Accept": 'application/ld+json',
@@ -30,5 +30,71 @@ Future<List<AjoutPanier>> getPanier(token, id, List<AjoutPanier> panier) async {
   } else {
     print("Error: ${response.statusCode} - ${response.reasonPhrase}");
     return [];
+  }
+}
+
+Future<void> addQte(token, id, qte) async {
+  String baseUrl = 's3-4674.nuage-peda.fr';
+  Map<String, String> header = {
+    "Content-type": "application/merge-patch+json",
+    "Accept": 'application/ld+json',
+    'Authorization': "Bearer $token"
+  };
+  final uri = Uri.http(baseUrl, '/GDSport/public/api/ajouters/$id');
+
+  final response = await http.patch(
+    uri,
+    headers: header,
+    body: jsonEncode({"quantite": qte + 1}),
+  );
+
+  if (response.statusCode == 200) {
+    print("modification ok");
+  } else {
+    print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+  }
+}
+
+Future<void> supQte(token, id, qte) async {
+  String baseUrl = 's3-4674.nuage-peda.fr';
+  Map<String, String> header = {
+    "Content-type": "application/merge-patch+json",
+    "Accept": 'application/ld+json',
+    'Authorization': "Bearer $token"
+  };
+  final uri = Uri.http(baseUrl, '/GDSport/public/api/ajouters/$id');
+
+  final response = await http.patch(
+    uri,
+    headers: header,
+    body: jsonEncode({"quantite": qte - 1}),
+  );
+
+  if (response.statusCode == 200) {
+    print("modification ok");
+  } else {
+    print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+  }
+}
+
+Future<void> delArticleP(String token, int id) async {
+  String baseUrl = 's3-4674.nuage-peda.fr';
+  Map<String, String> headers = {
+    "Authorization": "Bearer $token"
+  }; // Suppression de l'entrée vide dans les en-têtes
+
+  final uri = Uri.http(baseUrl,
+      '/GDSport/public/api/ajouters/$id'); // Utilisation de Uri.https pour une connexion sécurisée
+
+  try {
+    final response = await http.delete(uri, headers: headers);
+
+    if (response.statusCode == 204) {
+      print("delete ok");
+    } else {
+      print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+    }
+  } catch (e) {
+    print("Exception during delete: $e");
   }
 }

@@ -1,13 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:gdsport_flutter/class/ajoutPanier.dart';
-import 'package:gdsport_flutter/class/articleLight.dart';
-import 'package:gdsport_flutter/fonctions/favoris_API.dart';
-import 'package:gdsport_flutter/fonctions/panier_api.dart';
 import 'package:gdsport_flutter/widgets/caroussel.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
-import 'package:gdsport_flutter/widgets/panier.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:gdsport_flutter/fonctions/login_API.dart';
@@ -18,21 +13,17 @@ AndroidOptions _getAndroidOptions() => const AndroidOptions(
       encryptedSharedPreferences: true,
     );
 
-class FavorisPage extends StatefulWidget {
-  const FavorisPage({super.key});
+class Profil extends StatefulWidget {
+  const Profil({super.key});
 
   @override
-  State<FavorisPage> createState() => _FavorisPageState();
+  State<Profil> createState() => _ProfilState();
 }
 
-class _FavorisPageState extends State<FavorisPage> {
+class _ProfilState extends State<Profil> {
   bool _isLoading = true;
   bool _isLog = false;
-  String nameUser = "";
   final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
-  List<AjoutPanier> panier = [];
-  List<ArticleLight> favoris = [];
-  int nbFav = 0;
   User user = User(0, 0, "_email", "_token", "_prenom", "_nom", "_adresse",
       "_ville", "_codePostal", "pays");
 
@@ -47,78 +38,10 @@ class _FavorisPageState extends State<FavorisPage> {
     if (value != null) {
       user = User.fromJson(jsonDecode(value));
       _isLog = await isLogin(user.getToken(), user.getId());
-      if (_isLog == true) {
-        try {
-          nameUser = '${user.getNom()} ${user.getPrenom()}';
-          panier = await getPanier(user.getToken(), user.getId(), panier);
-          favoris = await getFavoris(user.getToken(), user.getId(), favoris);
-          nbFav = favoris.length;
-        } catch (e) {
-          print("Une erreur s'est produite lors du décodage json : $e");
-        }
-      }
     }
     setState(() {
       _isLoading = false;
     });
-  }
-
-  Widget infoFavoris() {
-    Column affichageFavoris = Column(
-      children: <Widget>[],
-    );
-    for (var favori in favoris) {
-      affichageFavoris.children.add(
-        InkWell(
-          onTap: () {},
-          child: Row(
-            children: [
-              SizedBox(
-                width: 90,
-                height: 90,
-                child: Image.network(
-                  'https://s3-4672.nuage-peda.fr/GDSport/public/articles/${favori.getImages()[0]["name"]}',
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      favori.getDesignation(),
-                      style: GoogleFonts.lilitaOne(
-                        textStyle: const TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-              IconButton(
-                  onPressed: () async {
-                    await delFavori(
-                        user.getToken(), user.getId(), favori.getId());
-                    var nouveauxFavoris =
-                        await getFavoris(user.getToken(), user.getId(), []);
-                    setState(() {
-                      favoris = nouveauxFavoris;
-                      nbFav = favoris.length;
-                    });
-                  },
-                  icon: const Icon(Icons.close)),
-            ],
-          ),
-        ),
-      );
-      affichageFavoris.children.add(const Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
-        child: Divider(),
-      ));
-    }
-    return affichageFavoris;
   }
 
   @override
@@ -130,32 +53,140 @@ class _FavorisPageState extends State<FavorisPage> {
 
   Widget _buildContent() {
     return Scaffold(
-        appBar: appBar(context),
-        drawer: appDrawer(context, _isLog, user),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // CAROUSEL D'INFORMATIONS
-              carousel(context),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Text(
-                  'FAVORIS $nbFav',
-                  style: GoogleFonts.lilitaOne(
-                    textStyle:
-                        const TextStyle(color: Colors.black, fontSize: 20),
-                  ),
+      appBar: appBar(context),
+      drawer: appDrawer(context, _isLog, user),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // CAROUSEL D'INFORMATIONS
+            carousel(context),
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Text(
+                'Mes informations ',
+                style: GoogleFonts.lilitaOne(
+                  textStyle: const TextStyle(color: Colors.black, fontSize: 20),
                 ),
               ),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: infoFavoris())
-            ],
-          ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Nom prenom : ${user.getNom()} ${user.getPrenom()}")
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [Text("email : ${user.getEmail()}")],
+                  ),
+                ],
+              ),
+            ),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Text(
+                'Votre adresse',
+                style: GoogleFonts.lilitaOne(
+                  textStyle: const TextStyle(color: Colors.black, fontSize: 20),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                          "${user.getAdresse()} , ${user.getCodePostal()} , ${user.getVille()}")
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [Text("${user.getPays()}")],
+                  ),
+                ],
+              ),
+            ),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Text(
+                'Vos commandes',
+                style: GoogleFonts.lilitaOne(
+                  textStyle: const TextStyle(color: Colors.black, fontSize: 20),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.popAndPushNamed(context, '/mes-commandes');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(10.0), // Bords arrondis
+                          ), // Texte en noir
+                          side: const BorderSide(
+                              color: Colors.black), // Contour noir
+                        ),
+                        child: const Text(
+                          'Voir les commandes',
+                          style:
+                              TextStyle(color: Colors.black), // Texte en noir
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+              child: Divider(),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.popAndPushNamed(context, '/modifProfil');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(10.0), // Bords arrondis
+                    ), // Texte en noir
+                    side: const BorderSide(color: Colors.black), // Contour noir
+                  ),
+                  child: const Text(
+                    'Modifier le profil',
+                    style: TextStyle(color: Colors.black), // Texte en noir
+                  ),
+                ),
+              ],
+            )
+          ],
         ),
-        floatingActionButton: panierW(context, _isLog, panier));
+      ),
+    );
   }
 
   Widget _loading() {

@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/class/user.dart';
+import 'package:gdsport_flutter/fonctions/login_API.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:badges/badges.dart' as badges;
@@ -10,7 +13,7 @@ AndroidOptions _getAndroidOptions() => const AndroidOptions(
 
 final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
 
-Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
+Drawer appDrawer(BuildContext context, isLog, user) {
   return Drawer(
     child: Container(
       color: Colors.white,
@@ -18,7 +21,7 @@ Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
             ),
             child: Column(
@@ -34,8 +37,8 @@ Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
-                Text(
+                const SizedBox(height: 16),
+                const Text(
                   'Bienvenue',
                   style: TextStyle(
                     color: Colors.black,
@@ -43,18 +46,20 @@ Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.account_circle,
                       color: Colors.black,
                       size: 36,
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Text(
-                      isLog ? nomUtilisateur : 'Aucun profil',
-                      style: TextStyle(
+                      isLog
+                          ? "${user.getNom()} ${user.getPrenom()}"
+                          : 'Connectez-vous !',
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 16,
                       ),
@@ -83,32 +88,37 @@ Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
           ListTile(
             leading: const Icon(Icons.checkroom_outlined),
             title: const Text("Catalogue"),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(Icons.favorite_border_outlined),
-            title: isLog
-                ? badges.Badge(
-                    position: badges.BadgePosition.custom(end: 0, top: 0),
-                    badgeContent: Text(
-                      "0",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    badgeStyle: badges.BadgeStyle(
-                      shape: badges.BadgeShape.square,
-                      borderRadius: BorderRadius.circular(4),
-                      badgeColor: Colors.black,
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      elevation: 0,
-                    ),
-                    child: Text("Favoris"),
-                  )
-                : Text("Favoris"),
             onTap: () {
-              Navigator.popAndPushNamed(context, '/favoris');
+              Navigator.popAndPushNamed(context, '/catalogue');
             },
           ),
-          Padding(
+          Visibility(
+            visible: isLog,
+            child: ListTile(
+              leading: const Icon(Icons.favorite_border_outlined),
+              title: isLog
+                  ? badges.Badge(
+                      position: badges.BadgePosition.custom(end: 0, top: 0),
+                      badgeContent: Text(
+                        user.getNbFav().toString(),
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      badgeStyle: badges.BadgeStyle(
+                        shape: badges.BadgeShape.square,
+                        borderRadius: BorderRadius.circular(4),
+                        badgeColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        elevation: 0,
+                      ),
+                      child: const Text("Favoris"),
+                    )
+                  : const Text("Favoris"),
+              onTap: () {
+                Navigator.popAndPushNamed(context, '/favoris');
+              },
+            ),
+          ),
+          const Padding(
               padding: EdgeInsets.symmetric(horizontal: 50), child: Divider()),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
@@ -127,15 +137,15 @@ Drawer appDrawer(BuildContext context, bool isLog, String nomUtilisateur) {
                   leading: const Icon(Icons.person_outline),
                   title: const Text("Mes informations"),
                   onTap: () {
-                    if (isLog == false) {
-                      Navigator.popAndPushNamed(context, '/connexion');
-                    }
+                    Navigator.popAndPushNamed(context, '/profil');
                   },
                 ),
                 ListTile(
                   leading: const Icon(Icons.local_shipping_outlined),
                   title: const Text('Mes commandes'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, '/mes-commandes');
+                  },
                 ),
                 ListTile(
                   leading: const Icon(Icons.logout_outlined),
