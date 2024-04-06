@@ -1,16 +1,31 @@
-# gdsport_flutter
+# GDSport Flutter
 
-A new Flutter project.
+// IMAGE DE LAPP
 
-## Getting Started
+GDSport Flutter est une application mobile réalisée dans le cadre de nos études par Sullivan, Thoma et Paul. Cette application récupère les données d'un site internet réalisé par Sullivan au cours de sa première année. Il s'agit d'une application de commerce en ligne qui permet aux utilisateurs d'accéder à différents catalogues, différents articles, et d'avoir accès à leur compte avec leur panier, leurs commandes, leur profil, leurs favoris, etc.
 
-This project is a starting point for a Flutter application.
+## Fonctionnalités
 
-A few resources to get you started if this is your first Flutter project:
+- Accès aux différents catalogues et articles
+- Gestion du panier d'achat
+- Consultation des commandes passées
+- Gestion du profil utilisateur
+- Ajout d'articles aux favoris
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Captures d'écran
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+## Technologies Utilisées
+
+- Flutter
+- Dart
+- Symfony/API Plateforme
+
+## Contact
+
+Gendre Sullivan - [Profil LinkedIn](https://www.linkedin.com/in/sullivan-gendre-a0a209271/) - sullivan04gendre@gmail.com
+Hamlaoui Thoma - [Profil LinkedIn](https://www.linkedin.com/in/thoma-hamlaoui/) - email
+Acier Paul - [Profil LinkedIn](https://www.linkedin.com/in/paul-acier-43a783276/) - email
+
+Lien du projet : [GDSportFlutter](https://github.com/SullivanGDR/GDSportFlutter/)
