@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:gdsport_flutter/widgets/caroussel.dart';
+import 'package:gdsport_flutter/widgets/carousels.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -61,7 +61,7 @@ class _ProfilState extends State<Profil> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             // CAROUSEL D'INFORMATIONS
-            carousel(context),
+            CarouselSliderPub(context),
             Padding(
               padding: const EdgeInsets.all(15),
               child: Text(
@@ -141,15 +141,15 @@ class _ProfilState extends State<Profil> {
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius:
-                                BorderRadius.circular(10.0), // Bords arrondis
-                          ), // Texte en noir
+                                BorderRadius.circular(10.0),
+                          ),
                           side: const BorderSide(
-                              color: Colors.black), // Contour noir
+                              color: Colors.black),
                         ),
                         child: const Text(
                           'Voir les commandes',
                           style:
-                              TextStyle(color: Colors.black), // Texte en noir
+                              TextStyle(color: Colors.black),
                         ),
                       ),
                     ],
@@ -172,13 +172,13 @@ class _ProfilState extends State<Profil> {
                     backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius:
-                          BorderRadius.circular(10.0), // Bords arrondis
-                    ), // Texte en noir
-                    side: const BorderSide(color: Colors.black), // Contour noir
+                          BorderRadius.circular(10.0),
+                    ),
+                    side: const BorderSide(color: Colors.black),
                   ),
                   child: const Text(
                     'Modifier le profil',
-                    style: TextStyle(color: Colors.black), // Texte en noir
+                    style: TextStyle(color: Colors.black),
                   ),
                 ),
               ],
@@ -197,7 +197,7 @@ class _ProfilState extends State<Profil> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           // CAROUSEL D'INFORMATIONS
-          carousel(context),
+          CarouselSliderPub(context),
           Padding(
             padding: const EdgeInsets.all(15),
             child: Text(
@@ -215,10 +215,10 @@ class _ProfilState extends State<Profil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -229,10 +229,10 @@ class _ProfilState extends State<Profil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -243,10 +243,10 @@ class _ProfilState extends State<Profil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -257,10 +257,10 @@ class _ProfilState extends State<Profil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -271,10 +271,10 @@ class _ProfilState extends State<Profil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -285,10 +285,10 @@ class _ProfilState extends State<Profil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),

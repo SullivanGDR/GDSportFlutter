@@ -1,13 +1,11 @@
 import 'dart:convert';
-
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/class/ajoutPanier.dart';
 import 'package:gdsport_flutter/class/article.dart';
 import 'package:gdsport_flutter/fonctions/article_API.dart';
-import 'package:gdsport_flutter/fonctions/favoris_API.dart';
 import 'package:gdsport_flutter/fonctions/panier_api.dart';
-import 'package:gdsport_flutter/widgets/caroussel.dart';
+import 'package:gdsport_flutter/widgets/carousels.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 import 'package:gdsport_flutter/widgets/panier.dart';
@@ -16,7 +14,6 @@ import 'package:shimmer/shimmer.dart';
 import 'package:gdsport_flutter/fonctions/login_API.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../class/user.dart';
-import 'package:badges/badges.dart' as badges;
 
 AndroidOptions _getAndroidOptions() => const AndroidOptions(
       encryptedSharedPreferences: true,
@@ -54,7 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
         try {
           panier = await getPanier(user.getToken(), user.getId(), panier);
         } catch (e) {
-          print("Une erreur s'est produite lors du décodage json : $e");
+          if (kDebugMode) {
+            print("Une erreur s'est produite lors du décodage json : $e");
+          }
         }
       }
     }
@@ -80,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               // CAROUSEL D'INFORMATIONS
-              carousel(context),
+              CarouselSliderPub(context),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -120,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                   const SizedBox(
                                       height:
-                                          10), // Espacement entre l'image et les textes
+                                          10),
                                   Text(
                                     _articlesTendance[index].designation,
                                     style: const TextStyle(
@@ -253,7 +252,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             // CAROUSEL D'INFORMATIONS
-            carousel(context),
+            CarouselSliderPub(context),
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -269,14 +268,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(height: 10),
                   SizedBox(
                     height:
-                        250, // Définissez une hauteur fixe pour votre ListView
+                        250,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 5, // Pour le test, utilisez un nombre fixe
+                      itemCount: 5,
                       itemBuilder: (context, index) {
                         return Container(
                           width:
-                              180, // Assurez-vous de définir une largeur pour chaque élément dans une liste horizontale
+                              180,
                           margin: const EdgeInsets.all(10),
                           child: Shimmer.fromColors(
                             baseColor: Colors.grey.shade300,

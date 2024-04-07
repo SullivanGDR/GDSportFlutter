@@ -1,12 +1,8 @@
 import 'dart:convert';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gdsport_flutter/class/ajoutPanier.dart';
-import 'package:gdsport_flutter/class/articleLight.dart';
-import 'package:gdsport_flutter/fonctions/favoris_API.dart';
 import 'package:gdsport_flutter/fonctions/user_API.dart';
-import 'package:gdsport_flutter/fonctions/panier_api.dart';
-import 'package:gdsport_flutter/widgets/caroussel.dart';
+import 'package:gdsport_flutter/widgets/carousels.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,7 +10,6 @@ import 'package:shimmer/shimmer.dart';
 import 'package:gdsport_flutter/fonctions/login_API.dart';
 import '../class/user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:badges/badges.dart' as badges;
 
 AndroidOptions _getAndroidOptions() => const AndroidOptions(
       encryptedSharedPreferences: true,
@@ -63,7 +58,9 @@ class _ModifProfilState extends State<ModifProfil> {
           _cpController.text = user.getCodePostal().toString();
           _paysController.text = user.getPays().toString();
         } catch (e) {
-          print("Une erreur s'est produite lors du décodage json : $e");
+          if (kDebugMode) {
+            print("Une erreur s'est produite lors du décodage json : $e");
+          }
         }
       }
     }
@@ -89,7 +86,7 @@ class _ModifProfilState extends State<ModifProfil> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             // CAROUSEL D'INFORMATIONS
-            carousel(context),
+            CarouselSliderPub(context),
             Padding(
               padding: const EdgeInsets.all(15),
               child: Text(
@@ -103,95 +100,89 @@ class _ModifProfilState extends State<ModifProfil> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Column(
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 10)),
+                  const Padding(padding: EdgeInsets.only(top: 10)),
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 15.0, right: 15.0, top: 15, bottom: 15),
-                    //padding: EdgeInsets.symmetric(horizontal: 15),
                     child: TextField(
                       controller: _emailController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Email'),
                     ),
                   ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment
-                          .spaceBetween, // ou MainAxisAlignment.spaceEvenly
-                      children: [
-                        SizedBox(width: 15),
-                        Expanded(
-                          child: TextField(
-                            controller: _nomController,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(), labelText: 'Nom'),
-                          ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment
+                        .spaceBetween,
+                    children: [
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: TextField(
+                          controller: _nomController,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(), labelText: 'Nom'),
                         ),
-                        SizedBox(
-                            width:
-                                10), // Espacement entre les deux champs de texte
-                        Expanded(
-                          child: TextField(
-                            controller: _prenomController,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Prenom'),
-                          ),
+                      ),
+                      const SizedBox(
+                          width:
+                              10),
+                      Expanded(
+                        child: TextField(
+                          controller: _prenomController,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Prenom'),
                         ),
-                        SizedBox(width: 15),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(width: 15),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 15.0, right: 15.0, top: 15, bottom: 15),
-                    //padding: EdgeInsets.symmetric(horizontal: 15),
                     child: TextField(
                       controller: _adresseController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Adresse'),
                     ),
                   ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment
-                          .spaceBetween, // ou MainAxisAlignment.spaceEvenly
-                      children: [
-                        SizedBox(width: 15),
-                        Expanded(
-                          child: TextField(
-                            controller: _villeController,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Ville'),
-                          ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment
+                        .spaceBetween,
+                    children: [
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: TextField(
+                          controller: _villeController,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Ville'),
                         ),
-                        SizedBox(
-                            width:
-                                10), // Espacement entre les deux champs de texte
-                        Expanded(
-                          child: TextField(
-                            controller: _paysController,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Pays'),
-                          ),
+                      ),
+                      const SizedBox(
+                          width:
+                              10),
+                      Expanded(
+                        child: TextField(
+                          controller: _paysController,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Pays'),
                         ),
-                        SizedBox(
-                            width:
-                                10), // Espacement entre les deux champs de texte
-                        Expanded(
-                          child: TextField(
-                            controller: _cpController,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(), labelText: 'CP'),
-                          ),
+                      ),
+                      const SizedBox(
+                          width:
+                              10),
+                      Expanded(
+                        child: TextField(
+                          controller: _cpController,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(), labelText: 'CP'),
                         ),
-                        SizedBox(width: 15),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(width: 15),
+                    ],
                   ),
-                  Padding(padding: EdgeInsets.only(top: 30)),
+                  const Padding(padding: EdgeInsets.only(top: 30)),
                   Container(
                     height: 50,
                     width: 250,
@@ -235,13 +226,13 @@ class _ModifProfilState extends State<ModifProfil> {
                           );
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         "Modifier",
                         style: TextStyle(color: Colors.white, fontSize: 25),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                 ],
@@ -261,7 +252,7 @@ class _ModifProfilState extends State<ModifProfil> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           // CAROUSEL D'INFORMATIONS
-          carousel(context),
+          CarouselSliderPub(context),
           Padding(
             padding: const EdgeInsets.all(15),
             child: Text(
@@ -279,10 +270,10 @@ class _ModifProfilState extends State<ModifProfil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -293,10 +284,10 @@ class _ModifProfilState extends State<ModifProfil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -307,10 +298,10 @@ class _ModifProfilState extends State<ModifProfil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -321,10 +312,10 @@ class _ModifProfilState extends State<ModifProfil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -335,10 +326,10 @@ class _ModifProfilState extends State<ModifProfil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -349,10 +340,10 @@ class _ModifProfilState extends State<ModifProfil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),

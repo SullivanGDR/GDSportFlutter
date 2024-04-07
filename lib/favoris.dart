@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/class/ajoutPanier.dart';
 import 'package:gdsport_flutter/class/articleLight.dart';
 import 'package:gdsport_flutter/fonctions/favoris_API.dart';
 import 'package:gdsport_flutter/fonctions/panier_api.dart';
-import 'package:gdsport_flutter/widgets/caroussel.dart';
+import 'package:gdsport_flutter/widgets/carousels.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 import 'package:gdsport_flutter/widgets/panier.dart';
@@ -54,7 +55,9 @@ class _FavorisPageState extends State<FavorisPage> {
           favoris = await getFavoris(user.getToken(), user.getId(), favoris);
           nbFav = favoris.length;
         } catch (e) {
-          print("Une erreur s'est produite lors du décodage json : $e");
+          if (kDebugMode) {
+            print("Une erreur s'est produite lors du décodage json : $e");
+          }
         }
       }
     }
@@ -77,7 +80,7 @@ class _FavorisPageState extends State<FavorisPage> {
                 width: 90,
                 height: 90,
                 child: Image.network(
-                  'https://s3-4672.nuage-peda.fr/GDSport/public/articles/${favori.getImages()[0]["name"]}',
+                  'https://s3-4674.nuage-peda.fr/GDSport/public/articles/${favori.getImages()[0]["name"]}',
                 ),
               ),
               const SizedBox(width: 8),
@@ -138,7 +141,7 @@ class _FavorisPageState extends State<FavorisPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               // CAROUSEL D'INFORMATIONS
-              carousel(context),
+              CarouselSliderPub(context),
               Padding(
                 padding: const EdgeInsets.all(15),
                 child: Text(
@@ -166,7 +169,7 @@ class _FavorisPageState extends State<FavorisPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           // CAROUSEL D'INFORMATIONS
-          carousel(context),
+          CarouselSliderPub(context),
           Padding(
             padding: const EdgeInsets.all(15),
             child: Text(
@@ -184,10 +187,10 @@ class _FavorisPageState extends State<FavorisPage> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -198,10 +201,10 @@ class _FavorisPageState extends State<FavorisPage> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -212,10 +215,10 @@ class _FavorisPageState extends State<FavorisPage> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -226,10 +229,10 @@ class _FavorisPageState extends State<FavorisPage> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -240,10 +243,10 @@ class _FavorisPageState extends State<FavorisPage> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -254,10 +257,10 @@ class _FavorisPageState extends State<FavorisPage> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),

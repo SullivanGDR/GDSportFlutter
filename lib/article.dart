@@ -10,7 +10,7 @@ class Article extends StatefulWidget {
 }
 
 class _ArticleState extends State<Article> {
-  String selectedSize = 'S'; // Taille par défaut
+  String selectedSize = 'S';
   bool _isDescriptionVisible = false;
   bool _isAvisVisible = false;
 
@@ -166,7 +166,7 @@ class _ArticleState extends State<Article> {
                       SizedBox(
                           height: 5), // Ajoute un espace entre le nom et l'avis
                       Text(
-                        'Avis les projet est nul c de la merde !',
+                        '',
                         style: TextStyle(fontSize: 18),
                       ),
                     ],

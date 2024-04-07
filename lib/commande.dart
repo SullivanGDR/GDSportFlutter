@@ -31,10 +31,10 @@ class _CommandePageState extends State<CommandePage> {
   final TextEditingController _villeController = TextEditingController();
   final TextEditingController _paysController = TextEditingController();
   final TextEditingController _codePostalController = TextEditingController();
-  TextEditingController _cardNomController = TextEditingController();
-  TextEditingController _cardNumberController = TextEditingController();
-  TextEditingController _expiryDateController = TextEditingController();
-  TextEditingController _cvvController = TextEditingController();
+  final TextEditingController _cardNomController = TextEditingController();
+  final TextEditingController _cardNumberController = TextEditingController();
+  final TextEditingController _expiryDateController = TextEditingController();
+  final TextEditingController _cvvController = TextEditingController();
   String? typeLivraison;
   int totalArticle = 0;
   double fraisDePort = 0;
@@ -89,7 +89,7 @@ class _CommandePageState extends State<CommandePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _buildPageContent(_currentPageIndex),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: _currentPageIndex == 0
                   ? MainAxisAlignment.center
@@ -108,12 +108,11 @@ class _CommandePageState extends State<CommandePage> {
                           foregroundColor:
                               MaterialStateProperty.all<Color>(Colors.white),
                         ),
-                        child: Text('Précédent'),
+                        child: const Text('Précédent'),
                       )
-                    : SizedBox(),
+                    : const SizedBox(),
                 ElevatedButton(
                   onPressed: () {
-                    // Vérifier si tous les champs sont remplis
                     if (_emailController.text.isEmpty ||
                         _nomController.text.isEmpty ||
                         _prenomController.text.isEmpty ||
@@ -126,40 +125,39 @@ class _CommandePageState extends State<CommandePage> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Champs manquants'),
-                            content: Text('Veuillez remplir tous les champs.'),
+                            title: const Text('Champs manquants'),
+                            content: const Text('Veuillez remplir tous les champs.'),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context)
-                                      .pop(); // Fermer la boîte de dialogue
+                                      .pop();
                                 },
-                                child: Text('OK'),
+                                child: const Text('OK'),
                               ),
                             ],
                           );
                         },
                       );
                     } else {
-                      // Tous les champs sont remplis, passer à la page suivante ou effectuer le paiement
                       setState(() {
                         if (_currentPageIndex < 2) {
-                          _currentPageIndex += 1; // Passer à la page suivante
+                          _currentPageIndex += 1;
                         } else {
                           commander();
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: Text('Paiement effectué'),
-                                content: Text(
+                                title: const Text('Paiement effectué'),
+                                content: const Text(
                                     'Votre paiement a été effectué avec succès.'),
                                 actions: [
                                   TextButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
-                                    child: Text('OK'),
+                                    child: const Text('OK'),
                                   ),
                                 ],
                               );
@@ -210,7 +208,6 @@ class _CommandePageState extends State<CommandePage> {
         Padding(
           padding: const EdgeInsets.only(
               left: 15.0, right: 15.0, top: 15, bottom: 15),
-          //padding: EdgeInsets.symmetric(horizontal: 15),
           child: TextField(
             controller: _emailController,
             decoration: const InputDecoration(
@@ -219,7 +216,7 @@ class _CommandePageState extends State<CommandePage> {
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment
-              .spaceBetween, // ou MainAxisAlignment.spaceEvenly
+              .spaceBetween,
           children: [
             const SizedBox(width: 15),
             Expanded(
@@ -251,7 +248,7 @@ class _CommandePageState extends State<CommandePage> {
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment
-              .spaceBetween, // ou MainAxisAlignment.spaceEvenly
+              .spaceBetween,
           children: [
             const SizedBox(width: 15),
             Expanded(
@@ -282,7 +279,6 @@ class _CommandePageState extends State<CommandePage> {
         ),
         const Padding(
           padding: EdgeInsets.only(top: 15.0, bottom: 10),
-          //padding: EdgeInsets.symmetric(horizontal: 15),
           child: Text(
             'Délai de livraison',
             style: TextStyle(color: Colors.black, fontSize: 25),
@@ -329,13 +325,13 @@ class _CommandePageState extends State<CommandePage> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          Text(
+          const Text(
             'Informations de paiement',
             style: TextStyle(color: Colors.black, fontSize: 25),
           ),
           Container(
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
                 border: Border.all(color: Colors.grey),
@@ -347,7 +343,7 @@ class _CommandePageState extends State<CommandePage> {
                     child: TextField(
                       controller: _cardNomController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Nom sur la carte',
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.person_outline),
@@ -359,7 +355,7 @@ class _CommandePageState extends State<CommandePage> {
                     child: TextField(
                       controller: _cardNumberController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Numéro de carte',
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.credit_card),
@@ -376,7 +372,7 @@ class _CommandePageState extends State<CommandePage> {
                           child: TextField(
                             controller: _expiryDateController,
                             keyboardType: TextInputType.datetime,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: 'MM/YY',
                               border: OutlineInputBorder(),
                               prefixIcon: Icon(Icons.calendar_today),
@@ -388,7 +384,7 @@ class _CommandePageState extends State<CommandePage> {
                           child: TextField(
                             controller: _cvvController,
                             keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: 'CVV',
                               border: OutlineInputBorder(),
                               prefixIcon: Icon(Icons.lock),
@@ -434,7 +430,7 @@ class _CommandePageState extends State<CommandePage> {
                 children: [
                   Text(
                     ajout.getArticle().getDesignation(),
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text("Taille : ${ajout.getTaille()}"),
@@ -449,90 +445,90 @@ class _CommandePageState extends State<CommandePage> {
       affichagePanier.children.add(const SizedBox(height: 8));
     }
     if (typeLivraison == "standard") {
-      estimatedDeliveryDate = DateTime.now().add(Duration(days: 6));
+      estimatedDeliveryDate = DateTime.now().add(const Duration(days: 6));
     } else {
-      estimatedDeliveryDate = DateTime.now().add(Duration(days: 2));
+      estimatedDeliveryDate = DateTime.now().add(const Duration(days: 2));
     }
     return Column(
       children: [
-        Text(
+        const Text(
           'Récapitulatif de la commande :',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        Divider(),
-        Text(
+        const Divider(),
+        const Text(
           'Date de livraison estimée:',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         Text(
-          '${DateFormat('dd/MM/yyyy').format(estimatedDeliveryDate)}',
-          style: TextStyle(fontSize: 18),
+          DateFormat('dd/MM/yyyy').format(estimatedDeliveryDate),
+          style: const TextStyle(fontSize: 18),
         ),
         Text(
           'Livraison $typeLivraison',
-          style: TextStyle(fontSize: 18),
+          style: const TextStyle(fontSize: 18),
         ),
-        Divider(),
-        Text(
+        const Divider(),
+        const Text(
           'Adresse de livraison :',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         Text(
           '${_nomController.text} ${_prenomController.text}',
-          style: TextStyle(fontSize: 18),
+          style: const TextStyle(fontSize: 18),
         ),
         Text(
-          '${_adresseController.text}',
-          style: TextStyle(fontSize: 18),
+          _adresseController.text,
+          style: const TextStyle(fontSize: 18),
         ),
         Text(
           '${_codePostalController.text}, ${_villeController.text}',
-          style: TextStyle(fontSize: 18),
+          style: const TextStyle(fontSize: 18),
         ),
         Text(
-          '${_paysController.text}',
-          style: TextStyle(fontSize: 18),
+          _paysController.text,
+          style: const TextStyle(fontSize: 18),
         ),
-        Divider(),
-        Text(
+        const Divider(),
+        const Text(
           'Informations de paiement :',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         Text(
-          '${_cardNomController.text}',
-          style: TextStyle(fontSize: 18),
+          _cardNomController.text,
+          style: const TextStyle(fontSize: 18),
         ),
         Text(
           'XXXX.XXXX.XXXX.${_cardNumberController.text.substring(12, 16)}',
-          style: TextStyle(fontSize: 18),
+          style: const TextStyle(fontSize: 18),
         ),
         Text(
           '${_expiryDateController.text}, ${_cvvController.text}',
-          style: TextStyle(fontSize: 18),
+          style: const TextStyle(fontSize: 18),
         ),
-        Divider(),
-        Text(
+        const Divider(),
+        const Text(
           'Articles commandés :',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         affichagePanier,
-        Divider(),
+        const Divider(),
         Text(
-          'Total article(s): ${totalArticle} €',
-          style: TextStyle(fontSize: 15),
+          'Total article(s): $totalArticle €',
+          style: const TextStyle(fontSize: 15),
         ),
-        Text(
+        const Text(
           'Réduction(s) : 0.0 €',
           style: TextStyle(fontSize: 15),
         ),
         Text(
-          'Frais de port : ${fraisDePort} €',
-          style: TextStyle(fontSize: 15),
+          'Frais de port : $fraisDePort €',
+          style: const TextStyle(fontSize: 15),
         ),
-        Divider(),
+        const Divider(),
         Text(
           'Total de la commande : ${fraisDePort + totalArticle} €',
-          style: TextStyle(fontSize: 15),
+          style: const TextStyle(fontSize: 15),
         ),
       ],
     );

@@ -47,7 +47,7 @@ class _ConnexionState extends State<Connexion> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(), labelText: 'Email'),
               ),
             ),
@@ -56,7 +56,7 @@ class _ConnexionState extends State<Connexion> {
               child: TextField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(), labelText: 'Mot de passe'),
               ),
             ),
@@ -91,22 +91,22 @@ class _ConnexionState extends State<Connexion> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 60),child: Divider(),),
-            Padding(padding: EdgeInsets.only(top: 15)),
+            const Padding(padding: EdgeInsets.symmetric(horizontal: 60),child: Divider(),),
+            const Padding(padding: EdgeInsets.only(top: 15)),
             Container(alignment: Alignment.bottomCenter ,child:
             Column(children: [
               GestureDetector(
                 onTap: () {
                   Navigator.popAndPushNamed(context, '/register');
                 },
-                child: Text(
+                child: const Text(
                   "S'inscrire ?",
                   style: TextStyle(
-                    color: Colors.black, // Couleur du texte
-                    decoration: TextDecoration.underline, // Soulignement du texte
+                    color: Colors.black,
+                    decoration: TextDecoration.underline,
                   ),
                 ),
               ),

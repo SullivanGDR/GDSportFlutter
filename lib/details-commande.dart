@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/class/detailsCommande.dart';
 import 'package:intl/intl.dart';
-
 import 'fonctions/commande_API.dart';
 
 class DetailsCommandePage extends StatefulWidget {
@@ -35,16 +34,16 @@ class _DetailsCommandePageState extends State<DetailsCommandePage> {
     if (detailsCommande == null) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Récapitulatif de la commande'),
+          title: const Text('Récapitulatif de la commande'),
         ),
-        body: Center(
+        body: const Center(
           child: CircularProgressIndicator(),
         ),
       );
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Récapitulatif de la commande'),
+          title: const Text('Récapitulatif de la commande'),
         ),
         body: ListView(
           padding: const EdgeInsets.all(16),
@@ -53,25 +52,25 @@ class _DetailsCommandePageState extends State<DetailsCommandePage> {
               children: [
                 Text(
                   'Commande numéro : #${detailsCommande!.id}',
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                Divider(),
-                Text(
+                const Divider(),
+                const Text(
                   'Date de livraison estimée:',
                   style: TextStyle(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '${DateFormat('dd/MM/yyyy').format(detailsCommande!.dateLivraison)}',
-                  style: TextStyle(fontSize: 18),
+                  DateFormat('dd/MM/yyyy').format(detailsCommande!.dateLivraison),
+                  style: const TextStyle(fontSize: 18),
                 ),
                 Text(
                   'Livraison ${detailsCommande!.livraison}',
-                  style: TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 18),
                 ),
-                Divider(),
-                Text(
+                const Divider(),
+                const Text(
                   'Articles commandés :',
                   style: TextStyle(
                       fontSize: 18, fontWeight: FontWeight.bold),
@@ -92,14 +91,14 @@ class _DetailsCommandePageState extends State<DetailsCommandePage> {
                                 fit: BoxFit.contain,
                               ),
                             ),
-                            SizedBox(width: 16),
+                            const SizedBox(width: 16),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     ajout.article.getDesignation(),
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   Text("Taille : ${ajout.taille}"),
@@ -114,23 +113,23 @@ class _DetailsCommandePageState extends State<DetailsCommandePage> {
                     );
                   }).toList(),
                 ),
-                Divider(),
+                const Divider(),
                 Text(
                   'Total article(s): ${detailsCommande!.totalPrix} €',
-                  style: TextStyle(fontSize: 15),
+                  style: const TextStyle(fontSize: 15),
                 ),
-                Text(
+                const Text(
                   'Réduction(s) : 0.0 €',
                   style: TextStyle(fontSize: 15),
                 ),
                 Text(
                   detailsCommande!.livraison == 'express' ? 'Frais de port : 9.95 €' : 'Frais de port : Gratuit',
-                  style: TextStyle(fontSize: 15),
+                  style: const TextStyle(fontSize: 15),
                 ),
-                Divider(),
+                const Divider(),
                 Text(
                   'Total de la commande : ${detailsCommande!.totalPrix} €',
-                  style: TextStyle(fontSize: 15),
+                  style: const TextStyle(fontSize: 15),
                 ),
               ],
             )

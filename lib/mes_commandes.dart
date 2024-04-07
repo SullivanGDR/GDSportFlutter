@@ -52,19 +52,19 @@ class _MesCommandePageState extends State<MesCommandePage> {
               style: TextStyle(fontWeight: FontWeight.bold)),
         ),
         body: isLoading
-            ? CircularProgressIndicator()
+            ? const CircularProgressIndicator()
             : ListView.builder(
           itemCount: listeCommandes.length,
           itemBuilder: (context, index) {
             Commande commande = listeCommandes[index];
             return Card(
               elevation: 2,
-              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              color: Colors.white, // Couleur de la carte
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              color: Colors.white,
               child: ListTile(
                 title: Text(
                   "Commande #${commande.getId()}",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,9 +79,9 @@ class _MesCommandePageState extends State<MesCommandePage> {
                     ),
                   ],
                 ),
-                trailing: Icon(
+                trailing: const Icon(
                   Icons.remove_red_eye,
-                  color: Colors.black, // Change la couleur de l'icône
+                  color: Colors.black,
                 ),
                 onTap: () {
                   Navigator.push(
