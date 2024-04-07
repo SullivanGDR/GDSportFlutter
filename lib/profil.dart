@@ -134,22 +134,17 @@ class _ProfilState extends State<Profil> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
-                        onPressed: () {
-                          // Action à effectuer lorsque le bouton est pressé
-                        },
+                        onPressed: () {},
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(10.0), // Bords arrondis
-                          ), // Texte en noir
-                          side: const BorderSide(
-                              color: Colors.black), // Contour noir
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          side: const BorderSide(color: Colors.black),
                         ),
                         child: const Text(
                           'Voir les commandes',
-                          style:
-                              TextStyle(color: Colors.black), // Texte en noir
+                          style: TextStyle(color: Colors.black),
                         ),
                       ),
                     ],
@@ -171,14 +166,13 @@ class _ProfilState extends State<Profil> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10.0), // Bords arrondis
-                    ), // Texte en noir
-                    side: const BorderSide(color: Colors.black), // Contour noir
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    side: const BorderSide(color: Colors.black),
                   ),
                   child: const Text(
                     'Modifier le profil',
-                    style: TextStyle(color: Colors.black), // Texte en noir
+                    style: TextStyle(color: Colors.black),
                   ),
                 ),
               ],
@@ -215,10 +209,10 @@ class _ProfilState extends State<Profil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -229,10 +223,10 @@ class _ProfilState extends State<Profil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -243,10 +237,10 @@ class _ProfilState extends State<Profil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -257,10 +251,10 @@ class _ProfilState extends State<Profil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -271,10 +265,10 @@ class _ProfilState extends State<Profil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -285,10 +279,10 @@ class _ProfilState extends State<Profil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),

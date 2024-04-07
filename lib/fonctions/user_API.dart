@@ -25,9 +25,13 @@ Future<void> resetDataUserLocal(token, id) async {
     if (value != null) {
       var token = User.fromJson(jsonDecode(value)).getToken();
       final Map<String, dynamic> data = json.decode(response.body);
+      int nbfav = 0;
+      if (data["nbFav"] != null) {
+        nbfav = data["nbFav"];
+      }
       User user = User(
           data["id"],
-          data["nbFav"],
+          nbfav,
           data["email"],
           token,
           data["prenom"],

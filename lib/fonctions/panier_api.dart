@@ -79,12 +79,9 @@ Future<void> supQte(token, id, qte) async {
 
 Future<void> delArticleP(String token, int id) async {
   String baseUrl = 's3-4672.nuage-peda.fr';
-  Map<String, String> headers = {
-    "Authorization": "Bearer $token"
-  }; // Suppression de l'entrée vide dans les en-têtes
+  Map<String, String> headers = {"Authorization": "Bearer $token"};
 
-  final uri = Uri.http(baseUrl,
-      '/GDSport/public/api/ajouters/$id'); // Utilisation de Uri.https pour une connexion sécurisée
+  final uri = Uri.http(baseUrl, '/GDSport/public/api/ajouters/$id');
 
   try {
     final response = await http.delete(uri, headers: headers);
