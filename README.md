@@ -1,6 +1,7 @@
 # GDSport Flutter
-
-// IMAGE DE LAPP
+<center>
+  <img style="text-center" src="https://github.com/SullivanGDR/GDSportFlutter/assets/122103312/d868287d-d059-49f2-9965-ac632db53d4a" width="600" height="800">
+</center>
 
 GDSport Flutter est une application mobile réalisée dans le cadre de nos études par Sullivan, Thoma et Paul. Cette application récupère les données d'un site internet réalisé par Sullivan au cours de sa première année. Il s'agit d'une application de commerce en ligne qui permet aux utilisateurs d'accéder à différents catalogues, différents articles, et d'avoir accès à leur compte avec leur panier, leurs commandes, leur profil, leurs favoris, etc.
 
