@@ -36,11 +36,15 @@ Future<bool> delFavori(String token, int id, int idFav) async {
     "Authorization": "Bearer $token"
   };
 
-  final uri = Uri.http(baseUrl,
-      '/GDSport/public/api/users/$id/remove_favori/$idFav'); // Utilisation de Uri.https pour une connexion sécurisée
+  final uri =
+      Uri.http(baseUrl, '/GDSport/public/api/users/$id/remove_favori/$idFav');
 
   try {
-    final response = await http.post(uri, headers: headers,body: jsonEncode({}),);
+    final response = await http.post(
+      uri,
+      headers: headers,
+      body: jsonEncode({}),
+    );
 
     if (response.statusCode == 201) {
       print("delete ok");
@@ -63,11 +67,15 @@ Future<bool> addFavori(String token, int id, int idFav) async {
     "Authorization": "Bearer $token"
   };
 
-  final uri = Uri.http(baseUrl,
-      '/GDSport/public/api/users/$id/add_favori/$idFav'); // Utilisation de Uri.https pour une connexion sécurisée
+  final uri =
+      Uri.http(baseUrl, '/GDSport/public/api/users/$id/add_favori/$idFav');
 
   try {
-    final response = await http.post(uri, headers: headers,body: jsonEncode({}),);
+    final response = await http.post(
+      uri,
+      headers: headers,
+      body: jsonEncode({}),
+    );
 
     if (response.statusCode == 201) {
       print("delete ok");

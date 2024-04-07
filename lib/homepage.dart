@@ -271,8 +271,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       itemCount: 5, // Pour le test, utilisez un nombre fixe
                       itemBuilder: (context, index) {
                         return Container(
-                          width:
-                              180, // Assurez-vous de définir une largeur pour chaque élément dans une liste horizontale
+                          width: 180,
                           margin: const EdgeInsets.all(10),
                           child: Shimmer.fromColors(
                             baseColor: Colors.grey.shade300,

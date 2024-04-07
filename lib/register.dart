@@ -44,7 +44,6 @@ class _RegisterState extends State<Register> {
             Padding(
               padding: const EdgeInsets.only(
                   left: 15.0, right: 15.0, top: 15, bottom: 0),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
@@ -63,8 +62,7 @@ class _RegisterState extends State<Register> {
             ),
             Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment
-                    .spaceBetween, // ou MainAxisAlignment.spaceEvenly
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(width: 15),
                   Expanded(
@@ -74,8 +72,7 @@ class _RegisterState extends State<Register> {
                           border: OutlineInputBorder(), labelText: 'Nom'),
                     ),
                   ),
-                  SizedBox(
-                      width: 10), // Espacement entre les deux champs de texte
+                  SizedBox(width: 10),
                   Expanded(
                     child: TextField(
                       controller: _prenomController,
@@ -90,7 +87,6 @@ class _RegisterState extends State<Register> {
             Padding(
               padding: const EdgeInsets.only(
                   left: 15.0, right: 15.0, top: 15, bottom: 15),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: _adresseController,
                 decoration: InputDecoration(
@@ -99,8 +95,7 @@ class _RegisterState extends State<Register> {
             ),
             Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment
-                    .spaceBetween, // ou MainAxisAlignment.spaceEvenly
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(width: 15),
                   Expanded(
@@ -110,8 +105,7 @@ class _RegisterState extends State<Register> {
                           border: OutlineInputBorder(), labelText: 'Ville (*)'),
                     ),
                   ),
-                  SizedBox(
-                      width: 10), // Espacement entre les deux champs de texte
+                  SizedBox(width: 10),
                   Expanded(
                     child: TextField(
                       controller: _paysController,
@@ -119,8 +113,7 @@ class _RegisterState extends State<Register> {
                           border: OutlineInputBorder(), labelText: 'Pays (*)'),
                     ),
                   ),
-                  SizedBox(
-                      width: 10), // Espacement entre les deux champs de texte
+                  SizedBox(width: 10),
                   Expanded(
                     child: TextField(
                       controller: _cpController,
@@ -194,9 +187,8 @@ class _RegisterState extends State<Register> {
                     child: Text(
                       'Se connecter ?',
                       style: TextStyle(
-                        color: Colors.black, // Couleur du texte
-                        decoration:
-                            TextDecoration.underline, // Soulignement du texte
+                        color: Colors.black,
+                        decoration: TextDecoration.underline,
                       ),
                     ),
                   ),

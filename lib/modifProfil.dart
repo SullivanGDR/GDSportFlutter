@@ -101,7 +101,6 @@ class _ModifProfilState extends State<ModifProfil> {
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 15.0, right: 15.0, top: 15, bottom: 15),
-                    //padding: EdgeInsets.symmetric(horizontal: 15),
                     child: TextField(
                       controller: _emailController,
                       decoration: InputDecoration(
@@ -110,8 +109,7 @@ class _ModifProfilState extends State<ModifProfil> {
                   ),
                   Container(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment
-                          .spaceBetween, // ou MainAxisAlignment.spaceEvenly
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(width: 15),
                         Expanded(
@@ -121,9 +119,7 @@ class _ModifProfilState extends State<ModifProfil> {
                                 border: OutlineInputBorder(), labelText: 'Nom'),
                           ),
                         ),
-                        SizedBox(
-                            width:
-                                10), // Espacement entre les deux champs de texte
+                        SizedBox(width: 10),
                         Expanded(
                           child: TextField(
                             controller: _prenomController,
@@ -139,7 +135,6 @@ class _ModifProfilState extends State<ModifProfil> {
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 15.0, right: 15.0, top: 15, bottom: 15),
-                    //padding: EdgeInsets.symmetric(horizontal: 15),
                     child: TextField(
                       controller: _adresseController,
                       decoration: InputDecoration(
@@ -148,8 +143,7 @@ class _ModifProfilState extends State<ModifProfil> {
                   ),
                   Container(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment
-                          .spaceBetween, // ou MainAxisAlignment.spaceEvenly
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(width: 15),
                         Expanded(
@@ -160,9 +154,7 @@ class _ModifProfilState extends State<ModifProfil> {
                                 labelText: 'Ville'),
                           ),
                         ),
-                        SizedBox(
-                            width:
-                                10), // Espacement entre les deux champs de texte
+                        SizedBox(width: 10),
                         Expanded(
                           child: TextField(
                             controller: _paysController,
@@ -171,9 +163,7 @@ class _ModifProfilState extends State<ModifProfil> {
                                 labelText: 'Pays'),
                           ),
                         ),
-                        SizedBox(
-                            width:
-                                10), // Espacement entre les deux champs de texte
+                        SizedBox(width: 10),
                         Expanded(
                           child: TextField(
                             controller: _cpController,
@@ -273,10 +263,10 @@ class _ModifProfilState extends State<ModifProfil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -287,10 +277,10 @@ class _ModifProfilState extends State<ModifProfil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -301,10 +291,10 @@ class _ModifProfilState extends State<ModifProfil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -315,10 +305,10 @@ class _ModifProfilState extends State<ModifProfil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -329,10 +319,10 @@ class _ModifProfilState extends State<ModifProfil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -343,10 +333,10 @@ class _ModifProfilState extends State<ModifProfil> {
                   highlightColor: Colors.grey.shade100,
                   child: const SizedBox(
                     height: 90,
-                    width: double.infinity, // Prend toute la largeur disponible
+                    width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Couleur gris
+                        color: Colors.grey,
                       ),
                     ),
                   ),
