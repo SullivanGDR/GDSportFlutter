@@ -352,7 +352,9 @@ Widget panierW(context, isLog, panier) {
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.popAndPushNamed(context, '/commande');
+                            },
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.white,
                               backgroundColor: Colors.black,
