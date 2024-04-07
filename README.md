@@ -34,7 +34,7 @@ GDSport Flutter est une application mobile réalisée dans le cadre de nos étud
 ## Contact
 
 Gendre Sullivan - [Profil LinkedIn](https://www.linkedin.com/in/sullivan-gendre-a0a209271/) - sullivan04gendre@gmail.com  
-Hamlaoui Thoma - [Profil LinkedIn](https://www.linkedin.com/in/thoma-hamlaoui/) - email  
+Hamlaoui Thoma - [Profil LinkedIn](https://www.linkedin.com/in/thoma-hamlaoui/) - thomahamlaoui@gmail.com  
 Acier Paul - [Profil LinkedIn](https://www.linkedin.com/in/paul-acier-43a783276/) - email  
   
 Lien du projet : [GDSportFlutter](https://github.com/SullivanGDR/GDSportFlutter/)
