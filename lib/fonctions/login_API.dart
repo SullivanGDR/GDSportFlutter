@@ -31,7 +31,7 @@ Future<User?> login(email, mdp) async {
         data["data"]["pays"]);
     return user;
   } else {
-    print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+    print("login : Error: ${response.statusCode} - ${response.reasonPhrase}");
     return null;
   }
 }
@@ -51,7 +51,7 @@ Future<bool> isLogin(token, id) async {
     print("est connecté");
     return true;
   } else {
-    print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+    print("isLogin Error: ${response.statusCode} - ${response.reasonPhrase}");
     return false;
   }
 }
