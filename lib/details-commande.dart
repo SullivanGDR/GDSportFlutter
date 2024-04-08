@@ -15,6 +15,7 @@ class DetailsCommandePage extends StatefulWidget {
 class _DetailsCommandePageState extends State<DetailsCommandePage> {
   DetailsCommande? detailsCommande;
   bool isLoading = true;
+  int totalArticle = 0;
 
   @override
   void initState() {
@@ -77,6 +78,8 @@ class _DetailsCommandePageState extends State<DetailsCommandePage> {
                 ),
                 Column(
                   children: detailsCommande!.ajoutCommande.map((ajout) {
+                    int prixArticle = ajout.prixUnit * ajout.quantite;
+                    totalArticle = totalArticle + prixArticle;
                     return Column(
                       children: [
                         const SizedBox(height: 10),
@@ -115,7 +118,7 @@ class _DetailsCommandePageState extends State<DetailsCommandePage> {
                 ),
                 const Divider(),
                 Text(
-                  'Total article(s): ${detailsCommande!.totalPrix} €',
+                  'Total article(s): ${totalArticle} €',
                   style: const TextStyle(fontSize: 15),
                 ),
                 const Text(
@@ -128,7 +131,7 @@ class _DetailsCommandePageState extends State<DetailsCommandePage> {
                 ),
                 const Divider(),
                 Text(
-                  'Total de la commande : ${detailsCommande!.totalPrix} €',
+                  'Total de la commande : ${detailsCommande!.totalPrix}  €',
                   style: const TextStyle(fontSize: 15),
                 ),
               ],
