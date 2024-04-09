@@ -29,7 +29,18 @@ Future<List<Article>> initListArticle(List<Article> listeArticles) async {
       final String articleMarque = article['marque'];
       final num articleNote = article['note'];
       final bool articleTendance = article['tendance'];
-      Article champion = Article(articleId, articlePrix, articleDesignation, articleDescription, articleGenre, articleType, articleImages, articleNbFavoris, articleMarque, articleNote, articleTendance);
+      Article champion = Article(
+          articleId,
+          articlePrix,
+          articleDesignation,
+          articleDescription,
+          articleGenre,
+          articleType,
+          articleImages,
+          articleNbFavoris,
+          articleMarque,
+          articleNote,
+          articleTendance);
       print(champion);
       listeArticles.add(champion);
     }
@@ -40,13 +51,15 @@ Future<List<Article>> initListArticle(List<Article> listeArticles) async {
   return listeArticles;
 }
 
-Future<List<Article>> initListArticleTendance(List<Article> listeArticles) async {
-  String baseUrl = 's3-4672.nuage-peda.fr';
+Future<List<Article>> initListArticleTendance(
+    List<Article> listeArticles) async {
+  String baseUrl = 's3-4674.nuage-peda.fr';
   Map<String, String> header = {
     "Content-type": "application/json; charset=UTF-8",
     "Accept": 'application/ld+json',
   };
-  final uri = Uri.http(baseUrl, '/GDSport/public/api/articles', {'tendance': 'true'});
+  final uri =
+      Uri.http(baseUrl, '/GDSport/public/api/articles', {'tendance': 'true'});
 
   final response = await http.get(uri, headers: header);
 
@@ -67,7 +80,18 @@ Future<List<Article>> initListArticleTendance(List<Article> listeArticles) async
       final String articleMarque = article['marque'];
       final num articleNote = article['note'];
       final bool articleTendance = article['tendance'];
-      Article champion = Article(articleId, articlePrix, articleDesignation, articleDescription, articleGenre, articleType, articleImages, articleNbFavoris, articleMarque, articleNote, articleTendance);
+      Article champion = Article(
+          articleId,
+          articlePrix,
+          articleDesignation,
+          articleDescription,
+          articleGenre,
+          articleType,
+          articleImages,
+          articleNbFavoris,
+          articleMarque,
+          articleNote,
+          articleTendance);
       print(champion);
       listeArticles.add(champion);
     }

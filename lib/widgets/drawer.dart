@@ -1,7 +1,19 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'dart:convert';
 
-Drawer appDrawer(BuildContext context) {
+import 'package:flutter/material.dart';
+import 'package:gdsport_flutter/class/user.dart';
+import 'package:gdsport_flutter/fonctions/login_API.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:badges/badges.dart' as badges;
+
+AndroidOptions _getAndroidOptions() => const AndroidOptions(
+      encryptedSharedPreferences: true,
+    );
+
+final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
+
+Drawer appDrawer(BuildContext context, isLog, user) {
   return Drawer(
     child: Container(
       color: Colors.white,
@@ -9,7 +21,7 @@ Drawer appDrawer(BuildContext context) {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
             ),
             child: Column(
@@ -25,8 +37,8 @@ Drawer appDrawer(BuildContext context) {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
-                Text(
+                const SizedBox(height: 16),
+                const Text(
                   'Bienvenue',
                   style: TextStyle(
                     color: Colors.black,
@@ -34,18 +46,20 @@ Drawer appDrawer(BuildContext context) {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.account_circle,
                       color: Colors.black,
                       size: 36,
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Text(
-                      'utilisateur',
-                      style: TextStyle(
+                      isLog
+                          ? "${user.getNom()} ${user.getPrenom()}"
+                          : 'Connectez-vous !',
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 16,
                       ),
@@ -56,62 +70,114 @@ Drawer appDrawer(BuildContext context) {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
-            child: const Text(
-              '-- Navigation --',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+            child: Text(
+              'NAVIGATION',
+              style: GoogleFonts.lilitaOne(
+                textStyle: const TextStyle(color: Colors.black, fontSize: 20),
               ),
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.man),
-            title: const Text("article"),
+            leading: const Icon(Icons.home_outlined),
+            title: const Text('Accueil'),
             onTap: () {
-              Navigator.pushNamed(context, '/article');
+              Navigator.popAndPushNamed(context, '/accueil');
             },
           ),
           ListTile(
-            leading: const Icon(Icons.man),
-            title: const Text("catalogue"),
+            leading: const Icon(Icons.checkroom_outlined),
+            title: const Text("Catalogue"),
             onTap: () {
-              Navigator.pushNamed(context, '/catalogue');
+              Navigator.popAndPushNamed(context, '/catalogue');
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.man),
-            title: const Text("catalAll"),
-            onTap: () {
-              Navigator.pushNamed(context, '/CatalAll');
-            },
+          Visibility(
+            visible: isLog,
+            child: ListTile(
+              leading: const Icon(Icons.favorite_border_outlined),
+              title: isLog
+                  ? badges.Badge(
+                      position: badges.BadgePosition.custom(end: 0, top: 0),
+                      badgeContent: Text(
+                        user.getNbFav().toString(),
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      badgeStyle: badges.BadgeStyle(
+                        shape: badges.BadgeShape.square,
+                        borderRadius: BorderRadius.circular(4),
+                        badgeColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        elevation: 0,
+                      ),
+                      child: const Text("Favoris"),
+                    )
+                  : const Text("Favoris"),
+              onTap: () {
+                Navigator.popAndPushNamed(context, '/favoris');
+              },
+            ),
           ),
-          ListTile(
-            leading: const Icon(Icons.cruelty_free),
-            title: const Text('Enfant'),
-            onTap: () {},
-          ),
+          const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 50), child: Divider()),
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
-            child: const Text(
-              '-- Compte --',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+            child: Text(
+              'MON COMPTE',
+              style: GoogleFonts.lilitaOne(
+                textStyle: const TextStyle(color: Colors.black, fontSize: 20),
               ),
             ),
           ),
-          ListTile(
-            leading: const Icon(Icons.person),
-            title: const Text("Profil"),
-            onTap: () {},
+          Visibility(
+            visible: isLog,
+            child: Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.person_outline),
+                  title: const Text("Mes informations"),
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, '/profil');
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.local_shipping_outlined),
+                  title: const Text('Mes commandes'),
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, '/mes-commandes');
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.logout_outlined),
+                  title: const Text('Déconnexion'),
+                  onTap: () async {
+                    await storage.delete(key: "userData");
+                    Navigator.popAndPushNamed(context, "/accueil");
+                  },
+                ),
+              ],
+            ),
           ),
-          ListTile(
-            leading: const Icon(Icons.favorite),
-            title: const Text('Favoris'),
-            onTap: () {},
+          Visibility(
+            visible: !isLog,
+            child: Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.login_outlined),
+                  title: const Text('Connexion'),
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, "/connexion");
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.person_add_outlined),
+                  title: const Text('Inscription'),
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, "/register");
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),

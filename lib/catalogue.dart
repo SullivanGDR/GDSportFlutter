@@ -15,35 +15,15 @@ class Catalogue extends StatefulWidget {
 }
 
 class _CatalogueState extends State<Catalogue> {
-  List<Article> _articlesTendance = [];
-
-  bool _isLoading = true;
-
-  void initState() {
-    super.initState();
-    chargement();
-  }
-
-  void chargement() async {
-    _articlesTendance = await initListArticleTendance(_articlesTendance);
-
-    setState(() {
-      _isLoading = false;
-      print('test');
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _isLoading ? _loading() : _buildContent(),
-    );
-  }
-
-  Widget _buildContent() {
-    return Scaffold(
-      appBar: appBar(context),
-      drawer: appDrawer(context),
+      appBar: AppBar(
+        // appBar method implementation
+      ),
+      drawer: Drawer(
+        // appDrawer method implementation
+      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -55,10 +35,9 @@ class _CatalogueState extends State<Catalogue> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 15),
                   child: Text(
-                    'Tendances',
+                    'Nouveautés',
                     style: GoogleFonts.lilitaOne(
-                      textStyle:
-                          const TextStyle(letterSpacing: .5, fontSize: 23),
+                      textStyle: const TextStyle(letterSpacing: .5, fontSize: 23),
                     ),
                   ),
                 ),
@@ -66,12 +45,12 @@ class _CatalogueState extends State<Catalogue> {
                   height: 10,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 10, left: 10),
+                  padding: const EdgeInsets.only(right: 10, left: 10, top: 10),
                   child: SizedBox(
                     height: 220,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: _articlesTendance.length,
+                      itemCount: 5, // Nombre d'éléments à afficher
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {},
@@ -81,26 +60,30 @@ class _CatalogueState extends State<Catalogue> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Image.network(
-                                  'https://s3-4674.nuage-peda.fr/GDSport/public/articles/${_articlesTendance[index].getImages()[0]}',
-                                  width: 250,
-                                  fit: BoxFit.contain,
+                                Container(
+                                  height: 150,
+                                  color: Colors.grey[300],
+                                  alignment: Alignment.center,
+                                  child: const Text(
+                                    'Image Placeholder',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
                                 ),
                                 const SizedBox(
-                                    height:
-                                        10), // Espacement entre l'image et les textes
-                                Text(
-                                  '${_articlesTendance[index].designation}',
-                                  style: const TextStyle(
+                                  height: 10,
+                                ),
+                                const Text(
+                                  'Nom de l\'article',
+                                  style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                Text(
-                                  '${_articlesTendance[index].prix} €',
-                                  style: const TextStyle(
+                                const Text(
+                                  'Prix',
+                                  style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -113,7 +96,7 @@ class _CatalogueState extends State<Catalogue> {
                     ),
                   ),
                 ),
-// Bouton "Afficher tout" avec une flèche
+                // Bouton "Afficher tout" avec une flèche
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Row(
@@ -125,15 +108,12 @@ class _CatalogueState extends State<Catalogue> {
                         onPressed: () {},
                         label: const Text(
                           'Afficher tout',
-                          style: TextStyle(
-                              color: Colors.black), // Couleur du texte
+                          style: TextStyle(color: Colors.black), // Couleur du texte
                         ),
-                        icon: Icon(Icons.arrow_forward,
-                            color: Colors.black), // Couleur de l'icône
+                        icon: const Icon(Icons.arrow_forward, color: Colors.black), // Couleur de l'icône
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white, // Couleur de fond
-                          side: BorderSide(
-                              color: Colors.black), // Couleur du contour
+                          side: const BorderSide(color: Colors.black), // Couleur du contour
                         ),
                       ),
                     ],
@@ -149,7 +129,7 @@ class _CatalogueState extends State<Catalogue> {
                       child: Card(
                         color: Colors.grey[200],
                         elevation: 5,
-                        shape: RoundedRectangleBorder(),
+                        shape: const RoundedRectangleBorder(),
                         child: Row(
                           children: [
                             Expanded(
@@ -160,7 +140,7 @@ class _CatalogueState extends State<Catalogue> {
                                   color: Colors.grey,
                                   borderRadius: BorderRadius.only(),
                                 ),
-                                child: Center(
+                                child: const Center(
                                   child: Icon(Icons.image),
                                 ),
                               ),
@@ -169,8 +149,8 @@ class _CatalogueState extends State<Catalogue> {
                               flex: 3,
                               child: Container(
                                 height: 100,
-                                padding: EdgeInsets.all(10),
-                                child: Center(
+                                padding: const EdgeInsets.all(10),
+                                child: const Center(
                                   child: Text(
                                     'Hauts',
                                     style: TextStyle(
@@ -197,7 +177,7 @@ class _CatalogueState extends State<Catalogue> {
                       child: Card(
                         color: Colors.grey[200],
                         elevation: 5,
-                        shape: RoundedRectangleBorder(),
+                        shape: const RoundedRectangleBorder(),
                         child: Row(
                           children: [
                             Expanded(
@@ -208,7 +188,7 @@ class _CatalogueState extends State<Catalogue> {
                                   color: Colors.grey,
                                   borderRadius: BorderRadius.only(),
                                 ),
-                                child: Center(
+                                child: const Center(
                                   child: Icon(Icons.image),
                                 ),
                               ),
@@ -217,8 +197,8 @@ class _CatalogueState extends State<Catalogue> {
                               flex: 3,
                               child: Container(
                                 height: 100,
-                                padding: EdgeInsets.all(10),
-                                child: Center(
+                                padding: const EdgeInsets.all(10),
+                                child: const Center(
                                   child: Text(
                                     'Bas',
                                     style: TextStyle(
@@ -245,7 +225,7 @@ class _CatalogueState extends State<Catalogue> {
                       child: Card(
                         color: Colors.grey[200],
                         elevation: 5,
-                        shape: RoundedRectangleBorder(),
+                        shape: const RoundedRectangleBorder(),
                         child: Row(
                           children: [
                             Expanded(
@@ -256,7 +236,7 @@ class _CatalogueState extends State<Catalogue> {
                                   color: Colors.grey,
                                   borderRadius: BorderRadius.only(),
                                 ),
-                                child: Center(
+                                child: const Center(
                                   child: Icon(Icons.image),
                                 ),
                               ),
@@ -265,10 +245,10 @@ class _CatalogueState extends State<Catalogue> {
                               flex: 3,
                               child: Container(
                                 height: 100,
-                                padding: EdgeInsets.all(10),
-                                child: Center(
+                                padding: const EdgeInsets.all(10),
+                                child: const Center(
                                   child: Text(
-                                    'Vestes et manteux',
+                                    'Vestes et manteaux',
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -293,7 +273,7 @@ class _CatalogueState extends State<Catalogue> {
                       child: Card(
                         color: Colors.grey[200],
                         elevation: 5,
-                        shape: RoundedRectangleBorder(),
+                        shape: const RoundedRectangleBorder(),
                         child: Row(
                           children: [
                             Expanded(
@@ -304,7 +284,7 @@ class _CatalogueState extends State<Catalogue> {
                                   color: Colors.grey,
                                   borderRadius: BorderRadius.only(),
                                 ),
-                                child: Center(
+                                child: const Center(
                                   child: Icon(Icons.image),
                                 ),
                               ),
@@ -313,8 +293,8 @@ class _CatalogueState extends State<Catalogue> {
                               flex: 3,
                               child: Container(
                                 height: 100,
-                                padding: EdgeInsets.all(10),
-                                child: Center(
+                                padding: const EdgeInsets.all(10),
+                                child: const Center(
                                   child: Text(
                                     'Pyjamas et vêtements confort',
                                     style: TextStyle(
@@ -331,34 +311,10 @@ class _CatalogueState extends State<Catalogue> {
                     ),
                   ),
                 ),
-
-                const SizedBox(
-                  height: 30,
-                ),
-                const Center(
-                  child: Column(
-                    children: [
-                      Text('© 2024 GDSport, Inc. Tous droits réservés.')
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
               ],
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Panier',
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        elevation: 10,
-        child: const Icon(Icons.shopping_bag_outlined),
       ),
     );
   }

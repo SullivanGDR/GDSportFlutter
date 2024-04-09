@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-class ArticleID extends StatefulWidget {
-  const ArticleID({super.key});
+class Article extends StatefulWidget {
+  const Article({super.key});
 
   @override
-  State<ArticleID> createState() => _ArticleIDState();
+  State<Article> createState() => _ArticleState();
 }
 
-class _ArticleIDState extends State<ArticleID> {
-  String selectedSize = 'S'; // Taille par défaut
+class _ArticleState extends State<Article> {
+  String selectedSize = 'S';
   bool _isDescriptionVisible = false;
+  bool _isAvisVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +166,7 @@ class _ArticleIDState extends State<ArticleID> {
                       SizedBox(
                           height: 5), // Ajoute un espace entre le nom et l'avis
                       Text(
-                        'Avis les projet est nul c de la merde !',
+                        '',
                         style: TextStyle(fontSize: 18),
                       ),
                     ],
