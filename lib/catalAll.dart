@@ -1,10 +1,22 @@
+import 'dart:convert';
+import 'package:gdsport_flutter/widgets/panier.dart';
+
+import '../class/user.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:gdsport_flutter/articleID.dart';
 import 'package:gdsport_flutter/class/article.dart';
-import 'package:gdsport_flutter/fonctions/article_API.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:gdsport_flutter/articleID.dart';
+import 'package:gdsport_flutter/class/ajoutPanier.dart';
+import 'package:gdsport_flutter/fonctions/login_API.dart';
+import 'package:gdsport_flutter/fonctions/panier_api.dart';
+import 'package:gdsport_flutter/fonctions/article_API.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+AndroidOptions _getAndroidOptions() => const AndroidOptions(
+  encryptedSharedPreferences: true,
+);
 
 class CatalAll extends StatefulWidget {
   const CatalAll({super.key});
@@ -20,14 +32,30 @@ class _CatalAllState extends State<CatalAll> {
   Set<String> _types = {'Tous'};
   String _selectedGenre = 'Tous';
   String _selectedType = 'Tous';
+  final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
+  bool _isLoading = true;
+  bool _isLog = false;
+  User user = User(
+      0,
+      0,
+      "_email",
+      "_token",
+      "_prenom",
+      "_nom",
+      "_adresse",
+      "_ville",
+      "_codePostal",
+      "_pays");
+  List<AjoutPanier> panier = [];
 
   @override
   void initState() {
     super.initState();
-    initArticles();
+    chargement();
   }
 
-  void initArticles() async {
+
+  void chargement() async {
     _articles = await initListArticle([]);
     // Extraction des genres et des types uniques
     _articles.forEach((article) {
@@ -35,7 +63,23 @@ class _CatalAllState extends State<CatalAll> {
       _types.add(article.type);
     });
     _filteredArticles = _articles;
-    setState(() {});
+    var value = await storage.read(key: "userData");
+    if (value != null) {
+      user = User.fromJson(jsonDecode(value));
+      _isLog = await isLogin(user.getToken(), user.getId());
+      if (_isLog == true) {
+        try {
+          panier = await getPanier(user.getToken(), user.getId(), panier);
+        } catch (e) {
+          if (kDebugMode) {
+            print("Une erreur s'est produite lors du décodage json : $e");
+          }
+        }
+      }
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void filterArticles() {
@@ -48,55 +92,62 @@ class _CatalAllState extends State<CatalAll> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(context),
-      drawer: appDrawer(context),
+      drawer: appDrawer(context, _isLog, user),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: Column(
               children: [
-                Expanded(
-                  child: DropdownButton<String>(
-                    isExpanded: true,
-                    value: _selectedGenre,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedGenre = newValue!;
-                        filterArticles();
-                      });
-                    },
-                    items:
-                        _genres.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                SizedBox(width: 20), // Add some spacing
-                Expanded(
-                  child: DropdownButton<String>(
-                    isExpanded: true,
-                    value: _selectedType,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedType = newValue!;
-                        filterArticles();
-                      });
-                    },
-                    items: _types.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
+                SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        value: _selectedGenre,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedGenre = newValue!;
+                            filterArticles();
+                          });
+                        },
+                        items: _genres.map<DropdownMenuItem<String>>((
+                            String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    SizedBox(width: 20), // Add some spacing
+                    Expanded(
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        value: _selectedType,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedType = newValue!;
+                            filterArticles();
+                          });
+                        },
+                        items: _types.map<DropdownMenuItem<String>>((
+                            String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -124,7 +175,8 @@ class _CatalAllState extends State<CatalAll> {
                   },
                   child: GridTile(
                     child: Image.network(
-                      'https://s3-4674.nuage-peda.fr/GDSport/public/articles/${article.getImages()[0]}',
+                      'https://s3-4674.nuage-peda.fr/GDSport/public/articles/${article
+                          .getImages()[0]}',
                       fit: BoxFit.cover,
                     ),
                     footer: GridTileBar(
@@ -145,6 +197,6 @@ class _CatalAllState extends State<CatalAll> {
           ),
         ],
       ),
-    );
+        floatingActionButton: panierW(context, _isLog, panier));
   }
 }

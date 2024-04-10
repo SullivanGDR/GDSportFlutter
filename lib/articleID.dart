@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gdsport_flutter/class/article.dart';
 import 'package:gdsport_flutter/fonctions/article_API.dart';
-import 'package:gdsport_flutter/widgets/drawer.dart';
-import 'package:gdsport_flutter/widgets/navbar.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:gdsport_flutter/articleID.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
+import 'fonctions/ArticleID_API.dart';
 
 class ArticlePage extends StatefulWidget {
   final int articleId;
@@ -22,8 +20,7 @@ class _ArticlePageState extends State<ArticlePage> {
   @override
   void initState() {
     super.initState();
-    _articleFuture = fetchArticleById(widget
-        .articleId); // Assurez-vous que cette fonction existe et est correctement implémentée pour récupérer un Article
+    _articleFuture = fetchArticleById(widget.articleId);
   }
 
   @override
@@ -86,7 +83,8 @@ class _ArticlePageState extends State<ArticlePage> {
                           },
                           body: ListTile(
                             title: Text(
-                                "${article.description}\n\nID: ${article.id}"),
+                              "${article.description}\n\nID: ${article.id}",
+                            ),
                           ),
                           isExpanded: _isDescriptionVisible,
                         ),
@@ -97,18 +95,23 @@ class _ArticlePageState extends State<ArticlePage> {
                 ),
               );
             } else {
-              return Text('Aucune donnée');
+              return Center(
+                child: Text('Échec du chargement des données'),
+              );
             }
           }
-          return CircularProgressIndicator();
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         },
       ),
     );
   }
 
-  // Vous devez implémenter cette fonction pour récupérer les détails de l'article
   Future<Article> fetchArticleById(int id) async {
-    // Votre logique de récupération d'article ici
-    throw UnimplementedError();
+    // Vous devez implémenter la logique de récupération de l'article par son ID
+    // Utilisez l'API ou le service approprié pour récupérer les données de l'article
+    // Par exemple :
+    return await getArticleById(id); // Supposons que vous avez une fonction getArticleById pour récupérer l'article par son ID
   }
 }

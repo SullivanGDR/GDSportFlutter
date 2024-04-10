@@ -1,19 +1,19 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
+import '../class/user.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
-import 'package:gdsport_flutter/class/ajoutPanier.dart';
+import 'package:flutter/foundation.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:gdsport_flutter/class/article.dart';
-import 'package:gdsport_flutter/fonctions/article_API.dart';
-import 'package:gdsport_flutter/fonctions/panier_api.dart';
-import 'package:gdsport_flutter/widgets/carousels.dart';
 import 'package:gdsport_flutter/widgets/drawer.dart';
 import 'package:gdsport_flutter/widgets/navbar.dart';
 import 'package:gdsport_flutter/widgets/panier.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:gdsport_flutter/class/ajoutPanier.dart';
+import 'package:gdsport_flutter/widgets/carousels.dart';
 import 'package:gdsport_flutter/fonctions/login_API.dart';
+import 'package:gdsport_flutter/fonctions/panier_api.dart';
+import 'package:gdsport_flutter/fonctions/article_API.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../class/user.dart';
 
 AndroidOptions _getAndroidOptions() => const AndroidOptions(
       encryptedSharedPreferences: true,

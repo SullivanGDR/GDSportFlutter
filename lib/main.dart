@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gdsport_flutter/catalAll.dart';
 import 'package:gdsport_flutter/catalogue.dart';
 import 'package:gdsport_flutter/commande.dart';
 import 'package:gdsport_flutter/connexion.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/accueil': (BuildContext context) => const MyHomePage(),
         '/connexion': (BuildContext context) => const Connexion(),
         '/catalogue': (BuildContext context) => const Catalogue(),
+        '/catalall': (BuildContext context) => const CatalAll(),
         '/register': (BuildContext context) => const Register(),
         '/favoris': (BuildContext context) => const FavorisPage(),
         '/profil': (BuildContext context) => const Profil(),
