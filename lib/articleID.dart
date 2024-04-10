@@ -15,12 +15,13 @@ class ArticlePage extends StatefulWidget {
 
 class _ArticlePageState extends State<ArticlePage> {
   late Future<Article> _articleFuture;
-  bool _isDescriptionVisible = false;
+  late bool _isDescriptionVisible;
 
   @override
   void initState() {
     super.initState();
     _articleFuture = fetchArticleById(widget.articleId);
+    _isDescriptionVisible = false; // Initialisez la variable _isDescriptionVisible à false
   }
 
   @override
@@ -52,7 +53,10 @@ class _ArticlePageState extends State<ArticlePage> {
                               return Container(
                                 width: MediaQuery.of(context).size.width,
                                 margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                child: Image.network(image, fit: BoxFit.cover),
+                                child: Image.network(
+                                  'https://s3-4674.nuage-peda.fr/GDSport/public/articles/${article.getImages()[0]}',
+                                  fit: BoxFit.cover,
+                                ),
                               );
                             },
                           );
@@ -70,7 +74,7 @@ class _ArticlePageState extends State<ArticlePage> {
                     ExpansionPanelList(
                       expansionCallback: (int index, bool isExpanded) {
                         setState(() {
-                          _isDescriptionVisible = !isExpanded;
+                          _isDescriptionVisible = !_isDescriptionVisible; // Inversez la valeur de _isDescriptionVisible
                         });
                       },
                       children: [
@@ -83,7 +87,7 @@ class _ArticlePageState extends State<ArticlePage> {
                           },
                           body: ListTile(
                             title: Text(
-                              "${article.description}\n\nID: ${article.id}",
+                              "${article.description}",
                             ),
                           ),
                           isExpanded: _isDescriptionVisible,

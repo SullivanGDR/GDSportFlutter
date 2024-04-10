@@ -14,6 +14,7 @@ import 'package:gdsport_flutter/fonctions/login_API.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shimmer/shimmer.dart';
 import '../class/user.dart';
+import 'articleID.dart';
 
 AndroidOptions _getAndroidOptions() => const AndroidOptions(
   encryptedSharedPreferences: true,
@@ -106,7 +107,15 @@ class _CatalogueState extends State<Catalogue> {
                         itemCount: _articlesTendance.length,
                         itemBuilder: (context, index) {
                           return InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              // Naviguer vers la page de détails de l'article avec l'ID de l'article sélectionné
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ArticlePage(articleId: _articlesTendance[index].id),
+                                ),
+                              );
+                            },
                             child: Container(
                               width: 200,
                               margin: const EdgeInsets.symmetric(horizontal: 2),
@@ -203,7 +212,7 @@ class _CatalogueState extends State<Catalogue> {
                                   padding: const EdgeInsets.all(10),
                                   child: const Center(
                                     child: Text(
-                                      'Hauts',
+                                      'Juniors',
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -251,7 +260,7 @@ class _CatalogueState extends State<Catalogue> {
                                   padding: const EdgeInsets.all(10),
                                   child: const Center(
                                     child: Text(
-                                      'Bas',
+                                      'Femme',
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -299,55 +308,7 @@ class _CatalogueState extends State<Catalogue> {
                                   padding: const EdgeInsets.all(10),
                                   child: const Center(
                                     child: Text(
-                                      'Vestes et manteaux',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    child: InkWell(
-                      onTap: () {
-                        // Action à effectuer lors du clic sur l'encre
-                      },
-                      child: Center(
-                        child: Card(
-                          color: Colors.grey[200],
-                          elevation: 5,
-                          shape: const RoundedRectangleBorder(),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.only(),
-                                  ),
-                                  child: const Center(
-                                    child: Icon(Icons.image),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 3,
-                                child: Container(
-                                  height: 100,
-                                  padding: const EdgeInsets.all(10),
-                                  child: const Center(
-                                    child: Text(
-                                      'Pyjamas et vêtements confort',
+                                      'Homme',
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -369,6 +330,11 @@ class _CatalogueState extends State<Catalogue> {
         ),
         floatingActionButton: panierW(context, _isLog, panier));
   }
+
+
+
+
+
 
 
   Widget _loading() {
@@ -458,226 +424,178 @@ class _CatalogueState extends State<Catalogue> {
                 ],
               ),
             ),
-                // Bouton "Afficher tout" avec une flèche
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Espacement
-                      const Spacer(),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.popAndPushNamed(context, '/catalall');
-                        },
-                        label: const Text(
-                          'Afficher tout',
-                          style: TextStyle(color: Colors.black), // Couleur du texte
-                        ),
-                        icon: const Icon(Icons.arrow_forward, color: Colors.black), // Couleur de l'icône
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white, // Couleur de fond
-                          side: const BorderSide(color: Colors.black), // Couleur du contour
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: InkWell(
-                    onTap: () {
-                      // Action à effectuer lors du clic sur l'encre
+            // Bouton "Afficher tout" avec une flèche
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Espacement
+                  const Spacer(),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.popAndPushNamed(context, '/catalall');
                     },
-                    child: Center(
-                      child: Card(
-                        color: Colors.grey[200],
-                        elevation: 5,
-                        shape: const RoundedRectangleBorder(),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.only(),
-                                ),
-                                child: const Center(
-                                  child: Icon(Icons.image),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                height: 100,
-                                padding: const EdgeInsets.all(10),
-                                child: const Center(
-                                  child: Text(
-                                    'Hauts',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    label: const Text(
+                      'Afficher tout',
+                      style: TextStyle(color: Colors.black), // Couleur du texte
+                    ),
+                    icon: const Icon(Icons.arrow_forward, color: Colors.black), // Couleur de l'icône
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white, // Couleur de fond
+                      side: const BorderSide(color: Colors.black), // Couleur du contour
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: InkWell(
-                    onTap: () {
-                      // Action à effectuer lors du clic sur l'encre
-                    },
-                    child: Center(
-                      child: Card(
-                        color: Colors.grey[200],
-                        elevation: 5,
-                        shape: const RoundedRectangleBorder(),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.only(),
-                                ),
-                                child: const Center(
-                                  child: Icon(Icons.image),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                height: 100,
-                                padding: const EdgeInsets.all(10),
-                                child: const Center(
-                                  child: Text(
-                                    'Bas',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: InkWell(
-                    onTap: () {
-                      // Action à effectuer lors du clic sur l'encre
-                    },
-                    child: Center(
-                      child: Card(
-                        color: Colors.grey[200],
-                        elevation: 5,
-                        shape: const RoundedRectangleBorder(),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.only(),
-                                ),
-                                child: const Center(
-                                  child: Icon(Icons.image),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                height: 100,
-                                padding: const EdgeInsets.all(10),
-                                child: const Center(
-                                  child: Text(
-                                    'Vestes et manteaux',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: InkWell(
-                    onTap: () {
-                      // Action à effectuer lors du clic sur l'encre
-                    },
-                    child: Center(
-                      child: Card(
-                        color: Colors.grey[200],
-                        elevation: 5,
-                        shape: const RoundedRectangleBorder(),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.only(),
-                                ),
-                                child: const Center(
-                                  child: Icon(Icons.image),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                height: 100,
-                                padding: const EdgeInsets.all(10),
-                                child: const Center(
-                                  child: Text(
-                                    'Pyjamas et vêtements confort',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: InkWell(
+                onTap: () {
+                  // Action à effectuer lors du clic sur l'encre
+                },
+                child: Center(
+                  child: Card(
+                    color: Colors.grey[200],
+                    elevation: 5,
+                    shape: const RoundedRectangleBorder(),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            height: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.only(),
+                            ),
+                            child: const Center(
+                              child: Icon(Icons.image),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            height: 100,
+                            padding: const EdgeInsets.all(10),
+                            child: const Center(
+                              child: Text(
+                                'Juniors',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: InkWell(
+                onTap: () {
+                  // Action à effectuer lors du clic sur l'encre
+                },
+                child: Center(
+                  child: Card(
+                    color: Colors.grey[200],
+                    elevation: 5,
+                    shape: const RoundedRectangleBorder(),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            height: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.only(),
+                            ),
+                            child: const Center(
+                              child: Icon(Icons.image),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            height: 100,
+                            padding: const EdgeInsets.all(10),
+                            child: const Center(
+                              child: Text(
+                                'Femme',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: InkWell(
+                onTap: () {
+                  // Action à effectuer lors du clic sur l'encre
+                },
+                child: Center(
+                  child: Card(
+                    color: Colors.grey[200],
+                    elevation: 5,
+                    shape: const RoundedRectangleBorder(),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            height: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.only(),
+                            ),
+                            child: const Center(
+                              child: Icon(Icons.image),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            height: 100,
+                            padding: const EdgeInsets.all(10),
+                            child: const Center(
+                              child: Text(
+                                'Homme',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }

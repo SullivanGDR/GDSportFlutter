@@ -15,6 +15,8 @@ import 'package:gdsport_flutter/fonctions/panier_api.dart';
 import 'package:gdsport_flutter/fonctions/article_API.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'articleID.dart';
+
 AndroidOptions _getAndroidOptions() => const AndroidOptions(
       encryptedSharedPreferences: true,
     );
@@ -105,7 +107,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         itemCount: _articlesTendance.length,
                         itemBuilder: (context, index) {
                           return InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              // Naviguer vers la page de détails de l'article avec l'ID de l'article sélectionné
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ArticlePage(articleId: _articlesTendance[index].id),
+                                ),
+                              );
+                            },
                             child: Container(
                               width: 200,
                               margin: const EdgeInsets.symmetric(horizontal: 2),
