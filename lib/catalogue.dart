@@ -20,7 +20,6 @@ AndroidOptions _getAndroidOptions() => const AndroidOptions(
   encryptedSharedPreferences: true,
 );
 
-
 class Catalogue extends StatefulWidget {
   const Catalogue({super.key});
 
@@ -29,7 +28,6 @@ class Catalogue extends StatefulWidget {
 }
 
 class _CatalogueState extends State<Catalogue> {
-
   List<Article> _articlesTendance = [];
   final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
   bool _isLoading = true;
@@ -72,270 +70,251 @@ class _CatalogueState extends State<Catalogue> {
     );
   }
 
-
-
   Widget _buildContent() {
     return Scaffold(
-        appBar: appBar(context),
-        drawer: appDrawer(context, _isLog, user),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 15),
-                    child: Text(
-                      'Tendances',
-                      style: GoogleFonts.lilitaOne(
-                        textStyle: const TextStyle(letterSpacing: .5, fontSize: 23),
-                      ),
+      appBar: appBar(context),
+      drawer: appDrawer(context, _isLog, user),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 15),
+                  child: Text(
+                    'Tendances',
+                    style: GoogleFonts.lilitaOne(
+                      textStyle: const TextStyle(letterSpacing: .5, fontSize: 23),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10, left: 10),
-                    child: SizedBox(
-                      height: 220,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: _articlesTendance.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              // Naviguer vers la page de détails de l'article avec l'ID de l'article sélectionné
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ArticlePage(articleId: _articlesTendance[index].id),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10, left: 10),
+                  child: SizedBox(
+                    height: 220,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _articlesTendance.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ArticlePage(articleId: _articlesTendance[index].id),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: 200,
+                            margin: const EdgeInsets.symmetric(horizontal: 2),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.network(
+                                  'https://s3-4674.nuage-peda.fr/GDSport/public/articles/${_articlesTendance[index].getImages()[0]}',
+                                  width: 250,
+                                  fit: BoxFit.contain,
                                 ),
-                              );
-                            },
-                            child: Container(
-                              width: 200,
-                              margin: const EdgeInsets.symmetric(horizontal: 2),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.network(
-                                    'https://s3-4674.nuage-peda.fr/GDSport/public/articles/${_articlesTendance[index].getImages()[0]}',
-                                    width: 250,
-                                    fit: BoxFit.contain,
+                                const SizedBox(height: 10),
+                                Text(
+                                  _articlesTendance[index].designation,
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  const SizedBox(
-                                      height:
-                                      10),
-                                  Text(
-                                    _articlesTendance[index].designation,
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  '${_articlesTendance[index].prix} €',
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  Text(
-                                    '${_articlesTendance[index].prix} €',
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                // Bouton "Afficher tout" avec une flèche
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Espacement
+                      const Spacer(),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.popAndPushNamed(context, '/catalall');
+                        },
+                        label: const Text(
+                          'Afficher tout',
+                          style: TextStyle(color: Colors.black), // Couleur du texte
+                        ),
+                        icon: const Icon(Icons.arrow_forward, color: Colors.black), // Couleur de l'icône
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white, // Couleur de fond
+                          side: const BorderSide(color: Colors.black), // Couleur du contour
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.popAndPushNamed(context, '/catalJun');
+                    },
+                    child: Center(
+                      child: Card(
+                        color: Colors.grey[200],
+                        elevation: 5,
+                        shape: const RoundedRectangleBorder(),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                height: 100,
+                                child: Image.asset(
+                                  'assets/images/accueil_junior.jpg', // Chemin de l'image à partir des ressources locales
+                                  fit: BoxFit.cover, // Ajuster l'image pour couvrir toute la zone disponible
+                                ),
                               ),
                             ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  // Bouton "Afficher tout" avec une flèche
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Espacement
-                        const Spacer(),
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.popAndPushNamed(context, '/catalall');
-                          },
-                          label: const Text(
-                            'Afficher tout',
-                            style: TextStyle(color: Colors.black), // Couleur du texte
-                          ),
-                          icon: const Icon(Icons.arrow_forward, color: Colors.black), // Couleur de l'icône
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white, // Couleur de fond
-                            side: const BorderSide(color: Colors.black), // Couleur du contour
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    child: InkWell(
-                      onTap: () {
-                        // Action à effectuer lors du clic sur l'encre
-                      },
-                      child: Center(
-                        child: Card(
-                          color: Colors.grey[200],
-                          elevation: 5,
-                          shape: const RoundedRectangleBorder(),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.only(),
-                                  ),
-                                  child: const Center(
-                                    child: Icon(Icons.image),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 3,
-                                child: Container(
-                                  height: 100,
-                                  padding: const EdgeInsets.all(10),
-                                  child: const Center(
-                                    child: Text(
-                                      'Juniors',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                height: 100,
+                                padding: const EdgeInsets.all(10),
+                                child: const Center(
+                                  child: Text(
+                                    'Juniors',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    child: InkWell(
-                      onTap: () {
-                        // Action à effectuer lors du clic sur l'encre
-                      },
-                      child: Center(
-                        child: Card(
-                          color: Colors.grey[200],
-                          elevation: 5,
-                          shape: const RoundedRectangleBorder(),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.only(),
-                                  ),
-                                  child: const Center(
-                                    child: Icon(Icons.image),
-                                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.popAndPushNamed(context, '/catalFem');
+                    },
+                    child: Center(
+                      child: Card(
+                        color: Colors.grey[200],
+                        elevation: 5,
+                        shape: const RoundedRectangleBorder(),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                height: 100,
+                                child: Image.asset(
+                                  'assets/images/accueil_femme.jpg', // Chemin de l'image à partir des ressources locales
+                                  fit: BoxFit.cover, // Ajuster l'image pour couvrir toute la zone disponible
                                 ),
                               ),
-                              Expanded(
-                                flex: 3,
-                                child: Container(
-                                  height: 100,
-                                  padding: const EdgeInsets.all(10),
-                                  child: const Center(
-                                    child: Text(
-                                      'Femme',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                height: 100,
+                                padding: const EdgeInsets.all(10),
+                                child: const Center(
+                                  child: Text(
+                                    'Femme',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    child: InkWell(
-                      onTap: () {
-                        // Action à effectuer lors du clic sur l'encre
-                      },
-                      child: Center(
-                        child: Card(
-                          color: Colors.grey[200],
-                          elevation: 5,
-                          shape: const RoundedRectangleBorder(),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.only(),
-                                  ),
-                                  child: const Center(
-                                    child: Icon(Icons.image),
-                                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.popAndPushNamed(context, '/catalHom');
+                    },
+                    child: Center(
+                      child: Card(
+                        color: Colors.grey[200],
+                        elevation: 5,
+                        shape: const RoundedRectangleBorder(),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                height: 100,
+                                child: Image.asset(
+                                  'assets/images/accueil_homme.jpg', // Chemin de l'image à partir des ressources locales
+                                  fit: BoxFit.cover, // Ajuster l'image pour couvrir toute la zone disponible
                                 ),
                               ),
-                              Expanded(
-                                flex: 3,
-                                child: Container(
-                                  height: 100,
-                                  padding: const EdgeInsets.all(10),
-                                  child: const Center(
-                                    child: Text(
-                                      'Homme',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                height: 100,
+                                padding: const EdgeInsets.all(10),
+                                child: const Center(
+                                  child: Text(
+                                    'Homme',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
-        floatingActionButton: panierW(context, _isLog, panier));
+      ),
+      floatingActionButton: panierW(context, _isLog, panier),
+    );
   }
-
-
-
-
-
-
 
   Widget _loading() {
     return Scaffold(
@@ -466,12 +445,9 @@ class _CatalogueState extends State<Catalogue> {
                           flex: 1,
                           child: Container(
                             height: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.only(),
-                            ),
-                            child: const Center(
-                              child: Icon(Icons.image),
+                            child: Image.asset(
+                              'assets/images/enfant.jpg', // Chemin de l'image à partir des ressources locales
+                              fit: BoxFit.cover, // Ajuster l'image pour couvrir toute la zone disponible
                             ),
                           ),
                         ),
@@ -514,12 +490,9 @@ class _CatalogueState extends State<Catalogue> {
                           flex: 1,
                           child: Container(
                             height: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.only(),
-                            ),
-                            child: const Center(
-                              child: Icon(Icons.image),
+                            child: Image.asset(
+                              'assets/images/femme.jpg', // Chemin de l'image à partir des ressources locales
+                              fit: BoxFit.cover, // Ajuster l'image pour couvrir toute la zone disponible
                             ),
                           ),
                         ),
@@ -562,12 +535,9 @@ class _CatalogueState extends State<Catalogue> {
                           flex: 1,
                           child: Container(
                             height: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.only(),
-                            ),
-                            child: const Center(
-                              child: Icon(Icons.image),
+                            child: Image.asset(
+                              'assets/images/homme.jpg', // Chemin de l'image à partir des ressources locales
+                              fit: BoxFit.cover, // Ajuster l'image pour couvrir toute la zone disponible
                             ),
                           ),
                         ),

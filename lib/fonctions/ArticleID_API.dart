@@ -1,20 +1,21 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../class/article.dart';
+import '../class/article.dart'; // Assurez-vous que le chemin d'accès est correct
 
 Future<Article> getArticleById(int id) async {
-  String baseUrl = 's3-4674.nuage-peda.fr';
-  Map<String, String> header = {
-    "Content-type": "application/json; charset=UTF-8",
-    "Accept": 'application/ld+json',
-  };
+   String baseUrl = 's3-4674.nuage-peda.fr';
+  final Uri uri = Uri.http(baseUrl, '/GDSport/public/api/articles/$id');
 
-  final uri = Uri.http(baseUrl, '/GDSport/public/api/articles/$id');
-
-  final response = await http.get(uri, headers: header);
+  final http.Response response = await http.get(
+    uri,
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+      "Accept": 'application/ld+json',
+    },
+  );
 
   if (response.statusCode == 200) {
-    final dynamic data = json.decode(response.body);
+    final Map<String, dynamic> data = json.decode(response.body);
 
     final int articleId = data['id'];
     final int articlePrix = data['prix'];
@@ -22,16 +23,13 @@ Future<Article> getArticleById(int id) async {
     final String articleDescription = data['description'];
     final String articleGenre = data['genre']['libelle'];
     final String articleType = data['type']['libelle'];
-    final List<String> articleImages = [];
-    for (var image in data['image']) {
-      articleImages.add(image['name']);
-    }
+    final List<String> articleImages = (data['image'] as List).map((image) => image['name'].toString()).toList();
     final int articleNbFavoris = data['nbFavoris'];
     final String articleMarque = data['marque'];
     final num articleNote = data['note'];
     final bool articleTendance = data['tendance'];
 
-    Article article = Article(
+    return Article(
       articleId,
       articlePrix,
       articleDesignation,
@@ -44,8 +42,6 @@ Future<Article> getArticleById(int id) async {
       articleNote,
       articleTendance,
     );
-
-    return article;
   } else {
     throw Exception('Failed to load article');
   }
