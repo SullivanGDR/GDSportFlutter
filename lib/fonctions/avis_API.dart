@@ -21,6 +21,6 @@ Future<List<Avis>> getAvisByArticleId(int articleId) async {
       data['note'],
     )).toList();
   } else {
-    throw Exception('Failed to load avis');
+    throw Exception('impossible de charger les avis');
   }
 }
